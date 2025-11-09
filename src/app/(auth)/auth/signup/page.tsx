@@ -75,7 +75,7 @@ export default function SignupPage() {
             Create Account
           </h1>
           <p className="text-white/70">
-            Join Aliff Capital and start winning contracts
+            Join Aliff Services and start winning contracts
           </p>
         </div>
 

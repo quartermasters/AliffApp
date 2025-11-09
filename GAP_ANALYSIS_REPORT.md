@@ -1,4 +1,4 @@
-# 🔍 Gap Analysis Report - Aliff Capital App v2.0
+# 🔍 Gap Analysis Report - Aliff Services App v2.0
 **Date**: 2025-11-07
 **Analyst**: Claude Code
 **Status**: Foundation Phase - Early Development
@@ -7,7 +7,7 @@
 
 ## Executive Summary
 
-The Aliff Capital v2.0 rebuild is in **early foundation phase** with only basic scaffolding complete. While the project structure and build system are working, **95% of planned features are not yet implemented**.
+The Aliff Services v2.0 rebuild is in **early foundation phase** with only basic scaffolding complete. While the project structure and build system are working, **95% of planned features are not yet implemented**.
 
 ### Current Status: ⚠️ **CRITICAL GAPS IDENTIFIED**
 
@@ -19,7 +19,7 @@ The Aliff Capital v2.0 rebuild is in **early foundation phase** with only basic 
 
 ### ✅ What EXISTS:
 ```
-aliff-capital-app-v2/
+aliff-services-app-v2/
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx         ✅ Basic layout with metadata

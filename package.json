@@ -1,7 +1,7 @@
 {
-  "name": "aliff-capital-app",
+  "name": "aliff-services-app",
   "version": "2.0.0",
-  "description": "Modern Next.js rebuild of Aliff Capital - AI-powered government contracting platform",
+  "description": "Modern Next.js rebuild of Aliff Services - AI-powered government contracting platform",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -17,7 +17,7 @@
     "crm",
     "nextjs"
   ],
-  "author": "Aliff Capital",
+  "author": "Aliff Services",
   "license": "UNLICENSED",
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",

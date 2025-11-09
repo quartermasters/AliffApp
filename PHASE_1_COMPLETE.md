@@ -9,7 +9,7 @@
 
 ## 🎉 Major Achievements
 
-Phase 1 establishes the complete foundation infrastructure for the Aliff Capital v2.0 rebuild. This is a **major milestone** that unblocks all future feature development.
+Phase 1 establishes the complete foundation infrastructure for the Aliff Services v2.0 rebuild. This is a **major milestone** that unblocks all future feature development.
 
 ### What Was Built:
 
@@ -156,7 +156,7 @@ Phase 1 establishes the complete foundation infrastructure for the Aliff Capital
 ## 🏗️ Project Structure
 
 ```
-aliff-capital-app-v2/
+aliff-services-app-v2/
 ├── prisma/
 │   └── schema.prisma                    ✅ Complete database schema
 │
@@ -459,7 +459,7 @@ With Phase 1 complete, we can now:
 
 1. **Start Here**:
    ```bash
-   cd aliff-capital-app-v2
+   cd aliff-services-app-v2
    npm install
    ```
 
@@ -512,4 +512,4 @@ With Phase 1 complete, we can now:
 
 *Completed by Claude Code on 2025-11-07*
 *Committed: f1049ae*
-*Branch: claude/review-aliff-capital-codebase-011CUu2XFcBnJi3FDkWg8346*
+*Branch: claude/review-aliff-services-codebase-011CUu2XFcBnJi3FDkWg8346*

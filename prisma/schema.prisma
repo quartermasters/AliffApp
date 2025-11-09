@@ -1,4 +1,4 @@
-// Aliff Capital Database Schema
+// Aliff Services Database Schema
 // Next.js 16 + Prisma + PostgreSQL
 
 generator client {

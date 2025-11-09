@@ -1,10 +1,10 @@
-# 🚀 Aliff Capital App v2.0
+# 🚀 Aliff Services App v2.0
 
-Modern Next.js rebuild of the Aliff Capital platform - AI-powered government contracting solution.
+Modern Next.js rebuild of the Aliff Services platform - AI-powered government contracting solution.
 
 ## 📊 Project Overview
 
-Aliff Capital is a comprehensive platform for government contractors featuring:
+Aliff Services is a comprehensive platform for government contractors featuring:
 - **AI-Powered Application Screening** - Resume parsing and candidate evaluation
 - **Full ATS (Applicant Tracking System)** - Manage job postings, applications, interviews
 - **CRM & Lead Management** - Track audits, leads, and conversions
@@ -62,8 +62,8 @@ Aliff Capital is a comprehensive platform for government contractors featuring:
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/aliff-capital-app.git
-cd aliff-capital-app
+git clone https://github.com/YOUR_USERNAME/aliff-services-app.git
+cd aliff-services-app
 ```
 
 2. **Install dependencies**
@@ -100,7 +100,7 @@ npm run type-check   # Run TypeScript compiler check
 ## 📁 Project Structure
 
 ```
-aliff-capital-app/
+aliff-services-app/
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   ├── components/       # React components
@@ -167,23 +167,23 @@ aliff-capital-app/
 
 ## 📝 Contributing
 
-This is a private project. For contributions, please contact the Aliff Capital team.
+This is a private project. For contributions, please contact the Aliff Services team.
 
 ## 📄 License
 
-UNLICENSED - Proprietary software of Aliff Capital
+UNLICENSED - Proprietary software of Aliff Services
 
 ---
 
 ## 🆘 Support
 
 For technical support or questions:
-- **Email**: dev@aliffcapital.com
+- **Email**: dev@aliffservices.com
 - **Documentation**: Coming soon
 
 ---
 
-**Built with ❤️ by Claude Code for Aliff Capital**
+**Built with ❤️ by Claude Code for Aliff Services**
 
 **Version**: 2.0.0 (Alpha)
 **Last Updated**: 2025-01-07

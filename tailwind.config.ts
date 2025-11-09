@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Aliff Capital Brand Colors
+        // Aliff Services Brand Colors
         gold: {
           DEFAULT: "#C89D5C",
           50: "#F8F3EB",

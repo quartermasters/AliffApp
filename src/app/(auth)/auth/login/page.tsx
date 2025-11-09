@@ -52,7 +52,7 @@ export default function LoginPage() {
             Welcome Back
           </h1>
           <p className="text-white/70">
-            Sign in to your Aliff Capital account
+            Sign in to your Aliff Services account
           </p>
         </div>
 

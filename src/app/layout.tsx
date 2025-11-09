@@ -4,8 +4,8 @@ import { TRPCProvider } from "@/lib/trpc/Provider";
 
 export const metadata: Metadata = {
   title: {
-    default: "Aliff Capital - Win Government Contracts with AI + Expert Teams",
-    template: "%s | Aliff Capital",
+    default: "Aliff Services - Win Government Contracts with AI + Expert Teams",
+    template: "%s | Aliff Services",
   },
   description:
     "$47M+ in government contracts won. Full business development teams with 24/7 RFP intelligence. 5-7 day turnaround. Zero hallucinations. 100% compliance guaranteed.",
@@ -21,16 +21,16 @@ export const metadata: Metadata = {
     "DLA TLS",
     "compliance audit",
   ],
-  authors: [{ name: "Aliff Capital" }],
-  creator: "Aliff Capital",
-  publisher: "Aliff Capital",
-  metadataBase: new URL("https://aliffcapital.com"),
+  authors: [{ name: "Aliff Services" }],
+  creator: "Aliff Services",
+  publisher: "Aliff Services",
+  metadataBase: new URL("https://aliffservices.com"),
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://aliffcapital.com",
-    siteName: "Aliff Capital",
-    title: "Aliff Capital - Win Government Contracts with AI + Expert Teams",
+    url: "https://aliffservices.com",
+    siteName: "Aliff Services",
+    title: "Aliff Services - Win Government Contracts with AI + Expert Teams",
     description:
       "$47M+ in contracts won. AI + Human expertise. 5-7 day turnaround. Get your readiness audit today.",
     images: [
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Aliff Capital - Government Contracting Excellence",
+        alt: "Aliff Services - Government Contracting Excellence",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aliff Capital - Win Government Contracts with AI + Expert Teams",
+    title: "Aliff Services - Win Government Contracts with AI + Expert Teams",
     description:
       "$47M+ in contracts won. AI + Human expertise. 5-7 day turnaround.",
     images: ["/og-image.png"],

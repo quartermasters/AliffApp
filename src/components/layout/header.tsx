@@ -24,7 +24,7 @@ export function Header({ user }: { user?: { name?: string | null; email?: string
               <span className="text-white font-bold text-lg">A</span>
             </div>
             <span className="font-bold text-xl hidden sm:inline">
-              Aliff Capital
+              Aliff Services
             </span>
           </Link>
 
