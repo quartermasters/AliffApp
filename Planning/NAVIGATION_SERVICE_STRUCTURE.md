@@ -18,11 +18,12 @@
 
 ## Overview
 
-Aliff Services offers three distinct service categories targeting different market segments:
+Aliff Services offers four distinct service categories targeting different market segments:
 
-1. **GOVCON** - Federal government contracting services
-2. **SLED** - State, Local, and Education contracting services
-3. **IT Services** - Website and mobile app development for ALL companies (not just government contractors)
+1. **GOVCON** - Federal government contracting services (8 services)
+2. **SLED** - State, Local, and Education contracting services (8 services)
+3. **Writing Services** - Professional writing for businesses and government contractors (6 categories)
+4. **IT Services** - Website and mobile app development for ALL companies (not just government contractors)
 
 ### Strategic Benefits
 
@@ -53,6 +54,8 @@ Aliff Services offers three distinct service categories targeting different mark
         ├───────────────────────┤
         │ SLED                  │ → /services/sled
         ├───────────────────────┤
+        │ Writing Services      │ → /services/writing
+        ├───────────────────────┤
         │ IT Services           │ → /services/it-services
         │  ├─ Website Dev       │ → /services/it-services/websites
         │  └─ Mobile Apps       │ → /services/it-services/mobile-apps
@@ -67,6 +70,7 @@ Aliff Services offers three distinct service categories targeting different mark
 ├── Services
 │   ├── GOVCON
 │   ├── SLED
+│   ├── Writing Services
 │   └── IT Services
 │       ├── Website Development
 │       └── Mobile App Development
@@ -85,7 +89,7 @@ Aliff Services offers three distinct service categories targeting different mark
 
 **Services Offered:**
 
-#### Core Services (1-6):
+#### Core Services (1-8):
 1. **Certification & Registration**
    - SAM.gov registration
    - Small business certifications (8(a), SDVOSB, WOSB, HUBZone)
@@ -122,8 +126,14 @@ Aliff Services offers three distinct service categories targeting different mark
    - Security clearances support
    - ATO documentation
 
-#### Supporting Services (7):
-7. **Website & Mobile App Development** *(Government-Specific)*
+7. **Subcontracting & Teaming**
+   - Federal market entry consulting
+   - Prime contractor matchmaking
+   - Teaming agreement development
+   - Past performance building
+   - Mentor-protégé programs
+
+8. **Website & Mobile App Development** *(Government-Specific)*
    - Capability statement websites
    - GSA Schedule showcase sites
    - Section 508 compliant applications
@@ -141,7 +151,7 @@ Aliff Services offers three distinct service categories targeting different mark
 
 **Services Offered:**
 
-#### Core Services (1-6):
+#### Core Services (1-8):
 1. **Certification & Registration**
    - State vendor registration (all 50 states)
    - MBE/WBE/DBE certifications
@@ -178,8 +188,13 @@ Aliff Services offers three distinct service categories targeting different mark
    - Insurance & bonding
    - Public records compliance
 
-#### Supporting Services (7):
-7. **Website & Mobile App Development** *(Government-Specific)*
+7. **Subcontracting & Teaming**
+   - State/local market entry support
+   - Prime contractor connections
+   - Cooperative purchasing teaming
+   - Building state/local past performance
+
+8. **Website & Mobile App Development** *(Government-Specific)*
    - Municipal service portals
    - School district applications
    - StateRAMP compliant solutions
@@ -348,6 +363,57 @@ Analytics: Google Analytics, Mixpanel
 
 ---
 
+### Writing Services Page (`/services/writing`)
+
+**Tagline:** "Professional Writing Services for Government Contractors & Businesses"
+
+**Target Audience:**
+- Government contractors (federal & SLED)
+- Businesses needing professional content
+- Executives and thought leaders
+- Companies seeking SEO content
+
+**Six Service Categories:**
+
+#### 1. Copywriting
+- Website copy
+- Sales pages
+- Ad copy
+- Brand messaging
+
+#### 2. Content Writing
+- Blog posts & articles
+- Social media content
+- Email campaigns
+- SEO content
+
+#### 3. Long-Form Content
+- Whitepapers & eBooks
+- Case studies
+- Guides & reports
+
+#### 4. Ghostwriting
+- Thought leadership articles
+- Executive content
+- Book writing
+
+#### 5. Business Writing
+- Business plans
+- Grant writing (SBIR/STTR)
+- Technical documentation
+- Press releases
+- Proposal writing (extends GOVCON/SLED)
+
+#### 6. Specialized Services
+- Resume & LinkedIn profiles
+- Academic writing
+- Script writing (video/podcast)
+
+**Cross-Link to GOVCON/SLED:**
+*"Government contractor? Our proposal writing expertise has won $47M+ in contracts. [View GOVCON Services →](/services/govcon)"*
+
+---
+
 ## Page Structure
 
 ### GOVCON/SLED Pages Structure
@@ -361,17 +427,12 @@ Analytics: Google Analytics, Mixpanel
 └─────────────────────────────────────────┘
          ↓
 ┌─────────────────────────────────────────┐
-│ 6 CORE SERVICES (Grid 2x3)              │
+│ 8 CORE SERVICES (Grid 2x4)              │
 │ - Each service card with icon           │
 │ - Brief description                     │
 │ - "Learn More" button                   │
-└─────────────────────────────────────────┘
-         ↓
-┌─────────────────────────────────────────┐
-│ WEBSITE & MOBILE APP DEV (Highlighted)  │
-│ - Government-specific features          │
-│ - Compliance focus                      │
-│ - Link to full IT Services              │
+│ - Includes Subcontracting & Teaming     │
+│ - Website & Mobile Dev as Service 8     │
 └─────────────────────────────────────────┘
          ↓
 ┌─────────────────────────────────────────┐
@@ -444,6 +505,52 @@ Analytics: Google Analytics, Mixpanel
 
 ---
 
+### Writing Services Page Structure
+
+```
+┌─────────────────────────────────────────┐
+│ HERO SECTION                            │
+│ - Tagline: Professional Writing         │
+│ - For all businesses & contractors      │
+│ - CTA: Get Free Consultation            │
+└─────────────────────────────────────────┘
+         ↓
+┌─────────────────────────────────────────┐
+│ 6 WRITING CATEGORIES (Grid 2x3)         │
+│ ┌──────────┬──────────┬──────────┐     │
+│ │Copywriting│ Content │Long-Form │     │
+│ │          │ Writing  │ Content  │     │
+│ ├──────────┼──────────┼──────────┤     │
+│ │Ghost-    │ Business │Special-  │     │
+│ │writing   │ Writing  │ ized     │     │
+│ └──────────┴──────────┴──────────┘     │
+└─────────────────────────────────────────┘
+         ↓
+┌─────────────────────────────────────────┐
+│ GOVERNMENT CONTRACTING CALLOUT           │
+│ - Proposal writing wins $47M+ contracts  │
+│ - Link to GOVCON/SLED services          │
+└─────────────────────────────────────────┘
+         ↓
+┌─────────────────────────────────────────┐
+│ WRITING SAMPLES / PORTFOLIO              │
+│ - Case studies and examples              │
+└─────────────────────────────────────────┘
+         ↓
+┌─────────────────────────────────────────┐
+│ INDUSTRIES WE SERVE                      │
+│ - Government, Tech, Healthcare, etc.     │
+└─────────────────────────────────────────┘
+         ↓
+┌─────────────────────────────────────────┐
+│ CTA SECTION                              │
+│ - Get Free Consultation                  │
+│ - Request Writing Quote                  │
+└─────────────────────────────────────────┘
+```
+
+---
+
 ## Cross-Linking Strategy
 
 ### From GOVCON/SLED to IT Services
@@ -506,6 +613,7 @@ Analytics: Google Analytics, Mixpanel
 │       - /services/govcon/proposal-development
 │       - /services/govcon/pricing-strategy
 │       - /services/govcon/compliance
+│       - /services/govcon/subcontracting-teaming
 │       - /services/govcon/web-mobile-dev
 │
 ├── /services/sled
@@ -516,7 +624,17 @@ Analytics: Google Analytics, Mixpanel
 │       - /services/sled/proposal-development
 │       - /services/sled/pricing-strategy
 │       - /services/sled/compliance
+│       - /services/sled/subcontracting-teaming
 │       - /services/sled/web-mobile-dev
+│
+├── /services/writing
+│   └── /services/writing/[category]
+│       - /services/writing/copywriting
+│       - /services/writing/content-writing
+│       - /services/writing/long-form
+│       - /services/writing/ghostwriting
+│       - /services/writing/business-writing
+│       - /services/writing/specialized
 │
 └── /services/it-services
     ├── /services/it-services/websites
@@ -565,6 +683,13 @@ Analytics: Google Analytics, Mixpanel
       <DropdownDivider />
 
       <DropdownItem
+        href="/services/writing"
+        icon={<PencilIcon />}
+        title="Writing Services"
+        description="Professional Writing for All Industries"
+      />
+
+      <DropdownItem
         href="/services/it-services"
         icon={<CodeIcon />}
         title="IT Services"
@@ -602,15 +727,15 @@ Analytics: Google Analytics, Mixpanel
 
 ### Quick Reference for Internal Use
 
-| Feature | GOVCON | SLED | IT Services |
-|---------|--------|------|-------------|
-| **Target Audience** | Federal contractors | State/local contractors | Any business |
-| **Market Size** | $600B | $1.9T | Unlimited |
-| **Core Services** | 6 contracting services | 6 contracting services | 2 tech services |
-| **Web/Mobile** | Gov-specific (compliance) | Gov-specific (ADA) | General commercial |
-| **Recurring Revenue** | Retainer possible | Retainer possible | Maintenance fees |
-| **Sales Cycle** | 1-3 months | 1-2 months | 2-8 weeks |
-| **Cross-Sell** | Can sell IT Services | Can sell IT Services | Can sell GOVCON/SLED |
+| Feature | GOVCON | SLED | Writing Services | IT Services |
+|---------|--------|------|------------------|-------------|
+| **Target Audience** | Federal contractors | State/local contractors | All businesses | Any business |
+| **Market Size** | $600B | $1.9T | Unlimited | Unlimited |
+| **Core Services** | 8 contracting services | 8 contracting services | 6 writing categories | 2 tech services |
+| **Specialization** | Federal compliance | State/local compliance | Content creation | Tech development |
+| **Recurring Revenue** | Retainer possible | Retainer possible | Ongoing content | Maintenance fees |
+| **Sales Cycle** | 1-3 months | 1-2 months | 1-4 weeks | 2-8 weeks |
+| **Cross-Sell** | IT + Writing | IT + Writing | GOVCON/SLED + IT | All services |
 
 ---
 
@@ -633,6 +758,16 @@ Analytics: Google Analytics, Mixpanel
 - School district contracts
 - State vendor registration
 - Cooperative purchasing
+
+#### Writing Services Keywords:
+- Professional writing services
+- Business writing services
+- Copywriting services
+- Content writing agency
+- Ghostwriting services
+- Grant writing services
+- Proposal writing
+- Technical writing services
 
 #### IT Services Keywords:
 - Website development company
@@ -658,6 +793,13 @@ Get free assessment.
 Win state & local government contracts with proven strategies.
 State certifications, RFP response, cooperative purchasing & more.
 35% win rate. Free consultation.
+```
+
+**Writing Services:**
+```
+Professional writing services for businesses and government contractors.
+Copywriting, content, ghostwriting, business plans, grants & more.
+Expert writers. Free consultation.
 ```
 
 **IT Services:**
@@ -776,6 +918,14 @@ Free consultation available.
 │  │
 │  ├─ SLED
 │  │  └─ View All Services
+│  │
+│  ├─ Writing Services ▼
+│  │  ├─ Copywriting
+│  │  ├─ Content Writing
+│  │  ├─ Long-Form Content
+│  │  ├─ Ghostwriting
+│  │  ├─ Business Writing
+│  │  └─ Specialized Services
 │  │
 │  └─ IT Services
 │     ├─ Website Development ▼
