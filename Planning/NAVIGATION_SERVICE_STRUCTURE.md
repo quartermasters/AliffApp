@@ -29,11 +29,13 @@ Aliff Services offers four distinct service categories targeting different marke
 
 **Market Diversification:**
 - Government contractors (GOVCON + SLED): Specialized niche
-- General businesses (IT Services): Broader market
-- Cross-sell opportunities across all three
+- Writing Services: All businesses and contractors
+- IT Services: Broader market
+- Cross-sell opportunities across all four categories
 
 **Revenue Streams:**
 - GOVCON/SLED: Project-based + retainer fees
+- Writing Services: Project-based + ongoing content
 - IT Services: Project-based + recurring maintenance
 - Bundle packages across services
 
@@ -555,7 +557,7 @@ Analytics: Google Analytics, Mixpanel
 
 ### From GOVCON/SLED to IT Services
 
-**Placement:** After the 6 core services, before case studies
+**Placement:** After the 8 core services, before case studies
 
 **Message:**
 ```

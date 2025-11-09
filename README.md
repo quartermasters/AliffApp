@@ -4,13 +4,33 @@ Modern Next.js rebuild of the Aliff Services platform - AI-powered government co
 
 ## 📊 Project Overview
 
-Aliff Services is a comprehensive platform for government contractors featuring:
-- **AI-Powered Application Screening** - Resume parsing and candidate evaluation
-- **Full ATS (Applicant Tracking System)** - Manage job postings, applications, interviews
-- **CRM & Lead Management** - Track audits, leads, and conversions
-- **LinkedIn Automation** - Prospect management and content generation
-- **AI Chatbot** - Lead qualification and customer support
-- **Business Development Tools** - Project tracking and analytics
+Aliff Services is a comprehensive marketplace platform connecting government contractors and businesses with pre-vetted service providers. The platform features complete anonymity between clients and providers, with Aliff acting as an intelligent intermediary.
+
+### 🎯 Four Service Categories
+
+1. **GOVCON** - Federal government contracting services (8 services)
+   - Certification, Market Intelligence, Relationship Building, Proposal Development
+   - Pricing Strategy, Compliance, Subcontracting & Teaming, Website & Mobile Development
+
+2. **SLED** - State, Local, and Education contracting services (8 services)
+   - Same comprehensive services tailored for state/local markets
+
+3. **Writing Services** - Professional writing for all businesses (6 categories)
+   - Copywriting, Content Writing, Long-Form Content
+   - Ghostwriting, Business Writing, Specialized Services
+
+4. **IT Services** - Website and mobile app development for all businesses
+   - Website Development (Corporate, E-commerce, Landing Pages, Web Apps, CMS)
+   - Mobile App Development (iOS, Android, React Native, PWA, Enterprise)
+
+### 🤖 Platform Features
+
+- **AI Chatbot "Aliff"** - Lead qualification, assessment, and pricing discovery
+- **Complete Anonymity** - Fake identity generation between clients and providers
+- **AI-Powered Matching** - Automated service provider selection via competency tests
+- **Document Sanitization** - AI scrubs identifying information
+- **Slack Integration** - Quote routing and team notifications
+- **Multi-Tenant Architecture** - Client, Provider, Vendor, and Admin portals
 
 ### Key Metrics
 - 💰 **$47M+** in contracts won
