@@ -10,7 +10,7 @@
 ## 📋 Table of Contents
 
 1. [Overview](#overview)
-2. [The 6 Core Services](#the-6-core-services)
+2. [The 8 Core Services](#the-8-core-services)
 3. [Services Page Design](#services-page-design)
 4. [Implementation Recommendations](#implementation-recommendations)
 
@@ -29,7 +29,7 @@ This document outlines the comprehensive service framework for Aliff Services, c
 
 ---
 
-## The 6 Core Services
+## The 8 Core Services
 
 ### 1. 📜 Certification & Registration
 
@@ -397,6 +397,108 @@ This document outlines the comprehensive service framework for Aliff Services, c
 
 ---
 
+### 7. 🤝 Subcontracting & Teaming
+
+#### Federal (GOVCON)
+
+**Federal Market Entry Consulting:**
+- Federal market entry consulting
+- Commercial-to-federal transition strategy
+- Federal readiness assessment
+- Gap analysis and roadmap development
+
+**Prime Contractor Matchmaking:**
+- Prime contractor identification and matchmaking
+- Subcontracting opportunity pipeline
+- Target prime contractor research
+- Introduction strategy and facilitation
+
+**Partnership Development:**
+- Teaming agreement development
+- Joint venture structuring
+- Partnership negotiation support
+- Work share and pricing arrangements
+
+**Past Performance Building:**
+- Past performance building through subcontracting
+- Subcontract documentation
+- CPARS management
+- Performance tracking and reporting
+
+**Mentor-Protégé Programs:**
+- Mentor-protégé program support
+- Mentor identification and matching
+- Agreement development and SBA submission
+- Program management and compliance
+
+#### SLED (State, Local, Education)
+
+**State/Local Market Entry:**
+- State/local market entry support
+- Regional market assessment
+- Local presence strategy
+- Community integration planning
+
+**Prime Contractor Connections:**
+- Prime contractor connections for state contracts
+- Local prime identification
+- Regional partnership development
+- Municipal contractor networking
+
+**Cooperative Purchasing Teaming:**
+- Cooperative purchasing teaming
+- Multi-state partnership strategies
+- Cooperative contract collaboration
+- Member organization connections
+
+**Past Performance Development:**
+- Building state/local past performance
+- Reference documentation
+- Performance tracking
+- Success story development
+
+---
+
+### 8. 💻 Website & Mobile Development
+
+#### Federal (GOVCON)
+
+**Government-Specific Digital Solutions:**
+- Capability statement websites
+- GSA Schedule showcase sites
+- Section 508 compliant applications
+- FedRAMP-ready solutions
+- PIV/CAC authentication systems
+- Federal mobile applications
+- ATO documentation support
+- Government portal development
+
+**Compliance Focus:**
+- Section 508 accessibility compliance
+- Security compliance (FISMA, FedRAMP)
+- Federal design standards
+- Government hosting requirements
+
+#### SLED (State, Local, Education)
+
+**State & Local Digital Solutions:**
+- Municipal service portals
+- School district applications
+- StateRAMP compliant solutions
+- Public-facing citizen apps
+- ADA compliant websites
+- Educational technology platforms
+- Community engagement portals
+- Local government dashboards
+
+**Compliance Focus:**
+- ADA/WCAG compliance
+- State accessibility standards
+- Data privacy requirements
+- Public records compliance
+
+---
+
 ## Services Page Design
 
 ### Design Philosophy
@@ -425,7 +527,7 @@ This document outlines the comprehensive service framework for Aliff Services, c
 └─────────────────────────────────────────────────┘
          ↓
 ┌─────────────────────────────────────────────────┐
-│           6 SERVICE CARDS (Grid 2x3)             │
+│           8 SERVICE CARDS (Grid 2x4)             │
 │   Each card expands to show Federal vs SLED     │
 │                                                  │
 │   1. Certification & Registration                │
@@ -434,6 +536,8 @@ This document outlines the comprehensive service framework for Aliff Services, c
 │   4. Proposal Development                        │
 │   5. Pricing Strategy                            │
 │   6. Compliance & Documentation                  │
+│   7. Subcontracting & Teaming                    │
+│   8. Website & Mobile Development                │
 └─────────────────────────────────────────────────┘
          ↓
 ┌─────────────────────────────────────────────────┐
@@ -466,6 +570,8 @@ This document outlines the comprehensive service framework for Aliff Services, c
 4. ✍️ Proposal Development - Document/pen
 5. 💰 Pricing Strategy - Calculator
 6. ✅ Compliance & Documentation - Checkmark shield
+7. 🤝 Subcontracting & Teaming - Partnership handshake
+8. 💻 Website & Mobile Development - Code/devices
 
 ### Interactive Components
 
@@ -585,7 +691,7 @@ Week 8+: Ongoing Support
 ✓ Zero hallucinations (AI accuracy)
 ```
 
-#### 6. Pricing Packages
+#### 6. Service Packages
 ```markdown
 ┌──────────────┬──────────────┬──────────────┐
 │   STARTER    │    GROWTH    │  ENTERPRISE  │
@@ -593,9 +699,8 @@ Week 8+: Ongoing Support
 │ Federal OR   │ Federal +    │ Unlimited    │
 │ SLED         │ SLED         │ Both Markets │
 │              │              │              │
-│ 2 services   │ 4 services   │ All 6        │
+│ 2 services   │ 4 services   │ All 8        │
 │ 1 proposal   │ 3 proposals  │ Unlimited    │
-│ $5K/month    │ $12K/month   │ Custom       │
 │              │              │              │
 │ [Get Started]│ [Get Started]│ [Contact Us] │
 └──────────────┴──────────────┴──────────────┘
@@ -624,7 +729,7 @@ Week 8+: Ongoing Support
 ## Implementation Recommendations
 
 ### Phase 1: Content Creation (Week 1-2)
-- [ ] Write detailed service descriptions for each of 6 services
+- [ ] Write detailed service descriptions for each of 8 services
 - [ ] Create Federal vs SLED comparison matrices
 - [ ] Develop case studies (2-3 per market)
 - [ ] Design service icons and graphics

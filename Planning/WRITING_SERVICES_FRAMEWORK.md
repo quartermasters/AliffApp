@@ -84,7 +84,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - SEO-friendly content
 - Brand voice consistency
 
-**Pricing:** $500 - $3,000 per page
 **Timeline:** 3-7 days per page
 
 **Ideal For:**
@@ -112,7 +111,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Objection handling
 - Clear next steps
 
-**Pricing:** $750 - $5,000 per project
 **Timeline:** 5-10 days
 
 **Ideal For:**
@@ -140,7 +138,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - CTR-focused messaging
 - A/B testing recommendations
 
-**Pricing:** $300 - $1,500 per campaign
 **Timeline:** 2-5 days
 
 **Ideal For:**
@@ -168,7 +165,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Do's and Don'ts
 - Competitor differentiation
 
-**Pricing:** $3,000 - $15,000
 **Timeline:** 2-4 weeks
 
 **Ideal For:**
@@ -201,18 +197,7 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Image suggestions
 - CTA integration
 
-**Pricing:**
-- Short posts (500-800 words): $150 - $400
-- Medium posts (800-1,500 words): $400 - $800
-- Long posts (1,500-2,500 words): $800 - $1,500
-- Pillar content (2,500+ words): $1,500 - $3,000
-
 **Timeline:** 3-7 days per post
-
-**Packages:**
-- Starter: 4 posts/month - $1,200
-- Growth: 8 posts/month - $2,200
-- Enterprise: 12 posts/month - $3,000
 
 **Ideal For:**
 - SEO strategy
@@ -239,13 +224,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Visual content suggestions
 - Posting schedule
 - 30-60-90 day calendars
-
-**Pricing:**
-- Individual posts: $50 - $200 each
-- Monthly packages:
-  - Starter: 12 posts/month - $500
-  - Growth: 20 posts/month - $800
-  - Enterprise: 40 posts/month - $1,400
 
 **Timeline:** Ongoing/monthly
 
@@ -274,11 +252,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - CTAs
 - PS sections
 - Mobile-optimized formatting
-
-**Pricing:**
-- Single email: $200 - $600
-- Email sequence (5-7 emails): $1,000 - $3,500
-- Monthly newsletter: $500 - $2,000/month
 
 **Timeline:** 3-5 days per email
 
@@ -312,7 +285,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Citations and sources
 - Professional design layout
 
-**Pricing:** $3,000 - $15,000 per white paper
 **Timeline:** 3-6 weeks
 
 **Ideal For:**
@@ -341,7 +313,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Visual elements
 - PDF and web formats
 
-**Pricing:** $800 - $3,000 per case study
 **Timeline:** 1-2 weeks
 
 **Ideal For:**
@@ -370,7 +341,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Landing page copy
 - Promotion strategy
 
-**Pricing:** $2,500 - $10,000 per e-book
 **Timeline:** 4-8 weeks
 
 **Ideal For:**
@@ -402,11 +372,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Industry insights
 - Call-to-action integration
 
-**Pricing:**
-- LinkedIn articles: $500 - $2,000 each
-- Industry publications: $1,500 - $5,000 each
-- Speeches: $2,000 - $10,000 each
-
 **Timeline:** 1-3 weeks
 
 **Ideal For:**
@@ -433,7 +398,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Publisher-ready format
 - Book proposal (if needed)
 
-**Pricing:** $15,000 - $100,000+ (based on length/complexity)
 **Timeline:** 4-12 months
 
 **Process:**
@@ -468,7 +432,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Headline variations
 - Pitch letter (if needed)
 
-**Pricing:** $500 - $3,000 per article
 **Timeline:** 1-2 weeks
 
 **Ideal For:**
@@ -501,7 +464,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Financial narrative
 - Appendices
 
-**Pricing:** $2,500 - $15,000
 **Timeline:** 3-6 weeks
 
 **Ideal For:**
@@ -530,10 +492,7 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Supporting documentation
 - Compliance review
 
-**Pricing:** $2,000 - $20,000+ (often % of grant amount)
 **Timeline:** 2-8 weeks
-
-**Success Fee:** Optional 3-5% of awarded grant
 
 **Ideal For:**
 - Non-profits
@@ -560,7 +519,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Multiple formats (PDF, web, etc.)
 - Version control
 
-**Pricing:** $75 - $200 per page
 **Timeline:** Varies by complexity
 
 **Ideal For:**
@@ -589,7 +547,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Media contact info
 - Distribution recommendations
 
-**Pricing:** $300 - $1,500 per release
 **Timeline:** 2-3 days
 
 **Ideal For:**
@@ -609,7 +566,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Service proposals
 - Consulting proposals
 
-**Pricing:** $2,000 - $25,000
 **Timeline:** 1-4 weeks
 
 ---
@@ -632,12 +588,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Achievement quantification
 - Keyword optimization
 
-**Pricing:**
-- Professional resume: $300 - $800
-- Executive resume: $800 - $2,000
-- LinkedIn profile: $200 - $600
-- Package (resume + LinkedIn): $800 - $2,500
-
 **Timeline:** 3-7 days
 
 ---
@@ -652,7 +602,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - Dissertations (editing/formatting)
 - Academic proposals
 
-**Pricing:** $100 - $300 per page
 **Timeline:** 2-8 weeks
 
 **Note:** Ethical ghostwriting only (editing, structuring, not plagiarism)
@@ -675,7 +624,6 @@ Aliff Services expands into professional writing services, leveraging our existi
 - CTA integration
 - B-roll suggestions
 
-**Pricing:** $300 - $2,500 per script
 **Timeline:** 5-10 days
 
 ---
@@ -737,74 +685,6 @@ Services ▼
     ├── Business Writing
     └── Specialized Services
 ```
-
----
-
-## Pricing Structure
-
-### Package Tiers
-
-#### **Starter Package** - $2,000/month
-- 4 blog posts (800 words each)
-- 2 social media post sets (10 posts total)
-- 1 email newsletter
-- Basic SEO optimization
-
-**Ideal For:** Small businesses, startups
-
----
-
-#### **Growth Package** - $5,000/month
-- 8 blog posts (1,200 words each)
-- 4 social media post sets (20 posts total)
-- 2 email newsletters
-- 1 case study per quarter
-- Advanced SEO optimization
-- Monthly strategy call
-
-**Ideal For:** Growing businesses, B2B companies
-
----
-
-#### **Enterprise Package** - $10,000+/month
-- 12+ blog posts
-- Unlimited social media content
-- Weekly email content
-- 1 white paper per quarter
-- 2 case studies per quarter
-- Executive ghostwriting (2 articles/month)
-- Dedicated account manager
-- Weekly strategy calls
-
-**Ideal For:** Large enterprises, thought leaders
-
----
-
-### À La Carte Pricing Summary
-
-| Service | Price Range | Timeline |
-|---------|-------------|----------|
-| **Copywriting** |
-| Website page | $500 - $3,000 | 3-7 days |
-| Sales page | $750 - $5,000 | 5-10 days |
-| Ad campaign | $300 - $1,500 | 2-5 days |
-| Brand messaging | $3,000 - $15,000 | 2-4 weeks |
-| **Content Writing** |
-| Blog post | $150 - $3,000 | 3-7 days |
-| Social media (monthly) | $500 - $1,400 | Ongoing |
-| Email sequence | $1,000 - $3,500 | 3-5 days |
-| **Long-Form** |
-| White paper | $3,000 - $15,000 | 3-6 weeks |
-| Case study | $800 - $3,000 | 1-2 weeks |
-| E-book | $2,500 - $10,000 | 4-8 weeks |
-| **Ghostwriting** |
-| LinkedIn article | $500 - $2,000 | 1-2 weeks |
-| Speech | $2,000 - $10,000 | 2-3 weeks |
-| Book | $15,000 - $100,000+ | 4-12 months |
-| **Business Writing** |
-| Business plan | $2,500 - $15,000 | 3-6 weeks |
-| Grant proposal | $2,000 - $20,000+ | 2-8 weeks |
-| Press release | $300 - $1,500 | 2-3 days |
 
 ---
 

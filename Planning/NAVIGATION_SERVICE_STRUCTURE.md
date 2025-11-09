@@ -216,7 +216,6 @@ Aliff Services offers three distinct service categories targeting different mark
 - SEO optimization
 - Mobile-responsive design
 
-**Pricing:** $5K - $25K
 **Timeline:** 3-8 weeks
 
 ##### **E-Commerce Websites**
@@ -228,7 +227,6 @@ Aliff Services offers three distinct service categories targeting different mark
 - Product catalog management
 
 **Platforms:** Shopify, WooCommerce, Custom (Next.js + Stripe)
-**Pricing:** $10K - $50K
 **Timeline:** 6-12 weeks
 
 ##### **Landing Pages**
@@ -239,7 +237,6 @@ Aliff Services offers three distinct service categories targeting different mark
 - Conversion optimization
 - Email capture and automation
 
-**Pricing:** $2K - $8K
 **Timeline:** 1-3 weeks
 
 ##### **Web Applications**
@@ -250,7 +247,6 @@ Aliff Services offers three distinct service categories targeting different mark
 - API development
 - Database design
 
-**Pricing:** $25K - $300K+
 **Timeline:** 3-12 months
 
 ##### **CMS Solutions**
@@ -260,7 +256,6 @@ Aliff Services offers three distinct service categories targeting different mark
 - Documentation sites
 - Knowledge bases
 
-**Pricing:** $5K - $20K
 **Timeline:** 3-6 weeks
 
 **Technology Stack:**
@@ -286,7 +281,6 @@ Hosting: Vercel, AWS, Azure, Google Cloud
 - In-app purchases
 - Apple Pay integration
 
-**Pricing:** $25K - $150K
 **Timeline:** 3-6 months
 
 ##### **Android Apps (Native)**
@@ -297,7 +291,6 @@ Hosting: Vercel, AWS, Azure, Google Cloud
 - Google Pay integration
 - Material Design 3
 
-**Pricing:** $25K - $150K
 **Timeline:** 3-6 months
 
 ##### **Cross-Platform Apps (React Native)**
@@ -308,7 +301,6 @@ Hosting: Vercel, AWS, Azure, Google Cloud
 - Cost-effective
 - Easier maintenance
 
-**Pricing:** $30K - $120K (for both platforms)
 **Timeline:** 3-5 months
 
 ##### **Progressive Web Apps (PWA)**
@@ -319,7 +311,6 @@ Hosting: Vercel, AWS, Azure, Google Cloud
 - Fast loading
 - Cross-platform compatibility
 
-**Pricing:** $15K - $60K
 **Timeline:** 2-4 months
 
 ##### **Enterprise Mobile Solutions**
@@ -330,7 +321,6 @@ Hosting: Vercel, AWS, Azure, Google Cloud
 - Sales enablement tools
 - Customer service apps
 
-**Pricing:** $40K - $200K+
 **Timeline:** 4-9 months
 
 **Features We Build:**
@@ -618,7 +608,6 @@ Analytics: Google Analytics, Mixpanel
 | **Market Size** | $600B | $1.9T | Unlimited |
 | **Core Services** | 6 contracting services | 6 contracting services | 2 tech services |
 | **Web/Mobile** | Gov-specific (compliance) | Gov-specific (ADA) | General commercial |
-| **Pricing** | $5K-25K/proposal | $3K-20K/proposal | $2K-300K/project |
 | **Recurring Revenue** | Retainer possible | Retainer possible | Maintenance fees |
 | **Sales Cycle** | 1-3 months | 1-2 months | 2-8 weeks |
 | **Cross-Sell** | Can sell IT Services | Can sell IT Services | Can sell GOVCON/SLED |
@@ -674,7 +663,7 @@ State certifications, RFP response, cooperative purchasing & more.
 **IT Services:**
 ```
 Professional website and mobile app development for businesses.
-React, Next.js, iOS, Android. Custom solutions from $5K.
+React, Next.js, iOS, Android. Custom solutions available.
 Free consultation available.
 ```
 
