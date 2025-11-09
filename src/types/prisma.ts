@@ -1,0 +1,52 @@
+// Type definitions for Prisma models (until Prisma generates the client)
+
+export enum Role {
+  SUPER_ADMIN = "SUPER_ADMIN",
+  ADMIN = "ADMIN",
+  RECRUITER = "RECRUITER",
+  INTERVIEWER = "INTERVIEWER",
+  USER = "USER",
+}
+
+export enum JobStatus {
+  DRAFT = "DRAFT",
+  PUBLISHED = "PUBLISHED",
+  CLOSED = "CLOSED",
+  ARCHIVED = "ARCHIVED",
+}
+
+export enum JobType {
+  FULL_TIME = "FULL_TIME",
+  PART_TIME = "PART_TIME",
+  CONTRACT = "CONTRACT",
+  INTERNSHIP = "INTERNSHIP",
+}
+
+export enum JobLocation {
+  REMOTE = "REMOTE",
+  HYBRID = "HYBRID",
+  ON_SITE = "ON_SITE",
+}
+
+export enum ApplicationStatus {
+  SUBMITTED = "SUBMITTED",
+  SCREENING = "SCREENING",
+  SHORTLISTED = "SHORTLISTED",
+  INTERVIEW_SCHEDULED = "INTERVIEW_SCHEDULED",
+  INTERVIEWING = "INTERVIEWING",
+  OFFER_EXTENDED = "OFFER_EXTENDED",
+  ACCEPTED = "ACCEPTED",
+  REJECTED = "REJECTED",
+  WITHDRAWN = "WITHDRAWN",
+}
+
+export enum LeadStatus {
+  NEW = "NEW",
+  CONTACTED = "CONTACTED",
+  QUALIFIED = "QUALIFIED",
+  PROPOSAL_SENT = "PROPOSAL_SENT",
+  NEGOTIATION = "NEGOTIATION",
+  WON = "WON",
+  LOST = "LOST",
+  ARCHIVED = "ARCHIVED",
+}

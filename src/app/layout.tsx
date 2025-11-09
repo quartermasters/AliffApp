@@ -1,0 +1,77 @@
+import type { Metadata } from "next";
+import "./globals.css";
+import { TRPCProvider } from "@/lib/trpc/Provider";
+
+export const metadata: Metadata = {
+  title: {
+    default: "Aliff Capital - Win Government Contracts with AI + Expert Teams",
+    template: "%s | Aliff Capital",
+  },
+  description:
+    "$47M+ in government contracts won. Full business development teams with 24/7 RFP intelligence. 5-7 day turnaround. Zero hallucinations. 100% compliance guaranteed.",
+  keywords: [
+    "government contracts",
+    "federal contracts",
+    "GSA Schedule",
+    "RFP response",
+    "proposal writing",
+    "government contracting",
+    "federal procurement",
+    "OASIS+",
+    "DLA TLS",
+    "compliance audit",
+  ],
+  authors: [{ name: "Aliff Capital" }],
+  creator: "Aliff Capital",
+  publisher: "Aliff Capital",
+  metadataBase: new URL("https://aliffcapital.com"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://aliffcapital.com",
+    siteName: "Aliff Capital",
+    title: "Aliff Capital - Win Government Contracts with AI + Expert Teams",
+    description:
+      "$47M+ in contracts won. AI + Human expertise. 5-7 day turnaround. Get your readiness audit today.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Aliff Capital - Government Contracting Excellence",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aliff Capital - Win Government Contracts with AI + Expert Teams",
+    description:
+      "$47M+ in contracts won. AI + Human expertise. 5-7 day turnaround.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className="antialiased bg-white dark:bg-navy-900 text-navy-800 dark:text-white font-sans">
+        <TRPCProvider>{children}</TRPCProvider>
+      </body>
+    </html>
+  );
+}
