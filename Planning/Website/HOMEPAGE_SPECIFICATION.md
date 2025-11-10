@@ -255,6 +255,65 @@ enableTouchSwipe(heroContainer, navigateSlide);
 
 ---
 
+### Section 2.5: B2B Callout (Agency-Focused)
+
+**Purpose**: Capture 70-90% of revenue opportunity from GOVCON agencies looking for white-label delivery solutions.
+
+**Headline**: "Are You a GOVCON Agency?"
+
+**Subheadline**: "Scale your delivery without adding headcount"
+
+**Layout**: Full-width banner with contrasting background
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│  🏢 ARE YOU A GOVCON AGENCY?                             │
+│                                                          │
+│  Scale your delivery without adding headcount           │
+│                                                          │
+│  ✓ White-label our services as your own                 │
+│  ✓ 15-25% volume discounts                              │
+│  ✓ Superior quality, lower rates                        │
+│  ✓ Pay per project, no fees                             │
+│                                                          │
+│  [View Agency Solutions →]                               │
+│                                                          │
+│  Trusted by several leading GOVCON agencies              │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Visual Design**:
+- Background: Gradient (Navy to dark gray)
+- Border: 2px gold accent on left edge
+- Icon: Building/briefcase (48px)
+- Text: White
+- CTA Button: Gold with white text
+- Padding: 60px top/bottom
+
+**CTA Destination**: `/for-agencies` page
+
+**Key Features Highlighted**:
+1. **White-label** - Your brand, not ours
+2. **Volume discounts** - 15-25% off based on monthly projects
+3. **Superior quality, lower rates** - Not cheap labor, but efficient delivery
+4. **Pay per project** - No platform fees, no monthly billing
+
+**Mobile Behavior**:
+- Full width
+- Stack elements vertically
+- Larger CTA button (min 56px height)
+- Condensed bullet points
+
+**Strategic Importance**:
+- Positioned early (after service cards) to capture B2B audience
+- 70-90% of revenue comes from this segment
+- Direct link to dedicated B2B landing page
+- Reinforces white-label value proposition
+
+---
+
 ### Section 3: Universal Value Props
 
 **Purpose**: Build trust and communicate core differentiators across all services.

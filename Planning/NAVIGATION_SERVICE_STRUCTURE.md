@@ -46,9 +46,9 @@ Aliff Services offers four distinct service categories targeting different marke
 ### Primary Navigation (Desktop)
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  [Logo]  Home  Services ▼  About  Case Studies  Contact │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│  [Logo]  Home  Services ▼  For Agencies  About  Case Studies Contact│
+└─────────────────────────────────────────────────────────────────────┘
                     │
                     ▼
         ┌───────────────────────┐
@@ -76,6 +76,7 @@ Aliff Services offers four distinct service categories targeting different marke
 │   └── IT Services
 │       ├── Website Development
 │       └── Mobile App Development
+├── For Agencies
 ├── About
 ├── Case Studies
 └── Contact
