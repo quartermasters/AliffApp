@@ -1,0 +1,146 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Business Decision",
+  "description": "Captures business decisions, logic, rules, and operational policies",
+  "type": "object",
+  "required": ["id", "date", "type", "roles", "decisionCategory", "situation", "optionsConsidered", "decisionMade", "rationale", "sensitivity"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this decision"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of decision"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["business_decision"],
+      "description": "Data type identifier"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["SALES", "OPS", "CLIENT", "TRAINER", "CEO"]
+      },
+      "description": "Which Aliff roles need access to this knowledge"
+    },
+    "decisionCategory": {
+      "type": "string",
+      "enum": ["pricing", "resource_allocation", "service_delivery", "client_management", "quality_control", "strategy", "policy"],
+      "description": "Category of business decision"
+    },
+    "situation": {
+      "type": "string",
+      "description": "What triggered this decision or what problem needed solving"
+    },
+    "optionsConsidered": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "option": {
+            "type": "string",
+            "description": "Option considered"
+          },
+          "pros": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "description": "Options that were evaluated"
+    },
+    "decisionMade": {
+      "type": "string",
+      "description": "The decision that was made"
+    },
+    "rationale": {
+      "type": "object",
+      "properties": {
+        "reasoning": {
+          "type": "string",
+          "description": "Why this decision was made"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Constraints that influenced the decision"
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Assumptions underlying the decision"
+        }
+      }
+    },
+    "implementationRules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule": {
+            "type": "string",
+            "description": "Operational rule stemming from this decision"
+          },
+          "condition": {
+            "type": "string",
+            "description": "When this rule applies (IF condition)"
+          },
+          "action": {
+            "type": "string",
+            "description": "What to do (THEN action)"
+          }
+        }
+      },
+      "description": "Rules for implementing this decision"
+    },
+    "exceptionHandling": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "exception": {
+            "type": "string",
+            "description": "Exception scenario"
+          },
+          "handling": {
+            "type": "string",
+            "description": "How to handle this exception"
+          }
+        }
+      },
+      "description": "How to handle exceptions to the rule"
+    },
+    "measurableOutcome": {
+      "type": "string",
+      "description": "How to measure if this decision was correct"
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": ["public", "internal", "proprietary", "secret"],
+      "description": "Data sensitivity level"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization and searchability"
+    }
+  }
+}

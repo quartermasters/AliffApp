@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Pattern Recognition",
+  "description": "Captures reusable patterns, red flags, green flags, and strategic insights",
+  "type": "object",
+  "required": ["id", "date", "type", "roles", "patternType", "patternName", "description", "indicators", "application", "sensitivity"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this pattern"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date pattern was identified"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["pattern_recognition"],
+      "description": "Data type identifier"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["SALES", "OPS", "CLIENT", "TRAINER", "CEO"]
+      },
+      "description": "Which Aliff roles need access to this knowledge"
+    },
+    "patternType": {
+      "type": "string",
+      "enum": ["red_flag", "green_flag", "diagnostic_pattern", "win_pattern", "loss_pattern", "client_behavior", "market_trend"],
+      "description": "Type of pattern"
+    },
+    "patternName": {
+      "type": "string",
+      "description": "Short name for this pattern"
+    },
+    "serviceCategory": {
+      "type": "string",
+      "enum": ["GOVCON", "SLED", "IT_SERVICES", "WRITING_SERVICES", "ALL"],
+      "description": "Which service category this pattern applies to"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the pattern"
+    },
+    "indicators": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Signals that indicate this pattern is present"
+    },
+    "whenThisAppears": {
+      "type": "string",
+      "description": "Context or situations where this pattern typically appears"
+    },
+    "whatItMeans": {
+      "type": "string",
+      "description": "What this pattern indicates or predicts"
+    },
+    "application": {
+      "type": "object",
+      "properties": {
+        "howToRecognize": {
+          "type": "string",
+          "description": "How to recognize this pattern in new situations"
+        },
+        "whatToDo": {
+          "type": "string",
+          "description": "Recommended action when pattern is detected"
+        },
+        "whatToAvoid": {
+          "type": "string",
+          "description": "What NOT to do when this pattern appears"
+        }
+      }
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "situation": {
+            "type": "string",
+            "description": "Example situation where this pattern appeared"
+          },
+          "outcome": {
+            "type": "string",
+            "description": "What happened"
+          }
+        }
+      },
+      "description": "Real examples of this pattern"
+    },
+    "relatedPatterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "IDs of related patterns"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Confidence level in this pattern based on number of observations"
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": ["public", "internal", "proprietary", "secret"],
+      "description": "Data sensitivity level"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization and searchability"
+    }
+  }
+}

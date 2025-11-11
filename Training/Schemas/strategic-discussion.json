@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Strategic Discussion",
+  "description": "Captures strategic insights, business decisions, and planning discussions",
+  "type": "object",
+  "required": ["id", "date", "type", "roles", "context", "discussion", "insights", "sensitivity"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this discussion"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of discussion"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["strategic_discussion"],
+      "description": "Data type identifier"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["SALES", "OPS", "CLIENT", "TRAINER", "CEO"]
+      },
+      "description": "Which Aliff roles need access to this knowledge"
+    },
+    "context": {
+      "type": "string",
+      "description": "Brief situation description (what triggered this discussion)"
+    },
+    "discussion": {
+      "type": "object",
+      "properties": {
+        "topic": {
+          "type": "string",
+          "description": "Main topic or question being discussed"
+        },
+        "keyPoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key points raised during discussion"
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Strategic thinking process and rationale"
+        }
+      }
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "insight": {
+            "type": "string",
+            "description": "Strategic insight or lesson learned"
+          },
+          "application": {
+            "type": "string",
+            "description": "How this applies to business operations"
+          }
+        }
+      },
+      "description": "Key insights and actionable learnings"
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Decisions made during this discussion"
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": ["public", "internal", "proprietary", "secret"],
+      "description": "Data sensitivity level - determines what can be revealed externally"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization and searchability"
+    }
+  }
+}

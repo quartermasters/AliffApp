@@ -1,0 +1,183 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Diagnosis Case Study",
+  "description": "Captures solicitation diagnosis process, findings, and outcomes",
+  "type": "object",
+  "required": ["id", "date", "type", "roles", "solicitationType", "whatRFPSaid", "diagnosisProcess", "whatWeDiscovered", "winStrategy", "outcome", "lessonsLearned", "sensitivity"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this case study"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of diagnosis"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["diagnosis_case_study"],
+      "description": "Data type identifier"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["SALES", "OPS", "CLIENT", "TRAINER", "CEO"]
+      },
+      "description": "Which Aliff roles need access to this knowledge"
+    },
+    "serviceCategory": {
+      "type": "string",
+      "enum": ["GOVCON", "SLED", "IT_SERVICES", "WRITING_SERVICES"],
+      "description": "Which service category this diagnosis relates to"
+    },
+    "solicitationType": {
+      "type": "string",
+      "description": "Type of solicitation (new contract, re-compete, IDIQ, etc.)"
+    },
+    "whatRFPSaid": {
+      "type": "object",
+      "properties": {
+        "statedRequirements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "What the RFP explicitly stated (the symptoms)"
+        },
+        "evaluationCriteria": {
+          "type": "string",
+          "description": "How proposals would be evaluated"
+        },
+        "timeline": {
+          "type": "string",
+          "description": "Deadline and transition timeline"
+        }
+      }
+    },
+    "diagnosisProcess": {
+      "type": "object",
+      "properties": {
+        "questionsAsked": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Diagnostic questions pursued"
+        },
+        "researchConducted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Research and investigation conducted"
+        },
+        "stakeholderEngagement": {
+          "type": "string",
+          "description": "How we engaged with contracting officer or other stakeholders"
+        }
+      }
+    },
+    "whatWeDiscovered": {
+      "type": "object",
+      "properties": {
+        "realPainPoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Unstated pain points discovered (the root cause)"
+        },
+        "hiddenConstraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Operational constraints not mentioned in RFP"
+        },
+        "competitiveInsights": {
+          "type": "string",
+          "description": "What we learned about incumbent or competitors"
+        }
+      }
+    },
+    "winStrategy": {
+      "type": "object",
+      "properties": {
+        "winThemes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Win themes developed based on diagnosis"
+        },
+        "solutionApproach": {
+          "type": "string",
+          "description": "How solution addressed diagnosed pain points"
+        },
+        "differentiators": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Key differentiators from competitors"
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string",
+          "enum": ["won", "lost", "no-bid", "pending"],
+          "description": "Outcome of the proposal"
+        },
+        "feedbackReceived": {
+          "type": "string",
+          "description": "Feedback from client or contracting officer"
+        },
+        "rootCauseAnalysis": {
+          "type": "string",
+          "description": "Why we won or lost"
+        }
+      }
+    },
+    "lessonsLearned": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lesson": {
+            "type": "string",
+            "description": "What we learned"
+          },
+          "application": {
+            "type": "string",
+            "description": "How to apply this in future diagnoses"
+          }
+        }
+      },
+      "description": "Key lessons for future projects"
+    },
+    "patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Reusable patterns identified (e.g., 'security clearance timeline drives incumbent preference')"
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": ["public", "internal", "proprietary", "secret"],
+      "description": "Data sensitivity level"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization and searchability"
+    }
+  }
+}

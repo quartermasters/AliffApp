@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Client Interaction",
+  "description": "Captures client communications, questions, objections, and resolutions",
+  "type": "object",
+  "required": ["id", "date", "type", "roles", "interactionType", "clientContext", "input", "response", "outcome", "sensitivity"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this interaction"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of interaction"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["client_interaction"],
+      "description": "Data type identifier"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["SALES", "OPS", "CLIENT", "TRAINER", "CEO"]
+      },
+      "description": "Which Aliff roles need access to this knowledge"
+    },
+    "interactionType": {
+      "type": "string",
+      "enum": ["qualification", "objection_handling", "status_update", "support_request", "upsell", "feedback"],
+      "description": "Type of client interaction"
+    },
+    "clientContext": {
+      "type": "object",
+      "properties": {
+        "clientType": {
+          "type": "string",
+          "enum": ["contractor_b2c", "agency_b2b", "business_it", "business_writing"],
+          "description": "Type of client"
+        },
+        "serviceCategory": {
+          "type": "string",
+          "enum": ["GOVCON", "SLED", "IT_SERVICES", "WRITING_SERVICES"],
+          "description": "Service they're interested in or using"
+        },
+        "stage": {
+          "type": "string",
+          "enum": ["prospect", "qualified_lead", "active_client", "repeat_client"],
+          "description": "Client relationship stage"
+        }
+      }
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "clientQuestion": {
+          "type": "string",
+          "description": "What the client asked or said"
+        },
+        "underlyingNeed": {
+          "type": "string",
+          "description": "What they really need (may differ from what they asked)"
+        },
+        "emotionalState": {
+          "type": "string",
+          "enum": ["curious", "concerned", "frustrated", "excited", "skeptical"],
+          "description": "Client's emotional state"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "approach": {
+          "type": "string",
+          "description": "How we approached the response"
+        },
+        "whatWeSaid": {
+          "type": "string",
+          "description": "Our response to the client"
+        },
+        "whatWeDidNotSay": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Information we deliberately did not reveal"
+        }
+      }
+    },
+    "outcome": {
+      "type": "object",
+      "properties": {
+        "clientSatisfaction": {
+          "type": "string",
+          "enum": ["satisfied", "neutral", "dissatisfied"],
+          "description": "How client responded"
+        },
+        "nextAction": {
+          "type": "string",
+          "description": "What happened next (signed contract, requested quote, etc.)"
+        }
+      }
+    },
+    "lessonsLearned": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "What we learned about handling this type of interaction"
+    },
+    "sensitivity": {
+      "type": "string",
+      "enum": ["public", "internal", "proprietary", "secret"],
+      "description": "Data sensitivity level"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization and searchability"
+    }
+  }
+}
