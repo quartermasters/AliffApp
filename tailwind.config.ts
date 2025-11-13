@@ -10,21 +10,37 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Aliff Services Brand Colors
-        gold: {
-          DEFAULT: "#C89D5C",
-          50: "#F8F3EB",
-          100: "#EFE5D3",
-          200: "#E5D4B3",
-          300: "#D9BD8A",
-          400: "#C89D5C",
-          500: "#B8894E",
-          600: "#9D7342",
-          700: "#7D5C35",
-          800: "#5E4528",
-          900: "#3F2E1B",
+        // Aliff Services Brand Colors - Phase 1
+        // Primary - Professional Authority
+        navy: {
+          DEFAULT: "#0A1628",
+          50: "#F8F9FA",
+          100: "#E9ECEF",
+          200: "#DEE2E6",
+          300: "#CED4DA",
+          400: "#6C757D",
+          500: "#495057",
+          600: "#343A40",
+          700: "#2a3f5f",
+          800: "#1a2744",
+          900: "#0A1628",
         },
-        victory: {
+        // Accent - Innovation Signal
+        teal: {
+          DEFAULT: "#0891B2",
+          50: "#ECFEFF",
+          100: "#CFFAFE",
+          200: "#A5F3FC",
+          300: "#67E8F9",
+          400: "#22D3EE",
+          500: "#06B6D4",
+          600: "#0891B2",
+          700: "#0E7490",
+          800: "#155E75",
+          900: "#164E63",
+        },
+        // Success - Metrics/Wins
+        success: {
           DEFAULT: "#10B981",
           50: "#ECFDF5",
           100: "#D1FAE5",
@@ -37,50 +53,54 @@ const config: Config = {
           800: "#065F46",
           900: "#064E3B",
         },
-        navy: {
-          DEFAULT: "#0A0F1E",
-          50: "#E5E7EB",
-          100: "#D1D5DB",
-          200: "#9CA3AF",
-          300: "#6B7280",
-          400: "#4B5563",
-          500: "#374151",
-          600: "#1F2937",
-          700: "#111827",
-          800: "#0A0F1E",
-          900: "#030712",
+        // Service Category Accents
+        govcon: {
+          DEFAULT: "#3B82F6",
+          600: "#2563EB",
+        },
+        it: {
+          DEFAULT: "#8B5CF6",
+          600: "#7C3AED",
+        },
+        writing: {
+          DEFAULT: "#EC4899",
+          600: "#DB2777",
         },
       },
       fontFamily: {
-        sans: [
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Oxygen",
-          "Ubuntu",
-          "Cantarell",
-          "Fira Sans",
-          "Droid Sans",
-          "Helvetica Neue",
-          "sans-serif",
-        ],
-        mono: ["Menlo", "Monaco", "Consolas", "Liberation Mono", "Courier New", "monospace"],
+        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["JetBrains Mono", "Menlo", "Monaco", "Consolas", "monospace"],
       },
       fontSize: {
-        "hero": ["4.5rem", { lineHeight: "1", letterSpacing: "-0.02em" }],
-        "display": ["3.75rem", { lineHeight: "1", letterSpacing: "-0.02em" }],
+        // Custom type scale
+        "display-lg": ["3.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }], // 56px
+        "display-md": ["2.5rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }], // 40px
+        "display-sm": ["2rem", { lineHeight: "1.25", letterSpacing: "-0.01em" }], // 32px
+        "hero-mobile": ["2.5rem", { lineHeight: "1.1", letterSpacing: "-0.02em" }], // 40px mobile
+      },
+      spacing: {
+        // Custom spacing scale (4px base)
+        "18": "4.5rem", // 72px
+        "22": "5.5rem", // 88px
+        "26": "6.5rem", // 104px
+        "30": "7.5rem", // 120px
       },
       animation: {
-        "fade-in": "fadeIn 0.5s ease-out",
+        "fade-in": "fadeIn 0.6s ease-out",
+        "fade-out": "fadeOut 0.6s ease-out",
         "slide-up": "slideUp 0.5s ease-out",
         "slide-down": "slideDown 0.5s ease-out",
         "scale-in": "scaleIn 0.3s ease-out",
+        "hero-rotate": "heroRotate 0.6s ease-in-out",
       },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
         },
         slideUp: {
           "0%": { transform: "translateY(20px)", opacity: "0" },
@@ -93,6 +113,10 @@ const config: Config = {
         scaleIn: {
           "0%": { transform: "scale(0.9)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
+        },
+        heroRotate: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
     },

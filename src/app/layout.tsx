@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { TRPCProvider } from "@/lib/trpc/Provider";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -68,8 +75,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased bg-white dark:bg-navy-900 text-navy-800 dark:text-white font-sans">
+    <html lang="en" className={inter.variable}>
+      <body className="antialiased bg-white text-gray-900 font-sans">
         <TRPCProvider>{children}</TRPCProvider>
       </body>
     </html>
