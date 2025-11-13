@@ -20,6 +20,7 @@
   "author": "Aliff Services",
   "license": "UNLICENSED",
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.65",
     "@auth/prisma-adapter": "^2.11.1",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.19.0",
@@ -38,6 +39,7 @@
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "ai": "^5.0.93",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
