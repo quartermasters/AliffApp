@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { TRPCProvider } from "@/lib/trpc/Provider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 
@@ -81,11 +80,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="antialiased bg-white text-gray-900 font-sans">
-        <TRPCProvider>
-          <Header />
-          {children}
-          <Footer />
-        </TRPCProvider>
+        <Header />
+        {children}
+        <Footer />
       </body>
     </html>
   );
