@@ -25,6 +25,20 @@ const config: Config = {
           800: "#1a2744",
           900: "#0A1628",
         },
+        // Brand Gold - Premium & Excellence
+        gold: {
+          DEFAULT: "#C89D5C",
+          50: "#FDF8F0",
+          100: "#F9EDDC",
+          200: "#F3DCB9",
+          300: "#EDCB96",
+          400: "#D8B070",
+          500: "#C89D5C",
+          600: "#B8894A",
+          700: "#9A7240",
+          800: "#7C5C36",
+          900: "#5E462A",
+        },
         // Accent - Innovation Signal
         teal: {
           DEFAULT: "#0891B2",
@@ -39,8 +53,21 @@ const config: Config = {
           800: "#155E75",
           900: "#164E63",
         },
-        // Success - Metrics/Wins
+        // Success - Metrics/Wins (also "victory" alias)
         success: {
+          DEFAULT: "#10B981",
+          50: "#ECFDF5",
+          100: "#D1FAE5",
+          200: "#A7F3D0",
+          300: "#6EE7B7",
+          400: "#34D399",
+          500: "#10B981",
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46",
+          900: "#064E3B",
+        },
+        victory: {
           DEFAULT: "#10B981",
           50: "#ECFDF5",
           100: "#D1FAE5",

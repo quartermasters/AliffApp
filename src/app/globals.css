@@ -56,11 +56,11 @@
   }
 
   h1 {
-    @apply text-5xl md:text-6xl lg:text-hero;
+    @apply text-5xl md:text-6xl lg:text-display-lg;
   }
 
   h2 {
-    @apply text-4xl md:text-5xl lg:text-display;
+    @apply text-4xl md:text-5xl lg:text-display-md;
   }
 
   h3 {
