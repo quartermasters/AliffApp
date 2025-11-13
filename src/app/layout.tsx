@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { TRPCProvider } from "@/lib/trpc/Provider";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,22 +13,24 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Aliff Services - Win Government Contracts with AI + Expert Teams",
+    default: "Aliff Services - Strategic Thinking + AI Execution",
     template: "%s | Aliff Services",
   },
   description:
-    "$47M+ in government contracts won. Full business development teams with 24/7 RFP intelligence. 5-7 day turnaround. Zero hallucinations. 100% compliance guaranteed.",
+    "Win 22% of federal contracts. Build enterprise systems at startup speed. Create authentic content, not AI slop. Strategic thinking + AI execution beats AI commodity competitors.",
   keywords: [
     "government contracts",
     "federal contracts",
-    "GSA Schedule",
-    "RFP response",
+    "GOVCON services",
+    "SLED services",
     "proposal writing",
+    "IT services",
+    "software development",
+    "content writing",
+    "strategic content",
+    "AI execution",
     "government contracting",
-    "federal procurement",
-    "OASIS+",
-    "DLA TLS",
-    "compliance audit",
+    "enterprise architecture",
   ],
   authors: [{ name: "Aliff Services" }],
   creator: "Aliff Services",
@@ -37,23 +41,23 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://aliffservices.com",
     siteName: "Aliff Services",
-    title: "Aliff Services - Win Government Contracts with AI + Expert Teams",
+    title: "Aliff Services - Strategic Thinking + AI Execution",
     description:
-      "$47M+ in contracts won. AI + Human expertise. 5-7 day turnaround. Get your readiness audit today.",
+      "Win government contracts. Build better systems. Create authentic content. Strategic thinking + AI execution beats AI commodity competitors.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Aliff Services - Government Contracting Excellence",
+        alt: "Aliff Services - Strategic Thinking + AI Execution",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aliff Services - Win Government Contracts with AI + Expert Teams",
+    title: "Aliff Services - Strategic Thinking + AI Execution",
     description:
-      "$47M+ in contracts won. AI + Human expertise. 5-7 day turnaround.",
+      "Win 22% of contracts. Build enterprise systems at startup speed. Create authentic content.",
     images: ["/og-image.png"],
   },
   robots: {
@@ -77,7 +81,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="antialiased bg-white text-gray-900 font-sans">
-        <TRPCProvider>{children}</TRPCProvider>
+        <TRPCProvider>
+          <Header />
+          {children}
+          <Footer />
+        </TRPCProvider>
       </body>
     </html>
   );
