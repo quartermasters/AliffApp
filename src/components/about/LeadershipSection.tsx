@@ -13,6 +13,8 @@ const founders = [
       "GWOT-era theater operations",
       "Strategic vision & execution",
     ],
+    initials: "HH",
+    gradient: "from-gold-400 via-gold-500 to-gold-600",
   },
   {
     name: "Sumera Khan",
@@ -24,6 +26,8 @@ const founders = [
       "Partnership architecture",
       "Cross-border operations",
     ],
+    initials: "SK",
+    gradient: "from-teal-400 via-teal-500 to-teal-600",
   },
   {
     name: "Sana Rehman",
@@ -35,6 +39,8 @@ const founders = [
       "AI workforce orchestration",
       "Culture & systems builder",
     ],
+    initials: "SR",
+    gradient: "from-gold-300 via-teal-400 to-gold-500",
   },
 ];
 
@@ -90,31 +96,40 @@ export function LeadershipSection() {
 
           {/* Founders Grid */}
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            {founders.map((founder) => (
+            {founders.map((founder, index) => (
               <div
                 key={founder.name}
-                className="glass rounded-xl p-6 border-2 border-gold-400/30 hover:border-gold-400 transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/10"
+                className="group relative"
               >
-                {/* Avatar placeholder */}
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-white text-2xl font-bold mb-4 shadow-lg shadow-gold-500/30">
-                  {founder.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
+                {/* Gradient border effect */}
+                <div className={`absolute -inset-0.5 bg-gradient-to-r ${founder.gradient} rounded-2xl opacity-75 group-hover:opacity-100 blur group-hover:blur-md transition-all duration-500`} />
 
-                <h3 className="text-xl font-bold text-white mb-2">{founder.name}</h3>
-                <p className="text-sm text-gold-400 font-semibold mb-4">{founder.title}</p>
-                <p className="text-sm text-gray-300 mb-4 leading-relaxed">{founder.bio}</p>
+                {/* Card content */}
+                <div className="relative bg-navy-800 rounded-2xl p-8 h-full border border-navy-700 hover:border-transparent transition-all duration-500">
+                  {/* Avatar with gradient */}
+                  <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${founder.gradient} flex items-center justify-center text-navy-900 text-3xl font-bold mb-6 shadow-2xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                    {founder.initials}
+                  </div>
 
-                {/* Highlights */}
-                <div className="space-y-2">
-                  {founder.highlights.map((highlight, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <span className="text-gold-400 text-xs mt-1">▸</span>
-                      <span className="text-xs text-gray-400">{highlight}</span>
-                    </div>
-                  ))}
+                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors duration-300">
+                    {founder.name}
+                  </h3>
+                  <p className="text-sm text-gold-400 font-semibold mb-4 uppercase tracking-wide">
+                    {founder.title}
+                  </p>
+                  <p className="text-base text-gray-300 mb-6 leading-relaxed">
+                    {founder.bio}
+                  </p>
+
+                  {/* Highlights with better contrast */}
+                  <div className="space-y-3 pt-4 border-t border-navy-700">
+                    {founder.highlights.map((highlight, idx) => (
+                      <div key={idx} className="flex items-start gap-3">
+                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${founder.gradient} mt-2 flex-shrink-0`} />
+                        <span className="text-sm text-gray-200 leading-relaxed">{highlight}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
@@ -146,24 +161,36 @@ export function LeadershipSection() {
                 {aiPrograms.map((pm) => (
                   <div
                     key={pm.name}
-                    className="bg-navy-800/60 border border-teal-600/30 rounded-lg p-6 hover:border-teal-600 transition-all duration-300 text-left"
+                    className="group relative"
                   >
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-white text-sm font-bold mb-4 shadow-lg shadow-teal-500/30">
-                      AI
+                    {/* Gradient border effect */}
+                    <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 rounded-xl opacity-50 group-hover:opacity-100 blur-sm group-hover:blur transition-all duration-300" />
+
+                    {/* Card content */}
+                    <div className="relative bg-navy-800 border border-navy-700 rounded-xl p-6 hover:border-transparent transition-all duration-300 text-left h-full">
+                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center text-navy-900 text-base font-bold mb-4 shadow-xl shadow-teal-500/30 transform group-hover:scale-110 transition-transform duration-300">
+                        AI
+                      </div>
+                      <h4 className="text-lg font-bold text-white mb-1 group-hover:text-teal-400 transition-colors duration-300">
+                        {pm.name}
+                      </h4>
+                      <p className="text-sm text-teal-400 font-semibold mb-4 uppercase tracking-wide">
+                        {pm.role}
+                      </p>
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-300">
+                          <strong className="text-white">Expertise:</strong> {pm.expertise}
+                        </p>
+                        <p className="text-sm text-gray-300">
+                          <strong className="text-white">Manages:</strong> {pm.manages}
+                        </p>
+                      </div>
                     </div>
-                    <h4 className="text-lg font-bold text-white mb-1">{pm.name}</h4>
-                    <p className="text-sm text-teal-400 font-semibold mb-3">{pm.role}</p>
-                    <p className="text-xs text-gray-400 mb-2">
-                      <strong className="text-gray-300">Expertise:</strong> {pm.expertise}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      <strong className="text-gray-300">Manages:</strong> {pm.manages}
-                    </p>
                   </div>
                 ))}
               </div>
 
-              <p className="text-xs text-gray-500 mt-6 max-w-3xl mx-auto">
+              <p className="text-sm text-gray-400 mt-8 max-w-3xl mx-auto leading-relaxed">
                 Our AI Program Directors are fully trained personas with deep domain expertise,
                 distinct personalities, and human-like communication. They manage programs,
                 coordinate teams, and ensure flawless execution—available 24/7 via Aliff Workspace.
