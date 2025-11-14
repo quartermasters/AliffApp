@@ -8,6 +8,7 @@
  * - Compliance analysis
  * - Complexity scoring
  * - Win probability assessment
+ * - Full triage orchestration
  */
 
 // Export parsing module
@@ -30,7 +31,11 @@ export { analyzeCompliance } from './compliance';
 export * from './scoring';
 export { scoreOpportunity } from './scoring';
 
-// Main SDL API (to be expanded)
+// Export triage module (main orchestrator)
+export * from './triage';
+export { runTriage, runBatchTriage } from './triage';
+
+// Main SDL API
 export const SDL = {
   // Document parsing
   parseDocument: require('./parsing').parseDocument,
@@ -58,6 +63,13 @@ export const SDL = {
   scoreOpportunity: require('./scoring').scoreOpportunity,
   getComplexityLevel: require('./scoring').getComplexityLevel,
   getScoringsSummary: require('./scoring').getScoringsSummary,
+
+  // Full Triage (main entry point)
+  runTriage: require('./triage').runTriage,
+  runBatchTriage: require('./triage').runBatchTriage,
+  generateExecutiveReport: require('./triage').generateExecutiveReport,
+  generateBatchReport: require('./triage').generateBatchReport,
+  generateConciseSummary: require('./triage').generateConciseSummary,
 } as const;
 
 export default SDL;
