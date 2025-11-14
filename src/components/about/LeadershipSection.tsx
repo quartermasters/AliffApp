@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 const founders = [
   {
@@ -15,6 +16,7 @@ const founders = [
     ],
     initials: "HH",
     gradient: "from-gold-400 via-gold-500 to-gold-600",
+    image: "/images/team/haroon-haider.jpg",
   },
   {
     name: "Sumera Khan",
@@ -28,6 +30,7 @@ const founders = [
     ],
     initials: "SK",
     gradient: "from-teal-400 via-teal-500 to-teal-600",
+    image: "/images/team/sumera-khan.jpg",
   },
   {
     name: "Sana Rehman",
@@ -41,6 +44,7 @@ const founders = [
     ],
     initials: "SR",
     gradient: "from-gold-300 via-teal-400 to-gold-500",
+    image: "/images/team/sana-rehman.jpg",
   },
 ];
 
@@ -106,9 +110,28 @@ export function LeadershipSection() {
 
                 {/* Card content */}
                 <div className="relative bg-navy-800 rounded-2xl p-8 h-full border border-navy-700 hover:border-transparent transition-all duration-500">
-                  {/* Avatar with gradient */}
-                  <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${founder.gradient} flex items-center justify-center text-navy-900 text-3xl font-bold mb-6 shadow-2xl transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-                    {founder.initials}
+                  {/* Avatar with image or gradient fallback */}
+                  <div className="relative w-32 h-32 mb-6 mx-auto">
+                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${founder.gradient} transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-2xl`} />
+                    <div className="relative w-full h-full rounded-2xl overflow-hidden">
+                      {founder.image ? (
+                        <Image
+                          src={founder.image}
+                          alt={founder.name}
+                          fill
+                          className="object-cover transition-all duration-500 group-hover:scale-110"
+                          sizes="(max-width: 768px) 128px, 128px"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                          }}
+                        />
+                      ) : null}
+                      {/* Fallback initials overlay (shows if image fails or doesn't exist) */}
+                      <div className={`absolute inset-0 flex items-center justify-center text-navy-900 text-4xl font-bold bg-gradient-to-br ${founder.gradient} ${founder.image ? 'opacity-0' : 'opacity-100'}`}>
+                        {founder.initials}
+                      </div>
+                    </div>
                   </div>
 
                   <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-gold-400 transition-colors duration-300">
