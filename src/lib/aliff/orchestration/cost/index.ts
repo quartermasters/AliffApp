@@ -9,6 +9,7 @@ export * from './types';
 
 // Export tracker
 export * from './tracker';
-export { CostTracker } from './tracker';
+import { CostTracker } from './tracker';
+export { CostTracker };
 
 export default CostTracker;
