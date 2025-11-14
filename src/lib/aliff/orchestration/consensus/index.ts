@@ -13,6 +13,7 @@ export { ConsensusStrategies } from './strategies';
 
 // Export engine
 export * from './engine';
-export { Consensus } from './engine';
+import { Consensus } from './engine';
+export { Consensus };
 
 export default Consensus;
