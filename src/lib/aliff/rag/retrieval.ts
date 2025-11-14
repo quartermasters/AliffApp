@@ -15,6 +15,7 @@ import type {
 import { ROLE_ACCESS_MATRIX, AccessDeniedError, RetrievalError, canAccessSensitivity } from '../types';
 import { getPineconeIndex } from './storage';
 import { embedText } from './embeddings';
+import { AuditLogger } from '../security/audit';
 
 /**
  * Retrieve knowledge documents based on semantic similarity to a query
@@ -45,6 +46,19 @@ export async function retrieveKnowledge(
     // Set defaults
     const topK = options.topK || 5;
     const similarityThreshold = options.similarityThreshold || 0.7;
+
+    // Log query event
+    await AuditLogger.logQuery(
+      query,
+      options.role,
+      options.userId,
+      options.sessionId,
+      {
+        categories: options.categories,
+        tags: options.tags,
+        maxSensitivity: options.maxSensitivity,
+      }
+    );
 
     // Generate query embedding
     const embeddingStart = Date.now();
@@ -78,8 +92,16 @@ export async function retrieveKnowledge(
       const sensitivity = match.metadata?.sensitivity as SensitivityLevel;
       if (sensitivity && !canAccessSensitivity(options.role, sensitivity)) {
         // Log access denial for audit
-        console.warn(
-          `Access denied: ${options.role} attempted to access ${sensitivity} document ${match.id}`
+        await AuditLogger.logAccessDenied(
+          'retrieve_document',
+          options.role,
+          `Role ${options.role} cannot access ${sensitivity} sensitivity documents`,
+          options.userId,
+          options.sessionId,
+          {
+            documentId: match.id,
+            requiredSensitivity: sensitivity,
+          }
         );
         continue;
       }
@@ -96,6 +118,33 @@ export async function retrieveKnowledge(
     }
 
     const totalTime = Date.now() - startTime;
+
+    // Log successful retrieval
+    const sensitivityLevels = Array.from(
+      new Set(documents.map((d) => d.metadata.sensitivity))
+    );
+    const categories = Array.from(
+      new Set(documents.map((d) => d.metadata.category))
+    );
+    const topScore = documents.length > 0 ? (documents[0].score || 0) : 0;
+    const avgScore =
+      documents.length > 0
+        ? documents.reduce((sum, d) => sum + (d.score || 0), 0) / documents.length
+        : 0;
+
+    await AuditLogger.logRetrieval(
+      query,
+      options.role,
+      documents.map((d) => d.id),
+      topScore,
+      avgScore,
+      sensitivityLevels,
+      categories,
+      totalTime,
+      embeddingTime,
+      options.userId,
+      options.sessionId
+    );
 
     return {
       documents,

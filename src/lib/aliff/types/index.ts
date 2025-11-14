@@ -101,6 +101,12 @@ export interface RetrievalOptions {
   /** Aliff role making the query (for access control) */
   role: AliffRole;
 
+  /** User ID (for audit logging) */
+  userId?: string;
+
+  /** Session ID (for audit logging) */
+  sessionId?: string;
+
   /** Number of results to return (default: 5) */
   topK?: number;
 
