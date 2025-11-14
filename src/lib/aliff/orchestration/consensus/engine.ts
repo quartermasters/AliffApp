@@ -10,8 +10,8 @@ import type {
   ConsensusConfig,
   AgreementAnalysis,
   ConsensusValidation,
-  DEFAULT_CONSENSUS_CONFIGS,
 } from './types';
+import { DEFAULT_CONSENSUS_CONFIGS } from './types';
 import { ConsensusStrategies } from './strategies';
 
 /**
