@@ -25,7 +25,6 @@ export * from './cost';
 export { CostTracker } from './cost';
 
 // Export orchestrator
-export * from './orchestrator';
 export { Orchestrator } from './orchestrator';
 
 // Convenience default export
