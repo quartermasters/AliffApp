@@ -13,9 +13,8 @@ import type {
   LeakDetection,
   LeakDetectionConfig,
   CompetitiveAdvantage,
-  DEFAULT_LEAK_CONFIG,
-  PROTECTED_ADVANTAGES,
 } from './types';
+import { DEFAULT_LEAK_CONFIG, PROTECTED_ADVANTAGES } from './types';
 import { SemanticDetector } from '../filtering/semantic';
 
 /**

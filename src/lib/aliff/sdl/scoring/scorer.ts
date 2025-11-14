@@ -282,11 +282,11 @@ function calculateComplexityHeuristic(
 
   // Weighted average
   const overall = Math.round(
-    technical * weights.technical +
-      complianceComplexity * weights.compliance +
-      scheduleComplexity * weights.schedule +
-      teamComplexity * weights.team +
-      costComplexity * weights.cost
+    technical * (weights.technical ?? DEFAULT_COMPLEXITY_WEIGHTS.technical) +
+      complianceComplexity * (weights.compliance ?? DEFAULT_COMPLEXITY_WEIGHTS.compliance) +
+      scheduleComplexity * (weights.schedule ?? DEFAULT_COMPLEXITY_WEIGHTS.schedule) +
+      teamComplexity * (weights.team ?? DEFAULT_COMPLEXITY_WEIGHTS.team) +
+      costComplexity * (weights.cost ?? DEFAULT_COMPLEXITY_WEIGHTS.cost)
   );
 
   let riskLevel: 'low' | 'medium' | 'high' | 'very-high';
@@ -576,14 +576,16 @@ export function getComplexityLevel(score: number): {
     if (score >= data.range[0] && score <= data.range[1]) {
       return {
         level: level as keyof typeof COMPLEXITY_LEVELS,
-        ...data,
+        description: data.description,
+        characteristics: [...data.characteristics],
       };
     }
   }
 
   return {
     level: 'medium',
-    ...COMPLEXITY_LEVELS.medium,
+    description: COMPLEXITY_LEVELS.medium.description,
+    characteristics: [...COMPLEXITY_LEVELS.medium.characteristics],
   };
 }
 

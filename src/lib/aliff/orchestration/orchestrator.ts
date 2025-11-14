@@ -212,7 +212,7 @@ export async function askWithConsensus(
   options?: {
     systemPrompt?: string;
     strategy?: 'dual' | 'triple';
-    taskType?: string;
+    taskType?: TaskType;
     temperature?: number;
     userId?: string;
     sessionId?: string;

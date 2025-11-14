@@ -13,6 +13,7 @@ export * from './docx';
 
 // Export main parser
 export * from './parser';
-export { DocumentParser } from './parser';
+import { DocumentParser } from './parser';
+export { DocumentParser };
 
 export default DocumentParser;

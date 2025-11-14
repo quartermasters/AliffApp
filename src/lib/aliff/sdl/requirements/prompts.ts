@@ -154,7 +154,7 @@ Return JSON array in this format:
 /**
  * Requirement complexity analysis prompt
  */
-export function getComplexityPrompt(requirement: string): string {
+export function getRequirementComplexityPrompt(requirement: string): string {
   return `Analyze the complexity of this requirement on a scale of 1-10:
 
 REQUIREMENT:

@@ -302,9 +302,9 @@ function detectFrameworksByKeywords(content: string): FrameworkDetection[] {
 
       detections.push({
         framework: framework as ComplianceFramework,
-        confidence: Math.min(0.6 + matches.length * 0.1, 0.95),
+        confidence: Math.min(0.6 + matches.length * 0.1, 1.0),
         evidence: matches.map((kw) => `Keyword detected: "${kw}"`),
-        requiredControls: frameworkInfo?.keyControls || [],
+        requiredControls: frameworkInfo?.keyControls ? [...frameworkInfo.keyControls] : [],
         estimatedComplexity: frameworkInfo?.estimatedComplexity || 5,
       });
     }

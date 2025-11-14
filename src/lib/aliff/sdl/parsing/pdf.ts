@@ -4,7 +4,6 @@
  * Parses PDF documents and extracts text, metadata, and structure.
  */
 
-import pdf from 'pdf-parse';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs/promises';
 import type {
@@ -18,6 +17,10 @@ import type {
   DocumentHeading,
   ParseError,
 } from './types';
+
+// Use require for CommonJS pdf-parse module
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pdf = require('pdf-parse');
 
 /**
  * PDF Document Parser

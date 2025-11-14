@@ -11,9 +11,8 @@ import type {
   RoutingDecision,
   TaskAnalysis,
   RouterConfig,
-  DEFAULT_ROUTER_CONFIG,
-  TASK_TYPE_KEYWORDS,
 } from './types';
+import { DEFAULT_ROUTER_CONFIG, TASK_TYPE_KEYWORDS } from './types';
 import { MODEL_INFO } from '../types';
 import { estimateTokens } from '../models';
 

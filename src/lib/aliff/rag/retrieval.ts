@@ -330,8 +330,8 @@ export async function retrieveSimilar(
     const fetchResponse = await index.fetch([documentId]);
     const document = fetchResponse.records[documentId];
 
-    if (!document) {
-      throw new RetrievalError(`Document ${documentId} not found`);
+    if (!document || !document.values) {
+      throw new RetrievalError(`Document ${documentId} not found or has no embedding`);
     }
 
     // Use document's embedding for similarity search

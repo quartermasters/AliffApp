@@ -11,7 +11,6 @@ import type {
   AuditEventType,
   AuditSeverity,
   AuditConfig,
-  DEFAULT_AUDIT_CONFIG,
   AnyAuditEvent,
   QueryEvent,
   RetrievalEvent,
@@ -23,7 +22,9 @@ import type {
   RoleEvent,
   AuthEvent,
 } from './types';
+import { DEFAULT_AUDIT_CONFIG } from './types';
 import type { AliffRole } from '../../types';
+import type { LeakType } from '../leak-detection/types';
 import { storeAuditEvents, storeAuditEvent } from './storage';
 
 /**
@@ -265,9 +266,10 @@ export async function logAccessDenied(
 ): Promise<void> {
   if (!shouldLog('warning')) return;
 
-  const event: AccessDeniedEvent = {
+  const event = {
     ...createBaseEvent('access_denied', 'warning', role, userId, sessionId),
-    eventType: 'access_denied',
+    eventType: 'access_denied' as const,
+    severity: 'warning' as const,
     metadata: {
       attemptedAction,
       reason,
@@ -275,7 +277,7 @@ export async function logAccessDenied(
     },
   };
 
-  await writeEvent(event);
+  await writeEvent(event as AccessDeniedEvent);
 }
 
 /**
@@ -297,9 +299,10 @@ export async function logFilterTriggered(
 ): Promise<void> {
   if (!shouldLog('warning')) return;
 
-  const event: FilterEvent = {
+  const event = {
     ...createBaseEvent('filter_triggered', 'warning', role, userId, sessionId),
-    eventType: 'filter_triggered',
+    eventType: 'filter_triggered' as const,
+    severity: 'warning' as const,
     metadata: {
       ruleId,
       ruleName,
@@ -312,14 +315,14 @@ export async function logFilterTriggered(
     },
   };
 
-  await writeEvent(event);
+  await writeEvent(event as FilterEvent);
 }
 
 /**
  * Log a leak detected event
  */
 export async function logLeakDetected(
-  leakType: 'pricing' | 'strategy' | 'methodology' | 'competitive' | 'client-data',
+  leakType: LeakType,
   confidence: number,
   textFlagged: string,
   autoBlocked: boolean,
@@ -330,14 +333,15 @@ export async function logLeakDetected(
     alertSent?: boolean;
   }
 ): Promise<void> {
-  const severity: AuditSeverity =
-    confidence > 0.9 ? 'critical' : confidence > 0.7 ? 'error' : 'warning';
+  const severity =
+    confidence > 0.9 ? ('critical' as const) : confidence > 0.7 ? ('error' as const) : ('warning' as const);
 
   if (!shouldLog(severity)) return;
 
-  const event: LeakEvent = {
+  const event = {
     ...createBaseEvent('leak_detected', severity, role, userId, sessionId),
-    eventType: 'leak_detected',
+    eventType: 'leak_detected' as const,
+    severity,
     metadata: {
       leakType,
       confidence,
@@ -349,7 +353,7 @@ export async function logLeakDetected(
     },
   };
 
-  await writeEvent(event);
+  await writeEvent(event as LeakEvent);
 }
 
 /**
@@ -372,9 +376,10 @@ export async function logDocumentEvent(
 ): Promise<void> {
   if (!shouldLog('info')) return;
 
-  const event: DocumentEvent = {
+  const event = {
     ...createBaseEvent(eventType, 'info', performedByRole, userId, sessionId),
     eventType,
+    severity: 'info' as const,
     metadata: {
       documentId,
       category,
@@ -384,7 +389,7 @@ export async function logDocumentEvent(
     },
   };
 
-  await writeEvent(event);
+  await writeEvent(event as DocumentEvent);
 }
 
 /**
@@ -401,9 +406,10 @@ export async function logRoleEvent(
 ): Promise<void> {
   if (!shouldLog('info')) return;
 
-  const event: RoleEvent = {
+  const event = {
     ...createBaseEvent(eventType, 'warning', adminRole, adminUserId, sessionId),
     eventType,
+    severity: 'warning' as const,
     metadata: {
       targetUserId,
       roleChanged,
@@ -412,7 +418,7 @@ export async function logRoleEvent(
     },
   };
 
-  await writeEvent(event);
+  await writeEvent(event as RoleEvent);
 }
 
 /**
@@ -430,20 +436,21 @@ export async function logAuthEvent(
     sessionDuration?: number;
   }
 ): Promise<void> {
-  const severity: AuditSeverity =
-    eventType === 'authentication_failed' ? 'warning' : 'info';
+  const severity =
+    eventType === 'authentication_failed' ? ('warning' as const) : ('info' as const);
 
   if (!shouldLog(severity)) return;
 
-  const event: AuthEvent = {
+  const event = {
     ...createBaseEvent(eventType, severity, role, userId, sessionId),
     eventType,
+    severity,
     metadata: {
       ...options,
     },
   };
 
-  await writeEvent(event);
+  await writeEvent(event as AuthEvent);
 }
 
 /**

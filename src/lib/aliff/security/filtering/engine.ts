@@ -14,8 +14,8 @@ import type {
   FilterConfig,
   FilterAction,
   DEFAULT_FILTER_RULES,
-  DEFAULT_FILTER_CONFIG,
 } from './types';
+import { DEFAULT_FILTER_CONFIG } from './types';
 import { detectSemanticContent } from './semantic';
 import { AuditLogger } from '../audit';
 
