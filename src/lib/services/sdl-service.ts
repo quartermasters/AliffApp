@@ -30,7 +30,7 @@ export async function startSDLProcessing(
     // Run SDL Triage (Phase 1)
     console.log(`[SDL Service] Starting triage for project ${projectId}`);
     const triageResult = await runTriage(documentBuffer, documentFilename, {
-      detailLevel: 'strategic', // Use highest detail level
+      detailLevel: 'comprehensive', // Use highest detail level
       useAI: true,
       parallelProcessing: true,
     });

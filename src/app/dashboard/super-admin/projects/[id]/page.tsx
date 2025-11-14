@@ -266,10 +266,10 @@ export default function ProjectDetailPage({
                             });
                           }
                         }}
-                        disabled={startSDLProcessing.isLoading}
+                        disabled={startSDLProcessing.isPending}
                         className="px-3 py-1 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
                       >
-                        {startSDLProcessing.isLoading ? 'Starting...' : 'Start SDL'}
+                        {startSDLProcessing.isPending ? 'Starting...' : 'Start SDL'}
                       </button>
                     )}
                     <button className="text-purple-600 hover:text-purple-800 text-sm font-medium">

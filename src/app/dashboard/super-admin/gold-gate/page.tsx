@@ -582,10 +582,10 @@ function GoldGateReviewModal({
             </button>
             <button
               onClick={handleSubmit}
-              disabled={!decision || !notes || approveForClient.isLoading || rejectMutation.isLoading}
+              disabled={!decision || !notes || approveForClient.isPending || rejectMutation.isPending}
               className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-amber-600 text-white rounded-lg hover:from-yellow-600 hover:to-amber-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
             >
-              {approveForClient.isLoading || rejectMutation.isLoading
+              {approveForClient.isPending || rejectMutation.isPending
                 ? 'Submitting...'
                 : 'Submit Gold Gate Decision'}
             </button>

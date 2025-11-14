@@ -247,8 +247,9 @@ function ReviewModal({
       // Approve the consensus result
       updateTask.mutate({
         taskId: task.id,
+        primaryResult: task.consensusResult || task.primaryResult,
+        confidenceScore: task.confidenceScore || 75,
         status: 'COMPLETED',
-        notes,
       });
     } else if (decision === 'OVERRIDE') {
       // Override with selected result
@@ -268,9 +269,9 @@ function ReviewModal({
 
       updateTask.mutate({
         taskId: task.id,
+        primaryResult: finalResult,
+        confidenceScore: 100, // Expert override = 100% confidence
         status: 'COMPLETED',
-        result: finalResult,
-        notes,
       });
     }
   };
@@ -506,10 +507,10 @@ function ReviewModal({
             </button>
             <button
               onClick={handleSubmit}
-              disabled={!decision || !notes || updateTask.isLoading}
+              disabled={!decision || !notes || updateTask.isPending}
               className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {updateTask.isLoading ? 'Submitting...' : 'Submit Review'}
+              {updateTask.isPending ? 'Submitting...' : 'Submit Review'}
             </button>
           </div>
         </div>

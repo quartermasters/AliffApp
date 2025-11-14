@@ -455,10 +455,10 @@ function ReviewModal({
             </button>
             <button
               onClick={handleSubmit}
-              disabled={!decision || reviewMutation.isLoading}
+              disabled={!decision || reviewMutation.isPending}
               className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {reviewMutation.isLoading ? 'Submitting...' : 'Submit Review'}
+              {reviewMutation.isPending ? 'Submitting...' : 'Submit Review'}
             </button>
           </div>
         </div>

@@ -49,8 +49,8 @@ export async function scoreDeliverableQuality(deliverableId: string) {
     // Execute multi-AI scoring
     const scoringResult = await orchestrate({
       prompt,
-      models: ['gpt-4', 'claude-3-5-sonnet-20241022'], // Use multiple AIs for consensus
-      strategy: 'consensus',
+      models: ['gpt-4', 'claude-3.5-sonnet'], // Use multiple AIs for consensus
+      strategy: 'dual',
     });
 
     // Parse scoring results
