@@ -22,6 +22,14 @@ export { extractMetadata } from './extraction';
 export * from './requirements';
 export { extractRequirements } from './requirements';
 
+// Export compliance module
+export * from './compliance';
+export { analyzeCompliance } from './compliance';
+
+// Export scoring module
+export * from './scoring';
+export { scoreOpportunity } from './scoring';
+
 // Main SDL API (to be expanded)
 export const SDL = {
   // Document parsing
@@ -39,6 +47,17 @@ export const SDL = {
   filterByPriority: require('./requirements').filterByPriority,
   filterByCategory: require('./requirements').filterByCategory,
   searchRequirements: require('./requirements').searchRequirements,
+
+  // Compliance analysis
+  analyzeCompliance: require('./compliance').analyzeCompliance,
+  getHighPriorityGaps: require('./compliance').getHighPriorityGaps,
+  getGapsByImpact: require('./compliance').getGapsByImpact,
+  calculateRemediationCost: require('./compliance').calculateRemediationCost,
+
+  // Scoring
+  scoreOpportunity: require('./scoring').scoreOpportunity,
+  getComplexityLevel: require('./scoring').getComplexityLevel,
+  getScoringsSummary: require('./scoring').getScoringsSummary,
 } as const;
 
 export default SDL;
