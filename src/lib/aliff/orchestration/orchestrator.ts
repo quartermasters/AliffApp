@@ -11,6 +11,7 @@ import type {
   OrchestrationResult,
   OrchestrationStrategy,
   AIRequest,
+  TaskType,
 } from './types';
 import { Models } from './models';
 import { Router } from './router';
@@ -133,7 +134,7 @@ function selectModels(
   strategy: OrchestrationStrategy,
   prompt: string,
   systemPrompt?: string,
-  taskType?: string
+  taskType?: TaskType
 ): AIModel[] {
   switch (strategy) {
     case 'single': {
