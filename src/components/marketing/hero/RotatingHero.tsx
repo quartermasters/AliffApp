@@ -130,7 +130,7 @@ export function RotatingHero() {
   };
 
   return (
-    <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
+    <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden bg-navy-900">
       {/* Background gradient - changes based on variant */}
       <div
         className={`absolute inset-0 bg-gradient-to-br ${getAccentClasses(
@@ -139,7 +139,7 @@ export function RotatingHero() {
       />
 
       {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -150,12 +150,12 @@ export function RotatingHero() {
             }`}
           >
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-display-lg font-bold text-navy-900 mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-display-lg font-bold text-white mb-6 leading-tight">
               {currentVariant.headline}
             </h1>
 
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               {currentVariant.subheadline}
             </p>
 
@@ -163,10 +163,10 @@ export function RotatingHero() {
             <div className="flex flex-wrap justify-center gap-6 sm:gap-8 mb-10">
               {currentVariant.metrics.map((metric, idx) => (
                 <div key={idx} className="text-center">
-                  <div className={`text-3xl sm:text-4xl font-bold text-${currentVariant.accent}`}>
+                  <div className="text-3xl sm:text-4xl font-bold text-gold-400">
                     {metric.value}
                   </div>
-                  <div className="text-sm sm:text-base text-gray-600 mt-1">{metric.label}</div>
+                  <div className="text-sm sm:text-base text-gray-400 mt-1 uppercase tracking-wide font-semibold">{metric.label}</div>
                 </div>
               ))}
             </div>
@@ -175,17 +175,17 @@ export function RotatingHero() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href={currentVariant.cta.primaryLink}>
                 <Button
-                  size="lg"
-                  className={`bg-${currentVariant.accent} hover:bg-${currentVariant.accent}-600 text-white px-8 py-6 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all`}
+                  size="xl"
+                  className="px-8"
                 >
                   {currentVariant.cta.primary}
                 </Button>
               </Link>
               <Link href={currentVariant.cta.secondaryLink}>
                 <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-2 border-gray-300 hover:border-gray-400 text-gray-700 px-8 py-6 text-lg font-semibold rounded-lg transition-all"
+                  size="xl"
+                  variant="darkOutline"
+                  className="px-8"
                 >
                   {currentVariant.cta.secondary}
                 </Button>
@@ -210,14 +210,14 @@ export function RotatingHero() {
           </div>
 
           {/* Service labels below dots */}
-          <div className="flex justify-center gap-8 mt-4 text-sm text-gray-600">
-            <span className={currentIndex === 0 ? "font-semibold text-govcon" : ""}>
+          <div className="flex justify-center gap-8 mt-4 text-sm text-gray-400">
+            <span className={currentIndex === 0 ? "font-semibold text-gold-400" : ""}>
               GOVCON
             </span>
-            <span className={currentIndex === 1 ? "font-semibold text-it" : ""}>
+            <span className={currentIndex === 1 ? "font-semibold text-gold-400" : ""}>
               IT Services
             </span>
-            <span className={currentIndex === 2 ? "font-semibold text-writing" : ""}>
+            <span className={currentIndex === 2 ? "font-semibold text-gold-400" : ""}>
               Writing
             </span>
           </div>

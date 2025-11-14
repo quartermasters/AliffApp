@@ -94,7 +94,9 @@ export function ChatWidget() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to get response");
+        const errorText = await response.text();
+        console.error("API Error:", response.status, errorText);
+        throw new Error(`API Error: ${response.status}`);
       }
 
       if (!response.body) {
@@ -121,26 +123,12 @@ export function ChatWidget() {
         const { done, value } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value);
-        const lines = chunk.split("\n");
+        const chunk = decoder.decode(value, { stream: true });
 
-        for (const line of lines) {
-          if (line.startsWith("0:")) {
-            // Parse the data stream format
-            try {
-              const jsonStr = line.slice(2); // Remove "0:" prefix
-              const parsed = JSON.parse(jsonStr);
-              if (parsed && typeof parsed === "string") {
-                assistantMessage += parsed;
-              }
-            } catch (e) {
-              // Skip invalid JSON
-              console.error("Failed to parse chunk:", e);
-            }
-          }
-        }
+        // The AI SDK returns plain text stream, just append it
+        assistantMessage += chunk;
 
-        // Update the assistant message
+        // Update the assistant message in real-time
         setMessages((prev) =>
           prev.map((m) =>
             m.id === assistantMessageId
