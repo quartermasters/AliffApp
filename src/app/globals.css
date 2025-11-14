@@ -4,10 +4,30 @@
 
 @layer base {
   :root {
-    /* Aliff Services Brand Colors */
-    --color-gold: 200 157 92;
-    --color-victory: 16 185 129;
-    --color-navy: 10 15 30;
+    /* Aliff Services Brand Colors - Official Color Schema */
+    /* Reference: Planning/Website/HOMEPAGE_SPECIFICATION.md */
+
+    /* Primary Brand Colors */
+    --color-gold: 200 157 92; /* #C89D5C */
+    --color-navy: 10 15 30; /* #0A0F1E */
+    --color-victory-green: 16 185 129; /* #10B981 */
+
+    /* Neutral Palette */
+    --color-white: 255 255 255; /* #FFFFFF */
+    --color-gray-50: 249 250 251; /* #F9FAFB */
+    --color-gray-100: 243 244 246; /* #F3F4F6 */
+    --color-gray-600: 75 85 99; /* #4B5563 */
+    --color-gray-900: 17 24 39; /* #111827 */
+
+    /* Functional Colors */
+    --color-success: 16 185 129; /* #10B981 */
+    --color-error: 239 68 68; /* #EF4444 */
+    --color-warning: 245 158 11; /* #F59E0B */
+
+    /* Gradients - Per Spec */
+    --gradient-gold: linear-gradient(135deg, #D4A962, #C89D5C);
+    --gradient-hero: linear-gradient(135deg, rgba(10,15,30,0.9), rgba(10,15,30,0.7));
+    --gradient-victory: linear-gradient(135deg, #34D399, #10B981);
 
     /* Spacing */
     --spacing-unit: 0.25rem;
@@ -22,12 +42,14 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.1);
 
     /* Border Radius */
     --radius-sm: 0.375rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
+    --radius-card: 0.75rem; /* 12px per spec */
   }
 
   * {
@@ -102,17 +124,36 @@
     @apply disabled:opacity-50 disabled:cursor-not-allowed;
   }
 
+  /* Primary CTA - Gold Button (Per Spec) */
   .btn-primary {
-    @apply btn bg-gold-400 text-white hover:bg-gold-500 focus:ring-gold-400;
+    @apply btn text-white focus:ring-gold-400;
+    background: var(--gradient-gold);
     @apply shadow-md hover:shadow-lg;
   }
 
-  .btn-secondary {
-    @apply btn bg-navy-800 text-white hover:bg-navy-700 focus:ring-navy-600;
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #E0B973, #D4A962);
+    transform: scale(1.05);
   }
 
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* Secondary CTA - Navy Button */
+  .btn-secondary {
+    @apply btn bg-navy-900 text-white hover:bg-navy-800 focus:ring-navy-600;
+  }
+
+  /* Outline Button - Gold Border */
   .btn-outline {
-    @apply btn border-2 border-gold-400 text-gold-400 hover:bg-gold-400 hover:text-white focus:ring-gold-400;
+    @apply btn border-2 border-gold text-gold hover:bg-gold hover:text-white focus:ring-gold;
+  }
+
+  /* Victory/Success Button - Green */
+  .btn-success {
+    @apply btn bg-victory text-white hover:bg-victory-600 focus:ring-victory;
+    @apply shadow-md hover:shadow-lg;
   }
 
   .btn-ghost {
@@ -136,15 +177,60 @@
     @apply px-8 py-4 text-xl;
   }
 
-  /* Card Styles */
+  /* Card Styles - Per Spec */
   .card {
-    @apply bg-white dark:bg-navy-800 rounded-xl shadow-md;
+    @apply bg-white dark:bg-navy-800 shadow-md;
     @apply border border-gray-200 dark:border-navy-700;
-    @apply transition-shadow duration-200;
+    @apply transition-all duration-200;
+    border-radius: var(--radius-card); /* 12px per spec */
+    padding: 40px; /* Per spec */
   }
 
+  /* Card Hover Effect - Per Spec (8px lift + specific shadow) */
   .card-hover {
-    @apply card hover:shadow-lg;
+    @apply card;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Service Category Cards */
+  .card-govcon {
+    @apply card-hover;
+    border: 1px solid rgba(200, 157, 92, 0.2);
+  }
+
+  .card-govcon:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    color: #C89D5C;
+  }
+
+  .card-it {
+    @apply card-hover;
+    border: 1px solid rgba(200, 157, 92, 0.2);
+  }
+
+  .card-it:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    color: #C89D5C;
+  }
+
+  .card-writing {
+    @apply card-hover;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .card-writing:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+    color: #10B981;
+  }
+
+  .card-icon {
+    @apply transition-all duration-300;
   }
 
   /* Input Styles */
@@ -211,17 +297,39 @@
     animation: scaleIn 0.3s ease-out;
   }
 
-  /* Gradient Backgrounds */
+  /* Gradient Backgrounds - Per Spec */
   .bg-gradient-gold {
-    @apply bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600;
+    background: linear-gradient(135deg, #D4A962, #C89D5C);
+    background: var(--gradient-gold);
+  }
+
+  .bg-gradient-hero {
+    background: linear-gradient(135deg, rgba(10,15,30,0.9), rgba(10,15,30,0.7));
+    background: var(--gradient-hero);
   }
 
   .bg-gradient-victory {
-    @apply bg-gradient-to-r from-victory-400 via-victory-500 to-victory-600;
+    background: linear-gradient(135deg, #34D399, #10B981);
+    background: var(--gradient-victory);
   }
 
   .bg-gradient-navy {
     @apply bg-gradient-to-br from-navy-800 via-navy-900 to-black;
+  }
+
+  /* Button Gradient Variants */
+  .btn-gradient-gold {
+    background: var(--gradient-gold);
+    @apply text-white shadow-md hover:shadow-lg transition-all duration-200;
+  }
+
+  .btn-gradient-gold:hover {
+    background: linear-gradient(135deg, #E0B973, #D4A962);
+    transform: scale(1.05);
+  }
+
+  .btn-gradient-gold:active {
+    transform: scale(0.98);
   }
 
   /* Hover Effects */

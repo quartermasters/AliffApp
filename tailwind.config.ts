@@ -10,10 +10,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Aliff Services Brand Colors - Phase 1
-        // Primary - Professional Authority
+        // Aliff Services Brand Colors - Official Color Schema
+        // Reference: Planning/Website/HOMEPAGE_SPECIFICATION.md
+
+        // Primary Brand - Professional Authority & Trust
         navy: {
-          DEFAULT: "#0A1628",
+          DEFAULT: "#0A0F1E", // Primary navy from spec
           50: "#F8F9FA",
           100: "#E9ECEF",
           200: "#DEE2E6",
@@ -21,54 +23,29 @@ const config: Config = {
           400: "#6C757D",
           500: "#495057",
           600: "#343A40",
-          700: "#2a3f5f",
-          800: "#1a2744",
-          900: "#0A1628",
+          700: "#212529",
+          800: "#1a1f2e",
+          900: "#0A0F1E",
         },
-        // Brand Gold - Premium & Excellence
+
+        // Brand Gold - Premium Excellence & Value
         gold: {
-          DEFAULT: "#C89D5C",
+          DEFAULT: "#C89D5C", // Primary gold from spec
           50: "#FDF8F0",
           100: "#F9EDDC",
           200: "#F3DCB9",
           300: "#EDCB96",
-          400: "#D8B070",
+          400: "#D4A962", // Gradient light from spec
           500: "#C89D5C",
           600: "#B8894A",
           700: "#9A7240",
           800: "#7C5C36",
           900: "#5E462A",
         },
-        // Accent - Innovation Signal
-        teal: {
-          DEFAULT: "#0891B2",
-          50: "#ECFEFF",
-          100: "#CFFAFE",
-          200: "#A5F3FC",
-          300: "#67E8F9",
-          400: "#22D3EE",
-          500: "#06B6D4",
-          600: "#0891B2",
-          700: "#0E7490",
-          800: "#155E75",
-          900: "#164E63",
-        },
-        // Success - Metrics/Wins (also "victory" alias)
-        success: {
-          DEFAULT: "#10B981",
-          50: "#ECFDF5",
-          100: "#D1FAE5",
-          200: "#A7F3D0",
-          300: "#6EE7B7",
-          400: "#34D399",
-          500: "#10B981",
-          600: "#059669",
-          700: "#047857",
-          800: "#065F46",
-          900: "#064E3B",
-        },
+
+        // Victory Green - Success & Achievement
         victory: {
-          DEFAULT: "#10B981",
+          DEFAULT: "#10B981", // Victory green from spec
           50: "#ECFDF5",
           100: "#D1FAE5",
           200: "#A7F3D0",
@@ -80,18 +57,75 @@ const config: Config = {
           800: "#065F46",
           900: "#064E3B",
         },
-        // Service Category Accents
+
+        // Functional Colors
+        success: {
+          DEFAULT: "#10B981", // Matches victory green
+          50: "#ECFDF5",
+          100: "#D1FAE5",
+          200: "#A7F3D0",
+          300: "#6EE7B7",
+          400: "#34D399",
+          500: "#10B981",
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46",
+          900: "#064E3B",
+        },
+        error: {
+          DEFAULT: "#EF4444", // Error red from spec
+          50: "#FEF2F2",
+          100: "#FEE2E2",
+          200: "#FECACA",
+          300: "#FCA5A5",
+          400: "#F87171",
+          500: "#EF4444",
+          600: "#DC2626",
+          700: "#B91C1C",
+          800: "#991B1B",
+          900: "#7F1D1D",
+        },
+        warning: {
+          DEFAULT: "#F59E0B", // Warning amber from spec
+          50: "#FFFBEB",
+          100: "#FEF3C7",
+          200: "#FDE68A",
+          300: "#FCD34D",
+          400: "#FBBF24",
+          500: "#F59E0B",
+          600: "#D97706",
+          700: "#B45309",
+          800: "#92400E",
+          900: "#78350F",
+        },
+
+        // Neutral Palette - Supporting Cast
+        gray: {
+          50: "#F9FAFB", // Gray-50 from spec
+          100: "#F3F4F6", // Gray-100 from spec
+          200: "#E5E7EB",
+          300: "#D1D5DB",
+          400: "#9CA3AF",
+          500: "#6B7280",
+          600: "#4B5563", // Gray-600 from spec
+          700: "#374151",
+          800: "#1F2937",
+          900: "#111827", // Gray-900 from spec
+        },
+
+        // Service Category Visual Identifiers
+        // (Used for badges, icons, accents)
         govcon: {
-          DEFAULT: "#3B82F6",
-          600: "#2563EB",
+          DEFAULT: "#0A0F1E", // Navy + Gold combo
+          light: "#C89D5C",
         },
         it: {
-          DEFAULT: "#8B5CF6",
-          600: "#7C3AED",
+          DEFAULT: "#C89D5C", // Gold primary
+          light: "#D4A962",
         },
         writing: {
-          DEFAULT: "#EC4899",
-          600: "#DB2777",
+          DEFAULT: "#10B981", // Victory green
+          light: "#34D399",
         },
       },
       fontFamily: {
