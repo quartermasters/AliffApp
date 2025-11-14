@@ -36,8 +36,8 @@ model User {
   twoFactorSecret  String? @map("two_factor_secret")
 
   // Timestamps
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
   lastLogin DateTime? @map("last_login")
 
   // Relations
@@ -48,6 +48,14 @@ model User {
   interviews   Interview[]
   leads        Lead[]
   activities   Activity[]
+
+  // Business Dashboard Relations
+  projectsCreated      Project[]           @relation("ProjectCreator")
+  teamAssignments      ProjectAssignment[] @relation("TeamMemberAssignments")
+  assignerAssignments  ProjectAssignment[] @relation("AssignerAssignments")
+  consensusReviews     ConsensusLog[]
+  deliverablesReviewed Deliverable[]
+  projectUpdates       ProjectUpdate[]
 
   @@map("users")
 }
@@ -116,34 +124,35 @@ enum JobLocation {
 }
 
 model JobPosting {
-  id          String      @id @default(cuid())
+  id          String @id @default(cuid())
   title       String
-  slug        String      @unique
-  description String      @db.Text
+  slug        String @unique
+  description String @db.Text
 
   // Job Details
-  type        JobType
-  location    JobLocation
-  department  String?
-  salary      String?
-  requirements String     @db.Text
-  responsibilities String  @db.Text
-  benefits    String?     @db.Text
+  type             JobType
+  location         JobLocation
+  department       String?
+  salary           String?
+  requirements     String      @db.Text
+  responsibilities String      @db.Text
+  benefits         String?     @db.Text
 
   // Status
-  status      JobStatus   @default(DRAFT)
-  publishedAt DateTime?   @map("published_at")
-  closedAt    DateTime?   @map("closed_at")
+  status      JobStatus @default(DRAFT)
+  publishedAt DateTime? @map("published_at")
+  closedAt    DateTime? @map("closed_at")
 
   // Metadata
-  views       Int         @default(0)
-  createdBy   String      @map("created_by")
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
+  views     Int      @default(0)
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  creator      User          @relation(fields: [createdBy], references: [id])
-  applications Application[]
+  creator            User                @relation(fields: [createdBy], references: [id])
+  applications       Application[]
+  projectAssignments ProjectAssignment[] // Link to Business Dashboard
 
   @@map("job_postings")
 }
@@ -161,37 +170,37 @@ enum ApplicationStatus {
 }
 
 model Application {
-  id        String            @id @default(cuid())
+  id String @id @default(cuid())
 
   // Candidate Info
-  firstName String            @map("first_name")
-  lastName  String            @map("last_name")
+  firstName String  @map("first_name")
+  lastName  String  @map("last_name")
   email     String
   phone     String?
 
   // Application Data
-  resumeUrl String            @map("resume_url")
-  coverLetter String?         @db.Text @map("cover_letter")
-  linkedinUrl String?         @map("linkedin_url")
-  portfolioUrl String?        @map("portfolio_url")
+  resumeUrl    String  @map("resume_url")
+  coverLetter  String? @map("cover_letter") @db.Text
+  linkedinUrl  String? @map("linkedin_url")
+  portfolioUrl String? @map("portfolio_url")
 
   // Status & Scoring
-  status    ApplicationStatus @default(SUBMITTED)
-  aiScore   Float?            @map("ai_score")
-  aiNotes   String?           @db.Text @map("ai_notes")
-  humanNotes String?          @db.Text @map("human_notes")
+  status     ApplicationStatus @default(SUBMITTED)
+  aiScore    Float?            @map("ai_score")
+  aiNotes    String?           @map("ai_notes") @db.Text
+  humanNotes String?           @map("human_notes") @db.Text
 
   // Relations
-  jobId     String            @map("job_id")
-  userId    String?           @map("user_id")
+  jobId  String  @map("job_id")
+  userId String? @map("user_id")
 
   // Timestamps
-  createdAt DateTime          @default(now()) @map("created_at")
-  updatedAt DateTime          @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  job        JobPosting        @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  user       User?             @relation(fields: [userId], references: [id])
+  job        JobPosting  @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user       User?       @relation(fields: [userId], references: [id])
   interviews Interview[]
   tests      Test[]
 
@@ -221,32 +230,32 @@ enum InterviewStatus {
 }
 
 model Interview {
-  id            String          @id @default(cuid())
+  id String @id @default(cuid())
 
   // Interview Details
-  type          InterviewType
-  status        InterviewStatus @default(SCHEDULED)
-  scheduledAt   DateTime        @map("scheduled_at")
-  duration      Int             // in minutes
-  location      String?         // or meeting link
-  notes         String?         @db.Text
+  type        InterviewType
+  status      InterviewStatus @default(SCHEDULED)
+  scheduledAt DateTime        @map("scheduled_at")
+  duration    Int // in minutes
+  location    String? // or meeting link
+  notes       String?         @db.Text
 
   // Feedback
-  rating        Int?            // 1-5
-  feedback      String?         @db.Text
-  recommendation String?        // hire, maybe, no hire
+  rating         Int? // 1-5
+  feedback       String? @db.Text
+  recommendation String? // hire, maybe, no hire
 
   // Relations
-  applicationId String          @map("application_id")
-  interviewerId String          @map("interviewer_id")
+  applicationId String @map("application_id")
+  interviewerId String @map("interviewer_id")
 
   // Timestamps
-  createdAt     DateTime        @default(now()) @map("created_at")
-  updatedAt     DateTime        @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  application   Application     @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  interviewer   User            @relation(fields: [interviewerId], references: [id])
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  interviewer User        @relation(fields: [interviewerId], references: [id])
 
   @@map("interviews")
 }
@@ -272,32 +281,32 @@ enum TestStatus {
 }
 
 model Test {
-  id            String     @id @default(cuid())
+  id String @id @default(cuid())
 
   // Test Details
-  title         String
-  type          TestType
-  description   String?    @db.Text
-  questions     Json       // Array of questions
-  duration      Int        // in minutes
+  title       String
+  type        TestType
+  description String?  @db.Text
+  questions   Json // Array of questions
+  duration    Int // in minutes
 
   // Status & Scoring
-  status        TestStatus @default(ASSIGNED)
-  score         Float?
-  aiEvaluation  String?    @db.Text @map("ai_evaluation")
-  answers       Json?      // Candidate answers
+  status       TestStatus @default(ASSIGNED)
+  score        Float?
+  aiEvaluation String?    @map("ai_evaluation") @db.Text
+  answers      Json? // Candidate answers
 
   // Relations
-  applicationId String     @map("application_id")
+  applicationId String @map("application_id")
 
   // Timestamps
-  assignedAt    DateTime   @default(now()) @map("assigned_at")
-  startedAt     DateTime?  @map("started_at")
-  submittedAt   DateTime?  @map("submitted_at")
-  expiresAt     DateTime   @map("expires_at")
+  assignedAt  DateTime  @default(now()) @map("assigned_at")
+  startedAt   DateTime? @map("started_at")
+  submittedAt DateTime? @map("submitted_at")
+  expiresAt   DateTime  @map("expires_at")
 
   // Relations
-  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   @@map("tests")
 }
@@ -328,11 +337,11 @@ enum LeadSource {
 }
 
 model Lead {
-  id          String     @id @default(cuid())
+  id String @id @default(cuid())
 
   // Company Info
-  companyName String     @map("company_name")
-  contactName String?    @map("contact_name")
+  companyName String  @map("company_name")
+  contactName String? @map("contact_name")
   email       String
   phone       String?
   website     String?
@@ -340,25 +349,25 @@ model Lead {
   // Lead Details
   status      LeadStatus @default(NEW)
   source      LeadSource @default(WEBSITE)
-  value       Float?     // Estimated contract value
-  probability Int?       // Win probability %
+  value       Float? // Estimated contract value
+  probability Int? // Win probability %
   notes       String?    @db.Text
 
   // Qualification
-  qualified   Boolean    @default(false)
-  qualifiedAt DateTime?  @map("qualified_at")
+  qualified   Boolean   @default(false)
+  qualifiedAt DateTime? @map("qualified_at")
 
   // Assignment
-  assignedTo  String?    @map("assigned_to")
+  assignedTo String? @map("assigned_to")
 
   // Timestamps
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  closedAt    DateTime?  @map("closed_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  closedAt  DateTime? @map("closed_at")
 
   // Relations
-  assignee    User?      @relation(fields: [assignedTo], references: [id])
-  activities  Activity[]
+  assignee   User?      @relation(fields: [assignedTo], references: [id])
+  activities Activity[]
 
   @@map("leads")
 }
@@ -378,23 +387,23 @@ enum ActivityType {
 }
 
 model Activity {
-  id          String       @id @default(cuid())
+  id String @id @default(cuid())
 
   type        ActivityType
   title       String
   description String?      @db.Text
-  metadata    Json?        // Additional data
+  metadata    Json? // Additional data
 
   // Relations
-  userId      String       @map("user_id")
-  leadId      String?      @map("lead_id")
+  userId String  @map("user_id")
+  leadId String? @map("lead_id")
 
   // Timestamps
-  createdAt   DateTime     @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
-  user        User         @relation(fields: [userId], references: [id])
-  lead        Lead?        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  user User  @relation(fields: [userId], references: [id])
+  lead Lead? @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   @@map("activities")
 }
@@ -411,24 +420,24 @@ enum LinkedInPostStatus {
 }
 
 model LinkedInPost {
-  id          String              @id @default(cuid())
+  id String @id @default(cuid())
 
-  content     String              @db.Text
-  imageUrl    String?             @map("image_url")
+  content  String  @db.Text
+  imageUrl String? @map("image_url")
 
-  status      LinkedInPostStatus  @default(DRAFT)
-  scheduledAt DateTime?           @map("scheduled_at")
-  publishedAt DateTime?           @map("published_at")
+  status      LinkedInPostStatus @default(DRAFT)
+  scheduledAt DateTime?          @map("scheduled_at")
+  publishedAt DateTime?          @map("published_at")
 
   // Engagement
-  views       Int                 @default(0)
-  likes       Int                 @default(0)
-  comments    Int                 @default(0)
-  shares      Int                 @default(0)
+  views    Int @default(0)
+  likes    Int @default(0)
+  comments Int @default(0)
+  shares   Int @default(0)
 
   // Timestamps
-  createdAt   DateTime            @default(now()) @map("created_at")
-  updatedAt   DateTime            @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("linkedin_posts")
 }
@@ -444,38 +453,411 @@ enum ConversationStatus {
 }
 
 model Conversation {
-  id        String              @id @default(cuid())
+  id String @id @default(cuid())
 
   // Contact Info
-  visitorId String?             @map("visitor_id") // Anonymous ID
+  visitorId String? @map("visitor_id") // Anonymous ID
   email     String?
   name      String?
 
-  status    ConversationStatus  @default(ACTIVE)
+  status ConversationStatus @default(ACTIVE)
 
   // Timestamps
-  createdAt DateTime            @default(now()) @map("created_at")
-  updatedAt DateTime            @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  messages  Message[]
+  messages Message[]
 
   @@map("conversations")
 }
 
 model Message {
-  id             String       @id @default(cuid())
+  id String @id @default(cuid())
 
-  content        String       @db.Text
-  isAI           Boolean      @default(false) @map("is_ai")
-  metadata       Json?        // AI metadata, intent, etc.
+  content  String  @db.Text
+  isAI     Boolean @default(false) @map("is_ai")
+  metadata Json? // AI metadata, intent, etc.
 
-  conversationId String       @map("conversation_id")
+  conversationId String @map("conversation_id")
 
-  createdAt      DateTime     @default(now()) @map("created_at")
+  createdAt DateTime @default(now()) @map("created_at")
 
   // Relations
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@map("messages")
+}
+
+// ============================================================================
+// BUSINESS DASHBOARD - GOVCON/SLED PROPOSAL MANAGEMENT
+// ============================================================================
+
+enum ProjectStage {
+  PENDING_REVIEW // Client submitted, awaiting Super Admin review
+  INTAKE // Super Admin reviewing project details
+  SDL_PROCESSING // SDL Triage running (AI analysis)
+  HUMAN_VALIDATION // Awaiting human expert validation
+  RECRUITER_HIRING // ALIFF-RECRUITER finding team members
+  TEAM_EXECUTION // Team working on deliverables
+  AI_VALIDATION // AI quality check on deliverables
+  GOLD_GATE // Final human expert review
+  CLIENT_APPROVAL // Client reviewing final proposal
+  SUBMITTED // Proposal submitted to agency
+  WON // Contract awarded
+  LOST // Proposal rejected
+}
+
+enum SDLPhase {
+  NOT_STARTED
+  PHASE1_TRIAGE
+  PHASE2_STRATEGIC_INTEL
+  PHASE3_WIN_STRATEGY
+  COMPLETED
+}
+
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  ARCHIVED
+  CANCELLED
+}
+
+// Main project model for RFP/Proposal projects
+model Project {
+  id              String  @id @default(cuid())
+  projectCode     String  @unique @map("project_code") // PROJ-2025-001
+  projectCodename String? @map("project_codename") // "Operation Phoenix" (anonymized for team)
+
+  // Client Information
+  clientName  String  @map("client_name")
+  clientEmail String? @map("client_email")
+  clientPhone String? @map("client_phone")
+
+  // Project Details
+  title              String
+  solicitationNumber String?   @map("solicitation_number")
+  contractValue      Float?    @map("contract_value")
+  deadline           DateTime?
+  industryCategory   String?   @map("industry_category")
+
+  // SDL Integration
+  sdlStatus          SDLPhase @default(NOT_STARTED) @map("sdl_status")
+  sdlComplexityScore Int?     @map("sdl_complexity_score") // 1-10 from SDL Task 10
+  sdlWinProbability  Int?     @map("sdl_win_probability") // 0-100% from SDL Task 26
+  sdlTriageResultId  String?  @unique @map("sdl_triage_result_id") // Reference to SDL triage result JSON storage
+
+  // Project Status
+  currentStage       ProjectStage @default(PENDING_REVIEW) @map("current_stage")
+  progressPercentage Int          @default(0) @map("progress_percentage")
+  qualityScore       Int?         @map("quality_score") // 0-100
+  anonymizeForTeam   Boolean      @default(true) @map("anonymize_for_team")
+
+  // Metadata
+  createdBy   String        @map("created_by")
+  status      ProjectStatus @default(ACTIVE)
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  completedAt DateTime?     @map("completed_at")
+  submittedAt DateTime?     @map("submitted_at")
+
+  // Relations
+  creator       User                @relation("ProjectCreator", fields: [createdBy], references: [id])
+  documents     ProjectDocument[]
+  assignments   ProjectAssignment[]
+  sdlTasks      SDLTask[]
+  deliverables  Deliverable[]
+  updates       ProjectUpdate[]
+  consensusLogs ConsensusLog[]
+
+  @@index([projectCode])
+  @@index([sdlStatus])
+  @@index([currentStage])
+  @@index([status])
+  @@index([createdBy])
+  @@map("projects")
+}
+
+enum SDLTaskPhase {
+  PHASE1_TRIAGE
+  PHASE2_STRATEGIC_INTEL
+  PHASE3_WIN_STRATEGY
+}
+
+enum SDLTaskStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  ESCALATED_TO_HUMAN
+}
+
+enum AIProvider {
+  OPENAI
+  CLAUDE
+  GEMINI
+  GROK
+}
+
+// SDL Task Queue (34 tasks per project)
+model SDLTask {
+  id         String       @id @default(cuid())
+  projectId  String       @map("project_id")
+  taskNumber Int          @map("task_number") // 1-34
+  taskName   String       @map("task_name")
+  taskPhase  SDLTaskPhase @map("task_phase")
+
+  // AI Routing
+  primaryAI               AIProvider  @map("primary_ai")
+  secondaryAI             AIProvider? @map("secondary_ai")
+  requiresMultiAI         Boolean     @default(false) @map("requires_multi_ai")
+  requiresHumanValidation Boolean     @default(false) @map("requires_human_validation")
+
+  // Execution Status
+  status   SDLTaskStatus @default(PENDING)
+  priority String        @default("medium") // low, medium, high, critical
+
+  // Results (JSON storage)
+  primaryResult         Json? @map("primary_result")
+  secondaryResult       Json? @map("secondary_result")
+  consensusResult       Json? @map("consensus_result")
+  humanValidationResult Json? @map("human_validation_result")
+  confidenceScore       Int?  @map("confidence_score") // 0-100
+
+  // Timing
+  estimatedDurationMinutes Int?      @map("estimated_duration_minutes")
+  startedAt                DateTime? @map("started_at")
+  completedAt              DateTime? @map("completed_at")
+  errorMessage             String?   @map("error_message") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  project       Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  consensusLogs ConsensusLog[]
+
+  @@unique([projectId, taskNumber])
+  @@index([projectId])
+  @@index([status])
+  @@index([taskPhase])
+  @@map("sdl_tasks")
+}
+
+enum ConsensusType {
+  FULL_CONSENSUS // All AIs agree (>80% similarity)
+  MAJORITY_CONSENSUS // 2 out of 3 agree (60-80% similarity)
+  SPLIT_DECISION // No consensus (<60% similarity)
+  LOW_CONFIDENCE // AI confidence scores conflict
+}
+
+// Multi-AI Consensus Log
+model ConsensusLog {
+  id        String @id @default(cuid())
+  sdlTaskId String @map("sdl_task_id")
+  projectId String @map("project_id")
+  taskName  String @map("task_name")
+
+  // AI Outputs
+  gpt5Output   Json? @map("gpt5_output")
+  claudeOutput Json? @map("claude_output")
+  geminiOutput Json? @map("gemini_output")
+
+  // Consensus Analysis
+  consensusType       ConsensusType @map("consensus_type")
+  consensusConfidence Int?          @map("consensus_confidence") // 0-100
+  finalResult         Json          @map("final_result")
+
+  // Human Review (if escalated)
+  escalatedToHuman Boolean @default(false) @map("escalated_to_human")
+  humanReviewerId  String? @map("human_reviewer_id")
+  humanDecision    Json?   @map("human_decision")
+  humanNotes       String? @map("human_notes") @db.Text
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  sdlTask       SDLTask @relation(fields: [sdlTaskId], references: [id], onDelete: Cascade)
+  project       Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  humanReviewer User?   @relation(fields: [humanReviewerId], references: [id])
+
+  @@index([projectId])
+  @@index([sdlTaskId])
+  @@map("consensus_logs")
+}
+
+enum DocumentType {
+  RFP_MAIN
+  AMENDMENT
+  ATTACHMENT
+  PAST_PERFORMANCE
+  CAPABILITY_STATEMENT
+  DELIVERABLE
+  SDL_OUTPUT
+  OTHER
+}
+
+// Project Documents
+model ProjectDocument {
+  id           String       @id @default(cuid())
+  projectId    String       @map("project_id")
+  documentType DocumentType @map("document_type")
+  fileName     String       @map("file_name")
+  filePath     String       @map("file_path")
+  fileSize     Int?         @map("file_size")
+
+  // Access Control
+  uploadedByType  String  @map("uploaded_by_type") // admin, client, team, system
+  uploadedById    String? @map("uploaded_by_id")
+  visibleToClient Boolean @default(false) @map("visible_to_client")
+  visibleToTeam   Boolean @default(false) @map("visible_to_team")
+  watermarked     Boolean @default(false)
+
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId])
+  @@index([documentType])
+  @@map("project_documents")
+}
+
+enum AssignmentType {
+  LEAD_RESEARCHER
+  TECHNICAL_SME
+  PROPOSAL_WRITER
+  PRICING_ANALYST
+  COMPLIANCE_REVIEWER
+  OTHER
+}
+
+enum AssignmentStatus {
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// Project Assignments (Team Members)
+model ProjectAssignment {
+  id                    String         @id @default(cuid())
+  projectId             String         @map("project_id")
+  teamMemberId          String         @map("team_member_id") // Can be User or external provider
+  assignmentType        AssignmentType @map("assignment_type")
+  assignmentDescription String?        @map("assignment_description") @db.Text
+
+  // ALIFF-RECRUITER Integration
+  recruitedViaAliff Boolean @default(false) @map("recruited_via_aliff")
+  jobPostingId      String? @map("job_posting_id") // Link to ATS
+
+  // Tracking
+  status         AssignmentStatus @default(ASSIGNED)
+  hoursEstimated Float?           @map("hours_estimated")
+  hoursActual    Float?           @map("hours_actual")
+  deadline       DateTime?
+
+  // Metadata
+  assignedBy  String    @map("assigned_by")
+  assignedAt  DateTime  @default(now()) @map("assigned_at")
+  completedAt DateTime? @map("completed_at")
+
+  // Relations
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  teamMember   User          @relation("TeamMemberAssignments", fields: [teamMemberId], references: [id])
+  assigner     User          @relation("AssignerAssignments", fields: [assignedBy], references: [id])
+  jobPosting   JobPosting?   @relation(fields: [jobPostingId], references: [id])
+  deliverables Deliverable[]
+
+  @@index([projectId])
+  @@index([teamMemberId])
+  @@index([status])
+  @@map("project_assignments")
+}
+
+enum DeliverableType {
+  RESEARCH_REPORT
+  TECHNICAL_ANALYSIS
+  PROPOSAL_DRAFT
+  PRICING_PROPOSAL
+  STUDY_NOTES
+  ANNOTATED_RFP
+  OTHER
+}
+
+enum DeliverableStatus {
+  ASSIGNED
+  IN_PROGRESS
+  SUBMITTED
+  UNDER_REVIEW
+  REVISION_REQUESTED
+  APPROVED
+  REJECTED
+}
+
+// Deliverables
+model Deliverable {
+  id              String          @id @default(cuid())
+  projectId       String          @map("project_id")
+  assignmentId    String?         @map("assignment_id")
+  deliverableType DeliverableType @map("deliverable_type")
+  title           String
+  description     String?         @db.Text
+
+  // File
+  filePath String? @map("file_path")
+  fileSize Int?    @map("file_size")
+
+  // Status & Quality
+  status             DeliverableStatus @default(ASSIGNED)
+  qualityScore       Int?              @map("quality_score") // 0-100 from AI validation
+  aiValidationResult Json?             @map("ai_validation_result")
+
+  // Review
+  reviewerNotes String?   @map("reviewer_notes") @db.Text
+  reviewedBy    String?   @map("reviewed_by")
+  reviewedAt    DateTime? @map("reviewed_at")
+
+  // Timing
+  dueDate     DateTime? @map("due_date")
+  submittedAt DateTime? @map("submitted_at")
+  approvedAt  DateTime? @map("approved_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  project    Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignment ProjectAssignment? @relation(fields: [assignmentId], references: [id])
+  reviewer   User?              @relation(fields: [reviewedBy], references: [id])
+
+  @@index([projectId])
+  @@index([status])
+  @@map("deliverables")
+}
+
+enum UpdateVisibility {
+  CLIENT_ONLY
+  TEAM_ONLY
+  SUPER_ADMIN_ONLY
+  CLIENT_AND_SUPER_ADMIN
+}
+
+// Project Updates (curated by Super Admin for Client Portal)
+model ProjectUpdate {
+  id         String           @id @default(cuid())
+  projectId  String           @map("project_id")
+  title      String
+  content    String           @db.Text
+  visibility UpdateVisibility @default(CLIENT_AND_SUPER_ADMIN)
+
+  // Metadata
+  createdBy String   @map("created_by")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  creator User    @relation(fields: [createdBy], references: [id])
+
+  @@index([projectId])
+  @@index([visibility])
+  @@map("project_updates")
 }
