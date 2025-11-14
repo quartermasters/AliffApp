@@ -95,6 +95,13 @@ model VerificationToken {
 // JOB POSTINGS & ATS
 // ============================================================================
 
+enum ServiceCategory {
+  GOVCON
+  SLED
+  IT_SERVICES
+  WRITING_SERVICES
+}
+
 enum JobStatus {
   DRAFT
   PUBLISHED
@@ -116,34 +123,37 @@ enum JobLocation {
 }
 
 model JobPosting {
-  id          String      @id @default(cuid())
+  id          String          @id @default(cuid())
   title       String
-  slug        String      @unique
-  description String      @db.Text
+  slug        String          @unique
+  description String          @db.Text
+  category    ServiceCategory // GOVCON, SLED, IT, WRITING
 
   // Job Details
   type        JobType
   location    JobLocation
   department  String?
-  salary      String?
-  requirements String     @db.Text
-  responsibilities String  @db.Text
-  benefits    String?     @db.Text
+  salary      String?         // PKR range for Pakistan market
+  requirements String         @db.Text
+  responsibilities String      @db.Text
+  benefits    String?         @db.Text
 
   // Status
-  status      JobStatus   @default(DRAFT)
-  publishedAt DateTime?   @map("published_at")
-  closedAt    DateTime?   @map("closed_at")
+  status      JobStatus       @default(DRAFT)
+  publishedAt DateTime?       @map("published_at")
+  closedAt    DateTime?       @map("closed_at")
 
   // Metadata
-  views       Int         @default(0)
-  createdBy   String      @map("created_by")
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
+  views       Int             @default(0)
+  applicationsCount Int       @default(0) @map("applications_count")
+  createdBy   String          @map("created_by")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
 
   // Relations
-  creator      User          @relation(fields: [createdBy], references: [id])
+  creator      User                     @relation(fields: [createdBy], references: [id])
   applications Application[]
+  distributions JobPostingDistribution[]
 
   @@map("job_postings")
 }
@@ -174,16 +184,32 @@ model Application {
   coverLetter String?         @db.Text @map("cover_letter")
   linkedinUrl String?         @map("linkedin_url")
   portfolioUrl String?        @map("portfolio_url")
+  githubUrl String?           @map("github_url")
+
+  // AI-Parsed Resume Data (50+ fields)
+  parsedData Json?            @map("parsed_data") // Full structured resume extraction
 
   // Status & Scoring
   status    ApplicationStatus @default(SUBMITTED)
-  aiScore   Float?            @map("ai_score")
+
+  // Screening scores (0-100)
+  screeningScore Float?       @map("screening_score") // Initial AI screening
+  chatScore      Float?       @map("chat_score")      // Chat interview score
+  testScore      Float?       @map("test_score")      // Skills test score
+  overallScore   Float?       @map("overall_score")   // Combined score
+
   aiNotes   String?           @db.Text @map("ai_notes")
   humanNotes String?          @db.Text @map("human_notes")
+
+  // Chat Interview
+  chatTranscript Json?        @map("chat_transcript") // Full conversation history
+  chatCompleted  Boolean      @default(false) @map("chat_completed")
+  chatCompletedAt DateTime?   @map("chat_completed_at")
 
   // Relations
   jobId     String            @map("job_id")
   userId    String?           @map("user_id")
+  providerId String?          @map("provider_id") // If converted to provider
 
   // Timestamps
   createdAt DateTime          @default(now()) @map("created_at")
@@ -192,6 +218,7 @@ model Application {
   // Relations
   job        JobPosting        @relation(fields: [jobId], references: [id], onDelete: Cascade)
   user       User?             @relation(fields: [userId], references: [id])
+  provider   Provider?         @relation(fields: [providerId], references: [id])
   interviews Interview[]
   tests      Test[]
 
@@ -280,11 +307,19 @@ model Test {
   description   String?    @db.Text
   questions     Json       // Array of questions
   duration      Int        // in minutes
+  context       Json?      // Supporting materials (fake RFP, project specs)
 
   // Status & Scoring
   status        TestStatus @default(ASSIGNED)
-  score         Float?
-  aiEvaluation  String?    @db.Text @map("ai_evaluation")
+
+  // Multi-AI Consensus Scoring (Phase 3)
+  gpt4Score     Float?     @map("gpt4_score")      // GPT-4 evaluation (0-100)
+  claudeScore   Float?     @map("claude_score")    // Claude evaluation (0-100)
+  geminiScore   Float?     @map("gemini_score")    // Gemini evaluation (0-100)
+  consensusScore Float?    @map("consensus_score") // Average of 3 (final score)
+
+  aiEvaluation  String?    @db.Text @map("ai_evaluation") // Detailed feedback
+  feedback      Json?      // Structured feedback (strengths, weaknesses, recommendations)
   answers       Json?      // Candidate answers
 
   // Relations
@@ -294,6 +329,7 @@ model Test {
   assignedAt    DateTime   @default(now()) @map("assigned_at")
   startedAt     DateTime?  @map("started_at")
   submittedAt   DateTime?  @map("submitted_at")
+  gradedAt      DateTime?  @map("graded_at")
   expiresAt     DateTime   @map("expires_at")
 
   // Relations
@@ -478,4 +514,157 @@ model Message {
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@map("messages")
+}
+
+// ============================================================================
+// PROVIDER TALENT POOL (CV BANK) - Phase 4
+// ============================================================================
+
+enum ProviderStatus {
+  AVAILABLE
+  BUSY
+  INACTIVE
+  SUSPENDED
+}
+
+model Provider {
+  id               String         @id @default(cuid())
+
+  // Core Info
+  name             String
+  email            String         @unique
+  phone            String?
+  location         String?
+  timezone         String?
+
+  // Professional Profile
+  skills           String[]       // ["GOVCON", "RFP", "Past Performance"]
+  yearsExperience  Int
+  domains          String[]       // ["Healthcare", "Cybersecurity"]
+  certifications   String[]
+  clearance        String?
+  category         ServiceCategory
+
+  // Portfolio
+  linkedinUrl      String?        @map("linkedin_url")
+  githubUrl        String?        @map("github_url")
+  portfolioUrl     String?        @map("portfolio_url")
+  resumeUrl        String?        @map("resume_url")
+
+  // Performance Metrics
+  overallRating    Float?         @map("overall_rating") // Average of all projects (1-5)
+  projectsCompleted Int           @default(0) @map("projects_completed")
+  onTimeRate       Float?         @map("on_time_rate") // Percentage
+  satisfactionAvg  Float?         @map("satisfaction_avg") // Average client rating
+
+  // Availability & Compensation
+  status           ProviderStatus @default(AVAILABLE)
+  hoursPerWeek     Int?           @map("hours_per_week")
+  hourlyRate       Float?         @map("hourly_rate") // In PKR
+  preferredProjects String[]      @map("preferred_projects")
+
+  // Engagement
+  lastContacted    DateTime?      @map("last_contacted")
+  responseTime     Int?           @map("response_time") // avg minutes to respond
+
+  // Timestamps
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  sourceApplication Application[]
+  reviews          ProviderReview[]
+
+  @@map("providers")
+}
+
+// ============================================================================
+// PROVIDER PERFORMANCE TRACKING - Phase 5
+// ============================================================================
+
+model ProviderReview {
+  id           String   @id @default(cuid())
+
+  providerId   String   @map("provider_id")
+  projectId    String?  @map("project_id") // Reference to project (external system)
+
+  // Ratings (1-5 scale)
+  qualityRating      Float  @map("quality_rating")
+  timelinessRating   Float  @map("timeliness_rating")
+  communicationRating Float @map("communication_rating")
+  overallRating      Float  @map("overall_rating")
+
+  // Feedback
+  strengths    String?  @db.Text
+  improvements String?  @db.Text
+  notes        String?  @db.Text
+
+  // Metadata
+  reviewedBy   String?  @map("reviewed_by") // ALIFF-CLIENT or human
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  // Relations
+  provider     Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@map("provider_reviews")
+}
+
+// ============================================================================
+// JOB POSTING DISTRIBUTION - Phase 5
+// ============================================================================
+
+enum PostingPlatform {
+  INDEED
+  LINKEDIN
+  DICE
+  STACK_OVERFLOW
+  GITHUB_JOBS
+  ANGEL_LIST
+  APMP
+  GOVCON_WIRE
+  CLEARANCE_JOBS
+  WRITER_ACCESS
+  FACEBOOK
+  INSTAGRAM
+  TWITTER
+  REDDIT
+  CAREERS_PAGE
+  OTHER
+}
+
+enum DistributionStatus {
+  PENDING
+  POSTED
+  ACTIVE
+  CLOSED
+  FAILED
+}
+
+model JobPostingDistribution {
+  id          String             @id @default(cuid())
+
+  jobId       String             @map("job_id")
+  platform    PostingPlatform
+  status      DistributionStatus @default(PENDING)
+
+  // Platform-specific
+  externalId  String?            @map("external_id") // ID on external platform
+  externalUrl String?            @map("external_url")
+
+  // Analytics
+  views       Int                @default(0)
+  clicks      Int                @default(0)
+  applications Int               @default(0)
+  cost        Float?             // If paid posting (PKR)
+
+  // Timestamps
+  postedAt    DateTime?          @map("posted_at")
+  expiresAt   DateTime?          @map("expires_at")
+  closedAt    DateTime?          @map("closed_at")
+  createdAt   DateTime           @default(now()) @map("created_at")
+
+  // Relations
+  job         JobPosting         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@map("job_posting_distributions")
 }
