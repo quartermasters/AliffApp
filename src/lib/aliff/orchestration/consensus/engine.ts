@@ -242,7 +242,7 @@ export async function analyzeAgreement(
   const divergences = similarities
     .filter((s) => s.similarity < 0.5)
     .map((s) => ({
-      models: [s.model1, s.model2],
+      models: [s.model1, s.model2] as any,
       reason: `Low similarity: ${(s.similarity * 100).toFixed(1)}%`,
     }));
 
