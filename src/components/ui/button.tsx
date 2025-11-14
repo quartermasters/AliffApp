@@ -9,15 +9,19 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-gold-400 text-white hover:bg-gold-500 shadow-md hover:shadow-lg",
+          "bg-gold-400 text-navy-900 hover:bg-gold-300 shadow-lg hover:shadow-xl font-bold",
+        victory:
+          "border-2 border-win-400 text-win-400 bg-transparent hover:bg-win-400 hover:text-navy-900 font-semibold shadow-md hover:shadow-lg",
+        darkOutline:
+          "border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold",
+        outline:
+          "border-2 border-gold-400 text-gold-400 bg-transparent hover:bg-gold-400 hover:text-navy-900",
+        secondary:
+          "bg-navy-700 text-white hover:bg-navy-600 border border-navy-600",
+        ghost: "hover:bg-white/10 text-gray-300 hover:text-white",
+        link: "text-gold-400 underline-offset-4 hover:underline hover:text-gold-300",
         destructive:
           "bg-red-500 text-white hover:bg-red-600 shadow-sm",
-        outline:
-          "border-2 border-gold-400 text-gold-400 bg-transparent hover:bg-gold-400 hover:text-white",
-        secondary:
-          "bg-navy-800 text-white hover:bg-navy-700",
-        ghost: "hover:bg-gray-100 dark:hover:bg-navy-800",
-        link: "text-gold-400 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",

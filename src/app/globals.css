@@ -4,10 +4,12 @@
 
 @layer base {
   :root {
-    /* Aliff Services Brand Colors */
-    --color-gold: 200 157 92;
+    /* Aliff Services Brand Colors - Updated */
+    --color-gold: 229 193 127;          /* #E5C17F - Updated */
+    --color-gold-bright: 243 201 107;   /* #F3C96B - New */
     --color-victory: 16 185 129;
-    --color-navy: 10 15 30;
+    --color-navy: 8 13 26;              /* #080d1a - Updated */
+    --color-navy-darker: 4 6 9;         /* #040609 - New */
 
     /* Spacing */
     --spacing-unit: 0.25rem;
@@ -39,7 +41,7 @@
   }
 
   body {
-    @apply font-sans;
+    @apply bg-navy-900 text-white font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -52,7 +54,7 @@
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tight text-white;
   }
 
   h1 {
@@ -187,9 +189,136 @@
     @apply badge bg-victory-100 text-victory-700 dark:bg-victory-900/30 dark:text-victory-400;
   }
 
+  /* Premium Badge (like "PROVEN WINNERS • $47M+ SECURED") */
+  .badge-premium {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full;
+    @apply bg-gold-500/20 border border-gold-400 text-gold-400;
+    @apply text-sm font-bold tracking-wide uppercase;
+    @apply shadow-md;
+  }
+
+  /* Gold Border Card */
+  .card-gold {
+    @apply bg-navy-800/80 border-2 border-gold-400 rounded-xl p-6;
+    @apply backdrop-blur-sm;
+    @apply hover:border-gold-300 hover:shadow-xl hover:shadow-gold-500/10;
+    @apply transition-all duration-300;
+  }
+
+  /* Victory/Green Border Card */
+  .card-victory {
+    @apply bg-navy-800/80 border-2 border-win-400 rounded-xl p-6;
+    @apply backdrop-blur-sm;
+    @apply hover:border-win-300 hover:shadow-xl hover:shadow-win-500/10;
+    @apply transition-all duration-300;
+  }
+
+  /* Dark Card */
+  .card-dark {
+    @apply bg-navy-800/60 border border-navy-700 rounded-xl p-6;
+    @apply backdrop-blur-sm;
+    @apply hover:border-navy-600 hover:shadow-lg;
+    @apply transition-all duration-300;
+  }
+
+  /* Checkmark Box */
+  .card-checkmark-box {
+    @apply bg-win-500/10 border border-win-400 rounded-lg p-4;
+    @apply text-win-400 text-sm font-semibold;
+    @apply flex items-center gap-2;
+  }
+
+  /* Process Step Numbers */
+  .step-number {
+    @apply w-12 h-12 rounded-full bg-gold-400 text-navy-900;
+    @apply flex items-center justify-center;
+    @apply text-xl font-bold;
+    @apply shadow-lg shadow-gold-500/30;
+  }
+
+  .step-number-victory {
+    @apply w-12 h-12 rounded-full bg-win-400 text-navy-900;
+    @apply flex items-center justify-center;
+    @apply text-xl font-bold;
+    @apply shadow-lg shadow-win-500/30;
+  }
+
+  /* Stats Components */
+  .stats-grid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12;
+    @apply max-w-5xl mx-auto;
+  }
+
+  .stat-card {
+    @apply text-center;
+    @apply flex flex-col items-center gap-3;
+  }
+
+  .stat-icon {
+    @apply w-16 h-16 rounded-full;
+    @apply border-2 border-gold-400;
+    @apply flex items-center justify-center;
+    @apply text-gold-400 text-2xl;
+    @apply mb-4;
+  }
+
+  .stat-icon-victory {
+    @apply w-16 h-16 rounded-full;
+    @apply border-2 border-win-400;
+    @apply flex items-center justify-center;
+    @apply text-win-400 text-2xl;
+    @apply mb-4;
+  }
+
+  .stat-value {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-gold-400;
+    @apply leading-none;
+  }
+
+  .stat-label {
+    @apply text-sm md:text-base text-gray-300 uppercase tracking-wide;
+    @apply font-semibold;
+  }
+
+  .stat-box-large {
+    @apply border-2 border-gold-400 rounded-2xl p-8 md:p-12;
+    @apply bg-navy-800/50 backdrop-blur-sm;
+    @apply text-center;
+    @apply shadow-xl shadow-gold-500/10;
+  }
+
+  /* Display Metric */
+  .display-metric {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-gold-400;
+    @apply tracking-tight;
+  }
+
+  .metric-label {
+    @apply text-sm md:text-base text-gray-400 uppercase tracking-wide;
+    @apply font-semibold;
+  }
+
   /* Gradient Text */
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-400 to-gold-600;
+  }
+
+  .text-gradient-win {
+    @apply bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-win-300 via-win-400 to-win-500;
+    @apply font-bold;
+  }
+
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-gold-300 via-gold-400 to-gold-600;
+    @apply font-bold;
+  }
+
+  .text-gradient-victory-gold {
+    @apply bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-win-400 via-gold-400 to-gold-600;
+    @apply font-bold;
   }
 }
 

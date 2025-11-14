@@ -1,120 +1,133 @@
-import { Search, Zap, Sparkles } from "lucide-react";
+import { Brain, Users, Shield } from "lucide-react";
 
 const steps = [
   {
-    number: "01",
-    title: "Strategic Intelligence",
+    number: "1",
+    title: "AI Analysis",
     description:
-      "We diagnose the real problem. Senior experts analyze what's stated and discover what's unstated. Most competitors skip this - they rush to compliance and lose.",
-    icon: <Search className="w-8 h-8" />,
-    color: "teal",
+      "We decode every RFP requirement with GPT-4o-mini precision. Our AI maps compliance requirements, identifies evaluation criteria, and ensures zero missed points.",
+    icon: <Brain className="w-8 h-8" />,
+    variant: "gold" as const,
+    checkmark: "100% compliance coverage guaranteed",
   },
   {
-    number: "02",
-    title: "AI-Powered Execution",
+    number: "2",
+    title: "6-Expert Human Touch",
     description:
-      "AI handles 80-90% of work at 10x speed. Research, drafting, compliance checking, formatting. Human strategy drives what AI builds.",
-    icon: <Zap className="w-8 h-8" />,
-    color: "govcon",
+      "Six strategists craft narratives evaluators can't ignore. We transform AI drafts into compelling stories that showcase your unique value and eliminate generic responses.",
+    icon: <Users className="w-8 h-8" />,
+    variant: "victory" as const,
+    checkmark: "Real expertise AI alone can never replicate",
   },
   {
-    number: "03",
-    title: "Expert Refinement",
+    number: "3",
+    title: "Quality Control",
     description:
-      "Humans ensure strategic excellence. Quality control, differentiation, authentic voice. Your deliverable reads like an expert wrote it - because one did.",
-    icon: <Sparkles className="w-8 h-8" />,
-    color: "success",
+      "Our Pink-Red-Gold quality system ensures perfection. Three independent reviews catch errors, eliminate AI hallucinations, and polish every proposal to winning standards.",
+    icon: <Shield className="w-8 h-8" />,
+    variant: "gold" as const,
+    checkmark: "Every proposal reviewed 3x before delivery",
   },
 ];
 
-const colorClasses = {
-  teal: {
-    bg: "bg-teal-100",
-    text: "text-teal-600",
-    border: "border-teal-200",
-    iconBg: "bg-teal-600",
-  },
-  govcon: {
-    bg: "bg-govcon/10",
-    text: "text-govcon",
-    border: "border-govcon/20",
-    iconBg: "bg-govcon",
-  },
-  success: {
-    bg: "bg-success-100",
-    text: "text-success-600",
-    border: "border-success-200",
-    iconBg: "bg-success-600",
-  },
-};
-
 export function HowItWorks() {
   return (
-    <section className="py-16 lg:py-24 bg-white">
+    <section className="py-16 lg:py-24 bg-navy-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl lg:text-display-md font-bold text-navy-900 mb-4">
-            How Aliff Works
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/20 border border-gold-400 text-gold-400 text-sm font-bold tracking-wide uppercase shadow-md mb-6">
+            🏆 THE WINNING FORMULA
+          </div>
+          <h2 className="text-3xl lg:text-display-md font-bold text-white mb-4">
+            How We Help You <span className="text-gradient-win">WIN</span>
           </h2>
-          <p className="text-lg text-gray-700">
-            Strategic thinking comes first. AI execution scales it. Human refinement perfects it.
+          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+            Our 3-step system combines AI precision with 6 expert strategists to deliver proposals that dominate the competition
           </p>
         </div>
 
         {/* Process Steps */}
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-            {steps.map((step, index) => {
-              const colors = colorClasses[step.color as keyof typeof colorClasses];
-
-              return (
-                <div key={index} className="relative">
-                  {/* Connector Line (hidden on mobile, shown on md+) */}
-                  {index < steps.length - 1 && (
-                    <div className="hidden md:block absolute top-16 left-full w-full h-0.5 bg-gradient-to-r from-gray-300 to-transparent -ml-6" />
-                  )}
-
-                  {/* Step Card */}
-                  <div className="relative">
-                    {/* Step Number */}
-                    <div className="flex items-center gap-4 mb-4">
-                      <span
-                        className={`text-5xl font-bold ${colors.text} opacity-20`}
-                      >
-                        {step.number}
-                      </span>
-                    </div>
-
-                    {/* Icon */}
-                    <div
-                      className={`inline-flex items-center justify-center w-16 h-16 rounded-xl ${colors.iconBg} text-white mb-4 shadow-lg`}
-                    >
-                      {step.icon}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-2xl font-bold text-navy-900 mb-3">
-                      {step.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-gray-700 leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
+        <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {steps.map((step, index) => (
+            <div
+              key={index}
+              className={
+                step.variant === "victory"
+                  ? "card-victory"
+                  : "card-gold"
+              }
+            >
+              {/* Step Number Badge */}
+              <div className="flex justify-center mb-4">
+                <div
+                  className={
+                    step.variant === "victory"
+                      ? "step-number-victory"
+                      : "step-number"
+                  }
+                >
+                  {step.number}
                 </div>
-              );
-            })}
-          </div>
+              </div>
 
-          {/* Bottom Callout */}
-          <div className="mt-16 text-center">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 rounded-full border border-gray-200">
-              <span className="text-sm font-semibold text-gray-700">
-                Result: Strategic differentiation that wins, delivered at AI speed
-              </span>
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <div
+                  className={
+                    step.variant === "victory"
+                      ? "stat-icon-victory"
+                      : "stat-icon"
+                  }
+                >
+                  {step.icon}
+                </div>
+              </div>
+
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-white mb-3 text-center">
+                {step.title}
+              </h3>
+
+              {/* Description */}
+              <p className="text-gray-300 leading-relaxed mb-6 text-center">
+                {step.description}
+              </p>
+
+              {/* Checkmark Box */}
+              <div className="card-checkmark-box mt-auto">
+                <span className="text-lg">✓</span>
+                <span>{step.checkmark}</span>
+              </div>
             </div>
+          ))}
+        </div>
+
+        {/* Bottom Stats */}
+        <div className="mt-16 flex flex-wrap justify-center gap-8 lg:gap-12 max-w-4xl mx-auto">
+          <div className="text-center">
+            <div className="text-gold-400 text-sm uppercase tracking-wide font-semibold mb-2">
+              200+ Proposals Won
+            </div>
+            <div className="h-1 w-16 bg-gold-400 mx-auto rounded-full"></div>
+          </div>
+          <div className="text-center">
+            <div className="text-gold-400 text-sm uppercase tracking-wide font-semibold mb-2">
+              22% Win Rate (47% Above Industry)
+            </div>
+            <div className="h-1 w-16 bg-gold-400 mx-auto rounded-full"></div>
+          </div>
+          <div className="text-center">
+            <div className="text-win-400 text-sm uppercase tracking-wide font-semibold mb-2">
+              24/7 RFP Intelligence
+            </div>
+            <div className="h-1 w-16 bg-win-400 mx-auto rounded-full"></div>
+          </div>
+          <div className="text-center">
+            <div className="text-win-400 text-sm uppercase tracking-wide font-semibold mb-2">
+              5-7 Day Delivery
+            </div>
+            <div className="h-1 w-16 bg-win-400 mx-auto rounded-full"></div>
           </div>
         </div>
       </div>

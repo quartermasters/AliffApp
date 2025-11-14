@@ -10,10 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Aliff Services Brand Colors - Phase 1
-        // Primary - Professional Authority
+        // Aliff Services Brand Colors - Updated from Aliff Capital
+        // Primary - Professional Authority (Darker for premium feel)
         navy: {
-          DEFAULT: "#0A1628",
+          DEFAULT: "#080d1a",
           50: "#F8F9FA",
           100: "#E9ECEF",
           200: "#DEE2E6",
@@ -21,23 +21,24 @@ const config: Config = {
           400: "#6C757D",
           500: "#495057",
           600: "#343A40",
-          700: "#2a3f5f",
-          800: "#1a2744",
-          900: "#0A1628",
+          700: "#1a2744",
+          800: "#0f1829",
+          900: "#080d1a",
+          950: "#040609",
         },
-        // Brand Gold - Premium & Excellence
+        // Brand Gold - Premium & Excellence (Brighter for impact)
         gold: {
-          DEFAULT: "#C89D5C",
-          50: "#FDF8F0",
-          100: "#F9EDDC",
-          200: "#F3DCB9",
-          300: "#EDCB96",
-          400: "#D8B070",
-          500: "#C89D5C",
-          600: "#B8894A",
-          700: "#9A7240",
-          800: "#7C5C36",
-          900: "#5E462A",
+          DEFAULT: "#E5C17F",
+          50: "#FDF9F0",
+          100: "#FBF3E0",
+          200: "#F8E8C2",
+          300: "#F3C96B",
+          400: "#E5C17F",
+          500: "#D4AF37",
+          600: "#C89D5C",
+          700: "#B8894A",
+          800: "#9A7240",
+          900: "#7C5C36",
         },
         // Accent - Innovation Signal
         teal: {
@@ -79,6 +80,14 @@ const config: Config = {
           700: "#047857",
           800: "#065F46",
           900: "#064E3B",
+        },
+        // Win alias (for semantic clarity in WIN messaging)
+        win: {
+          DEFAULT: "#10B981",
+          300: "#6EE7B7",
+          400: "#22C55E",
+          500: "#10B981",
+          600: "#059669",
         },
         // Service Category Accents
         govcon: {
