@@ -1,4 +1,4 @@
-import { Brain, Users, Shield } from "lucide-react";
+import { Brain, Users, Shield, Check } from "lucide-react";
 
 const steps = [
   {
@@ -37,7 +37,10 @@ export function HowItWorks() {
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold-500/20 border border-gold-400 text-gold-400 text-sm font-bold tracking-wide uppercase shadow-md mb-6">
-            🏆 THE WINNING FORMULA
+            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            THE WINNING FORMULA
           </div>
           <h2 className="text-3xl lg:text-display-md font-bold text-white mb-4">
             How We Help You <span className="text-gradient-win">WIN</span>
@@ -96,7 +99,7 @@ export function HowItWorks() {
 
               {/* Checkmark Box */}
               <div className="card-checkmark-box mt-auto">
-                <span className="text-lg">✓</span>
+                <Check className="w-5 h-5" strokeWidth={3} />
                 <span>{step.checkmark}</span>
               </div>
             </div>

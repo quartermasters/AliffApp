@@ -43,13 +43,13 @@ export function generateExecutiveReport(result: TriageResult): string {
 
 ## Key Insights
 
-### ✅ Strengths
+### Strengths
 ${summary.keyStrengths.length > 0 ? summary.keyStrengths.map((s) => `- ${s}`).join('\n') : '_No significant strengths identified_'}
 
-### ⚠️ Challenges
+### Challenges
 ${summary.keyChallenges.length > 0 ? summary.keyChallenges.map((c) => `- ${c}`).join('\n') : '_No major challenges identified_'}
 
-### 🚨 Critical Gaps
+### Critical Gaps
 ${summary.criticalGaps.length > 0 ? summary.criticalGaps.map((g) => `- ${g}`).join('\n') : '_No critical gaps_'}
 
 ---
@@ -257,14 +257,14 @@ ${result.warnings.length > 0 ? `
 ---
 
 ## Warnings
-${result.warnings.map((w) => `- ⚠️ ${w}`).join('\n')}
+${result.warnings.map((w) => `- WARNING: ${w}`).join('\n')}
 ` : ''}
 
 ${result.errors.length > 0 ? `
 ---
 
 ## Errors
-${result.errors.map((e) => `- ❌ ${e}`).join('\n')}
+${result.errors.map((e) => `- ERROR: ${e}`).join('\n')}
 ` : ''}
 
 ---

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { FileText, Handshake, Code, PenTool, Bot } from "lucide-react";
 
 /**
  * Aliff AI Chatbot - Full OpenAI GPT-4 Integration
@@ -23,22 +24,22 @@ interface Message {
 const QUICK_ACTIONS = [
   {
     label: "Federal Contract Proposal",
-    icon: "📋",
+    Icon: FileText,
     message: "I need help with a federal government contract proposal",
   },
   {
     label: "Agency Partnership",
-    icon: "🤝",
+    Icon: Handshake,
     message: "I'm an agency looking to partner for white-label delivery",
   },
   {
     label: "IT/Software Development",
-    icon: "💻",
+    Icon: Code,
     message: "I need help with software development or enterprise architecture",
   },
   {
     label: "Content/Writing Services",
-    icon: "✍️",
+    Icon: PenTool,
     message: "I need professional writing or content services",
   },
 ];
@@ -51,7 +52,7 @@ export function ChatWidget() {
       id: "welcome",
       role: "assistant",
       content:
-        "👋 Hi! I'm Aliff, your AI assistant. I can help you find the right service, answer questions, and get you started. What brings you here today?",
+        "Hi! I'm Aliff, your AI assistant. I can help you find the right service, answer questions, and get you started. What brings you here today?",
     },
   ]);
   const [input, setInput] = useState("");
@@ -213,7 +214,7 @@ export function ChatWidget() {
           <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white p-4 rounded-t-lg flex items-center justify-between">
             <div>
               <h3 className="font-bold text-lg flex items-center gap-2">
-                <span className="text-2xl">🤖</span>
+                <Bot className="w-6 h-6" />
                 Chat with Aliff
               </h3>
               <p className="text-sm text-teal-100">AI-powered assistant</p>
@@ -290,20 +291,24 @@ export function ChatWidget() {
                 <p className="text-xs text-gray-500 text-center">
                   Quick actions:
                 </p>
-                {QUICK_ACTIONS.map((action) => (
-                  <button
-                    key={action.label}
-                    onClick={() => handleQuickAction(action.message)}
-                    disabled={isLoading}
-                    className="w-full p-3 bg-white hover:bg-teal-50 rounded-lg border border-gray-200 hover:border-teal-300 transition-all text-left group disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{action.icon}</span>
-                      <div className="flex-grow">
-                        <div className="font-semibold text-sm text-gray-900 group-hover:text-teal-700">
-                          {action.label}
+                {QUICK_ACTIONS.map((action) => {
+                  const ActionIcon = action.Icon;
+                  return (
+                    <button
+                      key={action.label}
+                      onClick={() => handleQuickAction(action.message)}
+                      disabled={isLoading}
+                      className="w-full p-3 bg-white hover:bg-teal-50 rounded-lg border border-gray-200 hover:border-teal-300 transition-all text-left group disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                          <ActionIcon className="w-5 h-5" />
                         </div>
-                      </div>
+                        <div className="flex-grow">
+                          <div className="font-semibold text-sm text-gray-900 group-hover:text-teal-700">
+                            {action.label}
+                          </div>
+                        </div>
                       <svg
                         className="w-4 h-4 text-gray-400 group-hover:text-teal-600"
                         fill="none"
@@ -318,8 +323,9 @@ export function ChatWidget() {
                         />
                       </svg>
                     </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             )}
 
