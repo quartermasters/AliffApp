@@ -15,6 +15,7 @@ import { TRPCError } from '@trpc/server';
 import { createPhase1TriageExecutor } from '@/lib/services/sdl/phase1-triage';
 import { createPhase2StrategicIntelExecutor } from '@/lib/services/sdl/phase2-strategic-intel';
 import { createPhase3WinStrategyExecutor } from '@/lib/services/sdl/phase3-win-strategy';
+import { getQualityTracker } from '@/lib/services/quality-tracker';
 
 /**
  * SDL Task definitions (34 tasks across 3 phases)
@@ -488,5 +489,66 @@ export const sdlRouter = createTRPCRouter({
         avgConfidence: Math.round(avgConfidence),
         consensusRate: total > 0 ? Math.round((fullConsensus / total) * 100) : 0,
       };
+    }),
+
+  /**
+   * Get quality dashboard
+   * Access: Admin and above
+   */
+  getQualityDashboard: adminProcedure
+    .input(z.object({ projectId: z.string().optional() }))
+    .query(async ({ input }) => {
+      const qualityTracker = getQualityTracker();
+      return await qualityTracker.getQualityDashboard(input.projectId);
+    }),
+
+  /**
+   * Get provider performance metrics
+   * Access: Admin and above
+   */
+  getProviderMetrics: adminProcedure
+    .input(z.object({ projectId: z.string().optional() }))
+    .query(async ({ input }) => {
+      const qualityTracker = getQualityTracker();
+      return await qualityTracker.getProviderMetrics(input.projectId);
+    }),
+
+  /**
+   * Get task type performance
+   * Access: Admin and above
+   */
+  getTaskTypePerformance: adminProcedure
+    .input(z.object({ projectId: z.string().optional() }))
+    .query(async ({ input }) => {
+      const qualityTracker = getQualityTracker();
+      return await qualityTracker.getTaskTypePerformance(input.projectId);
+    }),
+
+  /**
+   * Get quality trends
+   * Access: Admin and above
+   */
+  getQualityTrends: adminProcedure
+    .input(
+      z.object({
+        provider: z.enum(['OPENAI', 'CLAUDE', 'GEMINI', 'GROK']),
+        days: z.number().optional().default(30),
+        projectId: z.string().optional(),
+      })
+    )
+    .query(async ({ input }) => {
+      const qualityTracker = getQualityTracker();
+      return await qualityTracker.getQualityTrends(input.provider as any, input.days, input.projectId);
+    }),
+
+  /**
+   * Get routing recommendations
+   * Access: Admin and above
+   */
+  getRoutingRecommendations: adminProcedure
+    .input(z.object({ projectId: z.string().optional() }))
+    .query(async ({ input }) => {
+      const qualityTracker = getQualityTracker();
+      return await qualityTracker.getRoutingRecommendations(input.projectId);
     }),
 });
