@@ -12,7 +12,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc/client';
 
 export default function RecruiterDashboard() {
@@ -85,10 +85,10 @@ export default function RecruiterDashboard() {
             {jobPackage && !pipelineStatus?.triggered && (
               <button
                 onClick={() => triggerPipeline.mutate({ projectId })}
-                disabled={triggerPipeline.isLoading}
+                disabled={triggerPipeline.isPending}
                 className="px-6 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-50 disabled:bg-gray-300 disabled:text-gray-500 transition-colors font-medium"
               >
-                {triggerPipeline.isLoading ? 'Launching...' : '🚀 Launch Hiring Pipeline'}
+                {triggerPipeline.isPending ? 'Launching...' : '🚀 Launch Hiring Pipeline'}
               </button>
             )}
           </div>
@@ -212,7 +212,7 @@ export default function RecruiterDashboard() {
                   </p>
                 </div>
                 <div className="divide-y divide-gray-200">
-                  {jobPackage.jobs.map((job, index) => (
+                  {jobPackage.jobs.map((job: any, index: number) => (
                     <button
                       key={index}
                       onClick={() => setSelectedJobIndex(index)}
@@ -317,7 +317,7 @@ export default function RecruiterDashboard() {
                         Required Skills (from SDL)
                       </h3>
                       <div className="flex flex-wrap gap-2">
-                        {selectedJob.requiredSkills.map((skill, i) => (
+                        {selectedJob.requiredSkills.map((skill: string, i: number) => (
                           <span
                             key={i}
                             className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium"
@@ -333,7 +333,7 @@ export default function RecruiterDashboard() {
                       <div>
                         <h3 className="text-sm font-bold text-gray-900 mb-2">Preferred Skills</h3>
                         <div className="flex flex-wrap gap-2">
-                          {selectedJob.preferredSkills.map((skill, i) => (
+                          {selectedJob.preferredSkills.map((skill: string, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
@@ -364,7 +364,7 @@ export default function RecruiterDashboard() {
                           Industry Experience
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {selectedJob.industryExperience.map((industry, i) => (
+                          {selectedJob.industryExperience.map((industry: string, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium"
@@ -381,7 +381,7 @@ export default function RecruiterDashboard() {
                       <div>
                         <h3 className="text-sm font-bold text-gray-900 mb-2">Certifications</h3>
                         <div className="flex flex-wrap gap-2">
-                          {selectedJob.certifications.map((cert, i) => (
+                          {selectedJob.certifications.map((cert: string, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium"
@@ -415,7 +415,7 @@ export default function RecruiterDashboard() {
               Complete SDL Phase 3 Win Strategy to automatically generate job descriptions
             </p>
             <div className="text-sm text-gray-500">
-              Jobs will be automatically generated when SDL analysis completes with "BID" decision
+              Jobs will be automatically generated when SDL analysis completes with &quot;BID&quot; decision
             </div>
           </div>
         )}

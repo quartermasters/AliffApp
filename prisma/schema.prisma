@@ -152,9 +152,10 @@ model JobPosting {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  creator            User                @relation(fields: [createdBy], references: [id])
+  creator            User                   @relation(fields: [createdBy], references: [id])
   applications       Application[]
   projectAssignments ProjectAssignment[] // Link to Business Dashboard
+  externalPostings   ExternalJobPosting[] // Multi-platform tracking
 
   @@map("job_postings")
 }
@@ -205,6 +206,7 @@ model Application {
   user       User?       @relation(fields: [userId], references: [id])
   interviews Interview[]
   tests      Test[]
+  candidate  Candidate? // If applicant becomes provider
 
   @@map("applications")
 }
@@ -311,6 +313,238 @@ model Test {
   application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
   @@map("tests")
+}
+
+// ============================================================================
+// PROVIDER TALENT POOL (CV BANK)
+// ============================================================================
+
+enum CandidateStatus {
+  AVAILABLE
+  BUSY
+  INACTIVE
+  BLACKLISTED
+}
+
+enum ClearanceLevel {
+  NONE
+  PUBLIC_TRUST
+  SECRET
+  TOP_SECRET
+  TS_SCI
+}
+
+model Candidate {
+  id            String @id @default(cuid())
+  applicationId String @unique @map("application_id")
+
+  // Core Info
+  name     String
+  email    String  @unique
+  phone    String?
+  location String? // City, Country
+  timezone String?
+
+  // Professional Links
+  linkedIn  String? @map("linkedin_url")
+  github    String? @map("github_url")
+  portfolio String? @map("portfolio_url")
+
+  // Skills & Experience (extracted from resume + validated via tests)
+  skills           String[] // ["GOVCON Proposal Writing", "Technical Writing", "FAR/DFARS"]
+  yearsExperience  Int      @default(0) @map("years_experience")
+  domains          String[] // ["Healthcare", "Cybersecurity", "Federal IT"]
+  certifications   String[] // ["PMP", "APMP", "CISSP"]
+  clearance        ClearanceLevel @default(NONE)
+  industryExp      String[]       @map("industry_experience") // Industries worked in
+
+  // Performance Metrics (from completed projects)
+  overallScore     Float   @default(0) @map("overall_score") // 0-100 average
+  projectsCompleted Int    @default(0) @map("projects_completed")
+  onTimeRate       Float   @default(0) @map("on_time_rate") // 0-100%
+  satisfactionAvg  Float   @default(0) @map("satisfaction_avg") // 0-5 stars
+  revisionRate     Float   @default(0) @map("revision_rate") // 0-100% (lower is better)
+
+  // Availability & Rates
+  status           CandidateStatus @default(AVAILABLE)
+  hoursPerWeek     Int?            @map("hours_per_week") // Availability
+  hourlyRatePKR    Float?          @map("hourly_rate_pkr") // Pakistani Rupees (CONFIDENTIAL)
+  preferredProjects String[]       @map("preferred_projects") // ["GOVCON", "SLED", "Technical Writing"]
+
+  // Pinecone Integration
+  vectorEmbeddingId String? @unique @map("vector_embedding_id") // Reference to Pinecone vector
+
+  // Engagement Tracking
+  lastContacted    DateTime? @map("last_contacted")
+  responseTime     Int?      @map("response_time") // avg minutes to respond
+  emailEngagement  Float?    @map("email_engagement") // open rate %
+  smsEngagement    Float?    @map("sms_engagement") // response rate %
+
+  // Parsed Resume Data (JSON storage for 50+ fields)
+  parsedResumeData Json? @map("parsed_resume_data")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  activatedAt DateTime? @map("activated_at") // When hired as provider
+
+  // Relations
+  application         Application          @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  projectAssignments  ProjectAssignment[]  @relation("CandidateAssignments")
+  performanceReviews  ProviderPerformance[]
+  timeEntries         TimeEntry[]
+
+  @@index([email])
+  @@index([status])
+  @@index([vectorEmbeddingId])
+  @@map("candidates")
+}
+
+// ============================================================================
+// PERFORMANCE TRACKING & TIME MONITORING
+// ============================================================================
+
+enum TimeEntryStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  DISPUTED
+}
+
+model TimeEntry {
+  id         String @id @default(cuid())
+  candidateId String @map("candidate_id")
+  projectId   String @map("project_id")
+  date        DateTime
+
+  // Time Tracking
+  hoursWorked    Float  @map("hours_worked")
+  hoursClaimed   Float  @map("hours_claimed") // May differ if idle time detected
+  hoursApproved  Float? @map("hours_approved") // After AI/human review
+  hoursRejected  Float? @map("hours_rejected")
+  idleMinutes    Int    @default(0) @map("idle_minutes")
+
+  // Activity Monitoring (from Time Doctor/Hubstaff)
+  activityPercent Float @default(0) @map("activity_percent") // 0-100
+  screenshots     Json? // Array of screenshot URLs
+  appsUsed        Json? @map("apps_used") // App/website tracking data
+
+  // Fraud Detection
+  redFlags Json? @map("red_flags") // Array of detected issues
+
+  // Review
+  status     TimeEntryStatus @default(PENDING)
+  reviewedBy String?         @map("reviewed_by") // "AI" or human reviewer ID
+  reviewedAt DateTime?       @map("reviewed_at")
+  reviewNotes String?        @map("review_notes") @db.Text
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+  @@index([projectId])
+  @@index([date])
+  @@index([status])
+  @@map("time_entries")
+}
+
+model ProviderPerformance {
+  id                 String @id @default(cuid())
+  candidateId        String @unique @map("candidate_id")
+  currentHourlyRatePKR Float  @map("current_hourly_rate_pkr") // Pakistani Rupees
+
+  // Rolling 30-day metrics
+  avgActivity        Float @default(0) @map("avg_activity") // 0-100
+  totalHoursApproved Float @default(0) @map("total_hours_approved")
+  totalHoursRejected Float @default(0) @map("total_hours_rejected")
+  approvalRate       Float @default(100) @map("approval_rate") // %
+  avgClientRating    Float @default(0) @map("avg_client_rating") // 1-5 stars
+  revisionRate       Float @default(0) @map("revision_rate") // % of deliverables needing revisions
+
+  // Fraud Tracking
+  fraudFlags     Int       @default(0) @map("fraud_flags")
+  lastFraudDate  DateTime? @map("last_fraud_date")
+  fraudIncidents Json?     @map("fraud_incidents") // Log of incidents
+
+  // Rate History
+  rateHistory    Json     @map("rate_history") // Array of {date, rate, reason}
+  nextReviewDate DateTime @map("next_review_date")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  candidate Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@map("provider_performance")
+}
+
+// ============================================================================
+// MULTI-PLATFORM JOB POSTING TRACKING
+// ============================================================================
+
+enum PostingStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  EXPIRED
+  CLOSED
+}
+
+enum PostingPlatform {
+  INTERNAL_CAREERS_PAGE
+  FACEBOOK
+  LINKEDIN
+  INDEED
+  GLASSDOOR
+  ZIPRECRUITER
+  DICE
+  STACKOVERFLOW
+  GITHUB
+  APMP
+  GOVCONWIRE
+  CLEARANCEJOBS
+  OTHER
+}
+
+model ExternalJobPosting {
+  id          String @id @default(cuid())
+  jobId       String @map("job_id")
+  platform    PostingPlatform
+  externalUrl String? @map("external_url")
+
+  // Status
+  status      PostingStatus @default(DRAFT)
+  postedAt    DateTime?     @map("posted_at")
+  expiresAt   DateTime?     @map("expires_at")
+
+  // Analytics
+  views        Int   @default(0)
+  clicks       Int   @default(0)
+  applications Int   @default(0)
+  cost         Float @default(0) // Ad spend (if paid posting)
+
+  // Campaign tracking
+  campaignId   String? @map("campaign_id") // For Facebook/LinkedIn campaigns
+  adCreativeId String? @map("ad_creative_id")
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  job JobPosting @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+  @@index([platform])
+  @@index([status])
+  @@map("external_job_postings")
 }
 
 // ============================================================================
@@ -555,6 +789,12 @@ model Project {
   qualityScore       Int?         @map("quality_score") // 0-100
   anonymizeForTeam   Boolean      @default(true) @map("anonymize_for_team")
 
+  // ALIFF-RECRUITER Integration
+  recruiterJobPackage      Json?     @map("recruiter_job_package") // SDL-generated job descriptions
+  recruiterPipelineStatus  Json?     @map("recruiter_pipeline_status") // Pipeline status
+  recruiterStatus          String?   @map("recruiter_status") // HIRING_IN_PROGRESS, etc.
+  recruiterActivatedAt     DateTime? @map("recruiter_activated_at")
+
   // Metadata
   createdBy   String        @map("created_by")
   status      ProjectStatus @default(ACTIVE)
@@ -571,6 +811,7 @@ model Project {
   deliverables  Deliverable[]
   updates       ProjectUpdate[]
   consensusLogs ConsensusLog[]
+  timeEntries   TimeEntry[]
 
   @@index([projectCode])
   @@index([sdlStatus])
@@ -745,6 +986,7 @@ model ProjectAssignment {
   id                    String         @id @default(cuid())
   projectId             String         @map("project_id")
   teamMemberId          String         @map("team_member_id") // Can be User or external provider
+  candidateId           String?        @map("candidate_id") // If assigned from CV Bank
   assignmentType        AssignmentType @map("assignment_type")
   assignmentDescription String?        @map("assignment_description") @db.Text
 
@@ -767,11 +1009,13 @@ model ProjectAssignment {
   project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   teamMember   User          @relation("TeamMemberAssignments", fields: [teamMemberId], references: [id])
   assigner     User          @relation("AssignerAssignments", fields: [assignedBy], references: [id])
+  candidate    Candidate?    @relation("CandidateAssignments", fields: [candidateId], references: [id])
   jobPosting   JobPosting?   @relation(fields: [jobPostingId], references: [id])
   deliverables Deliverable[]
 
   @@index([projectId])
   @@index([teamMemberId])
+  @@index([candidateId])
   @@index([status])
   @@map("project_assignments")
 }
