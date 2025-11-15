@@ -82,21 +82,21 @@ export default async function JobDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <main className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <section className="bg-navy-900 text-white py-8 border-b border-navy-800">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/careers"
-            className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2 mb-4"
+            className="text-gold-400 hover:text-gold-300 font-medium flex items-center gap-2 mb-6"
           >
             ← Back to all jobs
           </Link>
 
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{job.title}</h1>
-              {job.department && <p className="text-lg text-gray-600">{job.department}</p>}
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">{job.title}</h1>
+              {job.department && <p className="text-lg text-gray-300">{job.department}</p>}
             </div>
             <span
               className={`px-4 py-2 rounded-full text-sm font-medium border ${getTypeColor(
@@ -108,7 +108,7 @@ export default async function JobDetailPage({ params }: PageProps) {
           </div>
 
           {/* Job Meta */}
-          <div className="mt-6 flex flex-wrap items-center gap-6 text-gray-600">
+          <div className="mt-6 flex flex-wrap items-center gap-6 text-gray-300">
             <div className="flex items-center gap-2">
               <span className="text-xl">{getLocationIcon(job.location)}</span>
               <span className="font-medium">{job.location.replace('_', ' ')}</span>
@@ -133,16 +133,17 @@ export default async function JobDetailPage({ params }: PageProps) {
           <div className="mt-6">
             <Link
               href={`/careers/${job.slug}/apply`}
-              className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
+              className="inline-block bg-teal-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
             >
               Apply Now →
             </Link>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Job Details */}
           <div className="lg:col-span-2">
@@ -185,7 +186,7 @@ export default async function JobDetailPage({ params }: PageProps) {
               <div className="pt-8 border-t border-gray-200">
                 <Link
                   href={`/careers/${job.slug}/apply`}
-                  className="block w-full bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center shadow-lg hover:shadow-xl"
+                  className="block w-full bg-teal-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-center shadow-lg hover:shadow-xl"
                 >
                   Apply for this Position →
                 </Link>
@@ -198,14 +199,14 @@ export default async function JobDetailPage({ params }: PageProps) {
             <div className="sticky top-6 space-y-6">
               {/* Quick Apply Card */}
               <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Quick Apply</h3>
+                <h3 className="text-lg font-bold text-navy-900 mb-4">Quick Apply</h3>
                 <p className="text-sm text-gray-600 mb-4">
                   Our AI-powered application process makes it easy. Just upload your resume and
                   we'll help you complete the rest.
                 </p>
                 <Link
                   href={`/careers/${job.slug}/apply`}
-                  className="block w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-center"
+                  className="block w-full bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors text-center"
                 >
                   Start Application
                 </Link>
@@ -247,14 +248,14 @@ export default async function JobDetailPage({ params }: PageProps) {
               </div>
 
               {/* Help Card */}
-              <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Need Help?</h3>
+              <div className="bg-navy-50 rounded-lg p-6 border border-navy-200">
+                <h3 className="text-lg font-bold text-navy-900 mb-2">Need Help?</h3>
                 <p className="text-sm text-gray-700 mb-4">
                   Have questions about this role or the application process?
                 </p>
                 <a
                   href="mailto:hr@aliffcapital.com"
-                  className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                  className="text-teal-600 hover:text-teal-700 font-medium text-sm"
                 >
                   hr@aliffcapital.com
                 </a>
@@ -262,9 +263,9 @@ export default async function JobDetailPage({ params }: PageProps) {
 
               {/* Share Card */}
               <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Share this Job</h3>
+                <h3 className="text-lg font-bold text-navy-900 mb-4">Share this Job</h3>
                 <div className="flex gap-3">
-                  <button className="flex-1 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg hover:bg-blue-200 transition-colors text-sm font-medium">
+                  <button className="flex-1 bg-teal-100 text-teal-700 px-4 py-2 rounded-lg hover:bg-teal-200 transition-colors text-sm font-medium">
                     LinkedIn
                   </button>
                   <button className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium">
@@ -276,15 +277,16 @@ export default async function JobDetailPage({ params }: PageProps) {
           </div>
         </div>
       </div>
+      </section>
 
       {/* AI Chat Widget Placeholder */}
       {/* TODO: Implement AI chat widget in Sprint 4 */}
       <div className="fixed bottom-6 right-6 z-50">
-        <button className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all hover:scale-105 flex items-center gap-2">
+        <button className="bg-teal-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-teal-700 transition-all hover:scale-105 flex items-center gap-2">
           <span className="text-xl">💬</span>
           <span className="font-medium">Need Help?</span>
         </button>
       </div>
-    </div>
+    </main>
   );
 }

@@ -117,6 +117,13 @@ export function Header() {
             </Link>
 
             <Link
+              href="/careers"
+              className="text-gray-300 hover:text-gold-400 font-medium transition-colors"
+            >
+              Careers
+            </Link>
+
+            <Link
               href="/contact"
               className="text-gray-300 hover:text-gold-400 font-medium transition-colors"
             >
@@ -186,6 +193,14 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
+              </Link>
+
+              <Link
+                href="/careers"
+                className="text-gray-300 hover:text-gold-400 font-medium py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Careers
               </Link>
 
               <Link
