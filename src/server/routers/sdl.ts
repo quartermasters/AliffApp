@@ -13,6 +13,7 @@ import {
 } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { createPhase1TriageExecutor } from '@/lib/services/sdl/phase1-triage';
+import { createPhase2StrategicIntelExecutor } from '@/lib/services/sdl/phase2-strategic-intel';
 
 /**
  * SDL Task definitions (34 tasks across 3 phases)
@@ -151,6 +152,37 @@ export const sdlRouter = createTRPCRouter({
     .input(z.object({ projectId: z.string() }))
     .query(async ({ input }) => {
       const executor = createPhase1TriageExecutor(input.projectId);
+      return await executor.getSummary();
+    }),
+
+  /**
+   * Execute Phase 2 Strategic Intelligence (Tasks 12-25)
+   * Access: Admin and above
+   */
+  executePhase2: adminProcedure
+    .input(z.object({ projectId: z.string() }))
+    .mutation(async ({ input }) => {
+      const executor = createPhase2StrategicIntelExecutor(input.projectId);
+
+      // Execute Phase 2 in background (don't await)
+      executor.executeAll().catch((error) => {
+        console.error('[SDL Router] Phase 2 execution error:', error);
+      });
+
+      return {
+        success: true,
+        message: 'Phase 2 Strategic Intelligence execution started. Tasks will complete asynchronously.',
+      };
+    }),
+
+  /**
+   * Get Phase 2 summary
+   * Access: Protected
+   */
+  getPhase2Summary: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ input }) => {
+      const executor = createPhase2StrategicIntelExecutor(input.projectId);
       return await executor.getSummary();
     }),
 
