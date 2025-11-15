@@ -12,7 +12,7 @@ import {
   adminProcedure,
 } from '../trpc';
 import { TRPCError } from '@trpc/server';
-import { runTriage } from '@/lib/aliff/sdl/triage/orchestrator';
+import { createPhase1TriageExecutor } from '@/lib/services/sdl/phase1-triage';
 
 /**
  * SDL Task definitions (34 tasks across 3 phases)
@@ -121,6 +121,37 @@ export const sdlRouter = createTRPCRouter({
         tasksCreated: 34,
         message: 'SDL processing initiated. Phase 1 Triage starting...',
       };
+    }),
+
+  /**
+   * Execute Phase 1 Triage (Tasks 1-11)
+   * Access: Admin and above
+   */
+  executePhase1: adminProcedure
+    .input(z.object({ projectId: z.string() }))
+    .mutation(async ({ input }) => {
+      const executor = createPhase1TriageExecutor(input.projectId);
+
+      // Execute Phase 1 in background (don't await)
+      executor.executeAll().catch((error) => {
+        console.error('[SDL Router] Phase 1 execution error:', error);
+      });
+
+      return {
+        success: true,
+        message: 'Phase 1 Triage execution started. Tasks will complete asynchronously.',
+      };
+    }),
+
+  /**
+   * Get Phase 1 summary
+   * Access: Protected
+   */
+  getPhase1Summary: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ input }) => {
+      const executor = createPhase1TriageExecutor(input.projectId);
+      return await executor.getSummary();
     }),
 
   /**
