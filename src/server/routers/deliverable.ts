@@ -25,13 +25,12 @@ export const deliverableRouter = createTRPCRouter({
         title: z.string().min(1),
         description: z.string().optional(),
         deliverableType: z.enum([
-          'PROPOSAL_SECTION',
-          'TECHNICAL_VOLUME',
-          'MANAGEMENT_VOLUME',
-          'PAST_PERFORMANCE',
-          'PRICING',
-          'EXECUTIVE_SUMMARY',
-          'COMPLIANCE_MATRIX',
+          'RESEARCH_REPORT',
+          'TECHNICAL_ANALYSIS',
+          'PROPOSAL_DRAFT',
+          'PRICING_PROPOSAL',
+          'STUDY_NOTES',
+          'ANNOTATED_RFP',
           'OTHER',
         ]),
         filePath: z.string(),
@@ -188,7 +187,7 @@ export const deliverableRouter = createTRPCRouter({
       if (isTeamMember && !isAdmin && !isCreator) {
         // Team members only see their own deliverables
         return deliverables.filter(
-          (d) => d.assignment.teamMemberId === ctx.session.user.id
+          (d) => d.assignment?.teamMemberId === ctx.session.user.id
         );
       }
 
@@ -287,7 +286,7 @@ export const deliverableRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        status: z.enum(['APPROVED', 'NEEDS_REVISION', 'REJECTED']),
+        status: z.enum(['APPROVED', 'REVISION_REQUESTED', 'REJECTED']),
         reviewerFeedback: z.string().optional(),
         qualityScore: z.number().min(0).max(100).optional(),
       })
@@ -317,7 +316,7 @@ export const deliverableRouter = createTRPCRouter({
       });
 
       // Update assignment progress if approved
-      if (input.status === 'APPROVED') {
+      if (input.status === 'APPROVED' && deliverable.assignmentId) {
         const assignment = await ctx.prisma.projectAssignment.findUnique({
           where: { id: deliverable.assignmentId },
           include: {
@@ -337,7 +336,6 @@ export const deliverableRouter = createTRPCRouter({
           await ctx.prisma.projectAssignment.update({
             where: { id: assignment.id },
             data: {
-              progressPercentage,
               status:
                 progressPercentage === 100 ? 'COMPLETED' : 'IN_PROGRESS',
             },

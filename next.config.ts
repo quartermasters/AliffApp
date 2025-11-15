@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
+  serverExternalPackages: ['pdf-parse', 'pdfjs-dist', '@napi-rs/canvas'],
+
   experimental: {
     optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
     turbopackUseSystemTlsCerts: true,

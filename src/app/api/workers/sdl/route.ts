@@ -12,6 +12,9 @@ import {
   getWorkerStatus,
 } from '@/lib/workers/sdl-worker';
 
+// Mark this route as dynamic to prevent build-time evaluation
+export const dynamic = 'force-dynamic';
+
 /**
  * POST /api/workers/sdl
  * Trigger SDL worker manually

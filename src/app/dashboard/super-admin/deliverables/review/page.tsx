@@ -263,7 +263,7 @@ function ReviewModal({
   onClose: () => void;
   onSuccess: () => void;
 }) {
-  const [decision, setDecision] = useState<'APPROVED' | 'NEEDS_REVISION' | 'REJECTED' | null>(null);
+  const [decision, setDecision] = useState<'APPROVED' | 'REVISION_REQUESTED' | 'REJECTED' | null>(null);
   const [feedback, setFeedback] = useState('');
   const [qualityScore, setQualityScore] = useState('');
 
@@ -390,9 +390,9 @@ function ReviewModal({
               </button>
 
               <button
-                onClick={() => setDecision('NEEDS_REVISION')}
+                onClick={() => setDecision('REVISION_REQUESTED')}
                 className={`p-4 rounded-lg border-2 transition-all ${
-                  decision === 'NEEDS_REVISION'
+                  decision === 'REVISION_REQUESTED'
                     ? 'border-orange-500 bg-orange-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}

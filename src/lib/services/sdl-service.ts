@@ -10,6 +10,14 @@ import { orchestrate } from '@/lib/aliff/orchestration/orchestrator';
 import type { TriageResult } from '@/lib/aliff/sdl/triage/types';
 
 /**
+ * Serialize object for JSON storage in Prisma
+ * Converts Dates to ISO strings and handles circular references
+ */
+function serializeForJson(obj: any): any {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+/**
  * Start SDL processing for a project
  */
 export async function startSDLProcessing(
@@ -119,7 +127,7 @@ async function storeTriageResults(
         where: { id: task.id },
         data: {
           status: 'COMPLETED',
-          primaryResult: taskResult.result,
+          primaryResult: serializeForJson(taskResult.result),
           confidenceScore: taskResult.confidence,
           completedAt: new Date(),
         },
@@ -245,12 +253,12 @@ async function executeMultiAITask(taskId: string, projectId: string) {
         sdlTaskId: taskId,
         projectId,
         taskName: task.taskName,
-        gpt5Output: task.primaryAI === 'OPENAI' ? primaryResult.primary : null,
-        claudeOutput: task.primaryAI === 'CLAUDE' ? primaryResult.primary : null,
-        geminiOutput: task.primaryAI === 'GEMINI' ? primaryResult.primary : null,
+        gpt5Output: task.primaryAI === 'OPENAI' ? serializeForJson(primaryResult.primary) : null,
+        claudeOutput: task.primaryAI === 'CLAUDE' ? serializeForJson(primaryResult.primary) : null,
+        geminiOutput: task.primaryAI === 'GEMINI' ? serializeForJson(primaryResult.primary) : null,
         consensusType: consensus.type,
         consensusConfidence: consensus.confidence,
-        finalResult: consensus.result,
+        finalResult: serializeForJson(consensus.result),
         escalatedToHuman: consensus.escalate,
       },
     });
@@ -260,9 +268,9 @@ async function executeMultiAITask(taskId: string, projectId: string) {
       where: { id: taskId },
       data: {
         status: consensus.escalate ? 'ESCALATED_TO_HUMAN' : 'COMPLETED',
-        primaryResult: primaryResult.primary,
-        secondaryResult: secondaryResult?.primary || null,
-        consensusResult: consensus.result,
+        primaryResult: serializeForJson(primaryResult.primary),
+        secondaryResult: secondaryResult?.primary ? serializeForJson(secondaryResult.primary) : null,
+        consensusResult: serializeForJson(consensus.result),
         confidenceScore: consensus.confidence,
         completedAt: consensus.escalate ? null : new Date(),
       },
@@ -321,7 +329,7 @@ async function executeSingleAITask(taskId: string) {
       where: { id: taskId },
       data: {
         status: 'COMPLETED',
-        primaryResult: result.primary,
+        primaryResult: serializeForJson(result.primary),
         confidenceScore: 85, // Default confidence for single AI
         completedAt: new Date(),
       },

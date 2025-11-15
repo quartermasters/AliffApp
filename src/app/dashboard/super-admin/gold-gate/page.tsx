@@ -374,7 +374,7 @@ function GoldGateReviewModal({
     } else {
       rejectMutation.mutate({
         id: deliverableId,
-        status: 'NEEDS_REVISION',
+        status: 'REVISION_REQUESTED',
         reviewerFeedback: `Gold Gate Failed: ${notes}`,
       });
     }

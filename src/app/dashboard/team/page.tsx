@@ -11,14 +11,14 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 export default function TeamDashboardPage() {
-  const { data: session } = useSession();
+  const session = useSession();
   const { data: projects, isLoading } = trpc.project.list.useQuery({
     limit: 50,
   });
 
   // Filter to only show projects where user is assigned
   const myAssignments = projects?.projects.filter((p) =>
-    p.assignments?.some((a) => a.teamMemberId === session?.user?.id)
+    p.assignments?.some((a) => a.teamMemberId === session?.data?.user?.id)
   );
 
   // Calculate stats
@@ -26,12 +26,12 @@ export default function TeamDashboardPage() {
     activeAssignments: myAssignments?.filter((p) => p.status === 'ACTIVE').length || 0,
     inProgress: myAssignments?.filter((p) =>
       p.assignments?.some(
-        (a) => a.teamMemberId === session?.user?.id && a.status === 'IN_PROGRESS'
+        (a) => a.teamMemberId === session?.data?.user?.id && a.status === 'IN_PROGRESS'
       )
     ).length || 0,
     completed: myAssignments?.filter((p) =>
       p.assignments?.some(
-        (a) => a.teamMemberId === session?.user?.id && a.status === 'COMPLETED'
+        (a) => a.teamMemberId === session?.data?.user?.id && a.status === 'COMPLETED'
       )
     ).length || 0,
     totalDeliverables: myAssignments?.reduce(
@@ -48,7 +48,7 @@ export default function TeamDashboardPage() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome, {session?.user?.name}
+            Welcome, {session?.data?.user?.name}
           </h1>
           <p className="text-gray-600">Your current assignments and tasks</p>
         </div>
@@ -98,7 +98,7 @@ export default function TeamDashboardPage() {
             <div className="divide-y divide-gray-200">
               {myAssignments.map((project) => {
                 const myAssignment = project.assignments?.find(
-                  (a) => a.teamMemberId === session?.user?.id
+                  (a) => a.teamMemberId === session?.data?.user?.id
                 );
                 return (
                   <AssignmentCard

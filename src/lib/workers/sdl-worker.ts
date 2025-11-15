@@ -306,16 +306,20 @@ async function createJobPosting(
     if (!project) return;
 
     // Create job posting
+    const slug = `${requirement.role.toLowerCase().replace(/\s+/g, '-')}-${project.projectCode.toLowerCase()}`;
+
     const jobPosting = await prisma.jobPosting.create({
       data: {
         title: `${requirement.role} - ${project.projectCodename || project.title}`,
+        slug,
         description: `We are seeking a ${requirement.role} for a ${project.industryCategory || 'government'} contract proposal.`,
         requirements: requirement.experience,
+        responsibilities: `- ${requirement.skills.join('\n- ')}\n- Collaborate with project team\n- Meet project deadlines`,
         type: 'CONTRACT',
-        status: 'ACTIVE',
-        salary: undefined, // Will be determined by ALIFF-RECRUITER
-        location: 'Remote',
+        status: 'PUBLISHED',
+        location: 'REMOTE',
         department: 'Proposal Development',
+        createdBy: project.createdBy,
       },
     });
 

@@ -11,14 +11,14 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 export default function ClientDashboardPage() {
-  const { data: session } = useSession();
+  const session = useSession();
   const { data: projects, isLoading } = trpc.project.list.useQuery({
     limit: 50,
   });
 
   // Filter to only show projects where user is the client
   const myProjects = projects?.projects.filter(
-    (p) => p.clientEmail === session?.user?.email
+    (p) => p.clientEmail === session?.data?.user?.email
   );
 
   return (
@@ -29,7 +29,7 @@ export default function ClientDashboardPage() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome, {session?.user?.name}
+            Welcome, {session?.data?.user?.name}
           </h1>
           <p className="text-gray-600">
             View your active proposals and track progress
