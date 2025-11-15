@@ -11,6 +11,9 @@
  */
 
 import { AIProvider } from '@prisma/client';
+import { createOpenAIProvider } from './ai-providers/openai-provider';
+import { createClaudeProvider } from './ai-providers/claude-provider';
+import { createGeminiProvider } from './ai-providers/gemini-provider';
 
 // ============================================================================
 // AI PROVIDER CONFIGURATION
@@ -259,7 +262,7 @@ export class AIRouter {
   }
 
   /**
-   * Execute AI call (placeholder - will be implemented with actual AI SDKs)
+   * Execute AI call with actual provider SDK
    */
   private async executeAI(
     provider: AIProvider,
@@ -267,34 +270,55 @@ export class AIRouter {
     documentContent: string
   ): Promise<any> {
     const config = this.getProviderConfig(provider);
-
-    // TODO: Implement actual AI SDK calls
-    // For now, return mock response
     console.log(`[AI Router] Executing ${provider} with model ${config.model}`);
 
-    // This is a placeholder. In production, implement:
-    switch (provider) {
-      case AIProvider.OPENAI:
-        // return await callOpenAI(config, prompt, documentContent);
-        break;
-      case AIProvider.CLAUDE:
-        // return await callClaude(config, prompt, documentContent);
-        break;
-      case AIProvider.GEMINI:
-        // return await callGemini(config, prompt, documentContent);
-        break;
-      case AIProvider.GROK:
-        // return await callGrok(config, prompt, documentContent);
-        break;
-    }
+    try {
+      switch (provider) {
+        case AIProvider.OPENAI: {
+          const openai = createOpenAIProvider();
+          if (!openai) {
+            throw new Error('OpenAI provider not configured');
+          }
+          const response = await openai.execute(prompt, documentContent);
+          return openai.parseResponse(response);
+        }
 
-    // Mock response for development
-    return {
-      content: `Mock response from ${provider} for prompt: ${prompt.substring(0, 50)}...`,
-      confidence: 85,
-      provider,
-      model: config.model,
-    };
+        case AIProvider.CLAUDE: {
+          const claude = createClaudeProvider();
+          if (!claude) {
+            throw new Error('Claude provider not configured');
+          }
+          const response = await claude.execute(prompt, documentContent);
+          return claude.parseResponse(response);
+        }
+
+        case AIProvider.GEMINI: {
+          const gemini = createGeminiProvider();
+          if (!gemini) {
+            throw new Error('Gemini provider not configured');
+          }
+          const response = await gemini.execute(prompt, documentContent);
+          return gemini.parseResponse(response);
+        }
+
+        case AIProvider.GROK: {
+          // Grok uses OpenAI-compatible API
+          console.warn('[AI Router] Grok not yet implemented, falling back to mock');
+          return {
+            content: `Mock Grok response for prompt: ${prompt.substring(0, 50)}...`,
+            confidence: 80,
+            provider,
+            model: config.model,
+          };
+        }
+
+        default:
+          throw new Error(`Unknown AI provider: ${provider}`);
+      }
+    } catch (error) {
+      console.error(`[AI Router] ${provider} execution error:`, error);
+      throw error;
+    }
   }
 
   /**
