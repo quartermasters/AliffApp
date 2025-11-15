@@ -384,4 +384,109 @@ export const sdlRouter = createTRPCRouter({
         },
       };
     }),
+
+  /**
+   * Get consensus logs requiring human review
+   * Access: Protected
+   */
+  getLogsRequiringReview: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.prisma.consensusLog.findMany({
+        where: {
+          projectId: input.projectId,
+          escalatedToHuman: true,
+          humanReviewerId: null, // Not yet reviewed
+        },
+        include: {
+          sdlTask: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    }),
+
+  /**
+   * Submit human adjudication for consensus conflict
+   * Access: Admin and above
+   */
+  submitAdjudication: adminProcedure
+    .input(
+      z.object({
+        consensusLogId: z.string(),
+        decision: z.any(),
+        notes: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Update consensus log with human decision
+      await ctx.prisma.consensusLog.update({
+        where: { id: input.consensusLogId },
+        data: {
+          humanReviewerId: ctx.session.user.id,
+          humanDecision: input.decision,
+          humanNotes: input.notes,
+        },
+      });
+
+      // Get the consensus log to update the associated SDL task
+      const consensusLog = await ctx.prisma.consensusLog.findUnique({
+        where: { id: input.consensusLogId },
+      });
+
+      if (consensusLog) {
+        // Update SDL task with human-adjudicated result
+        await ctx.prisma.sDLTask.update({
+          where: { id: consensusLog.sdlTaskId },
+          data: {
+            status: 'COMPLETED',
+            consensusResult: input.decision,
+            completedAt: new Date(),
+          },
+        });
+      }
+
+      return {
+        success: true,
+        message: 'Human adjudication submitted successfully',
+      };
+    }),
+
+  /**
+   * Get consensus statistics for project
+   * Access: Protected
+   */
+  getConsensusStatistics: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const logs = await ctx.prisma.consensusLog.findMany({
+        where: { projectId: input.projectId },
+      });
+
+      const total = logs.length;
+      const fullConsensus = logs.filter((l) => l.consensusType === 'FULL_CONSENSUS').length;
+      const majorityConsensus = logs.filter((l) => l.consensusType === 'MAJORITY_CONSENSUS')
+        .length;
+      const splitDecisions = logs.filter((l) => l.consensusType === 'SPLIT_DECISION').length;
+      const lowConfidence = logs.filter((l) => l.consensusType === 'LOW_CONFIDENCE').length;
+      const escalated = logs.filter((l) => l.escalatedToHuman).length;
+      const reviewed = logs.filter((l) => l.humanReviewerId !== null).length;
+
+      const avgConfidence =
+        total > 0 ? logs.reduce((sum, l) => sum + (l.consensusConfidence || 0), 0) / total : 0;
+
+      return {
+        total,
+        fullConsensus,
+        majorityConsensus,
+        splitDecisions,
+        lowConfidence,
+        escalated,
+        reviewed,
+        pendingReview: escalated - reviewed,
+        avgConfidence: Math.round(avgConfidence),
+        consensusRate: total > 0 ? Math.round((fullConsensus / total) * 100) : 0,
+      };
+    }),
 });
