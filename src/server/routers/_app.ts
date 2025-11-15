@@ -9,12 +9,14 @@ import { projectRouter } from './project';
 import { sdlRouter } from './sdl';
 import { documentRouter } from './document';
 import { deliverableRouter } from './deliverable';
+import { recruiterRouter } from './recruiter';
 
 export const appRouter = createTRPCRouter({
   project: projectRouter,
   sdl: sdlRouter,
   document: documentRouter,
   deliverable: deliverableRouter,
+  recruiter: recruiterRouter,
 });
 
 // Export type definition of API

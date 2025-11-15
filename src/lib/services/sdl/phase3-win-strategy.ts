@@ -520,6 +520,19 @@ export class Phase3WinStrategyExecutor {
     }
 
     console.log('[Phase 3 Executor] Win Strategy execution completed');
+
+    // Auto-trigger ALIFF-RECRUITER if bid decision is "BID"
+    try {
+      const { autoTriggerRecruiterPipeline } = await import('../recruiter/sdl-recruiter-pipeline');
+      const triggered = await autoTriggerRecruiterPipeline(this.projectId);
+
+      if (triggered) {
+        console.log(`[Phase 3 Executor] ALIFF-RECRUITER automatically triggered for project ${this.projectId}`);
+      }
+    } catch (error) {
+      console.error('[Phase 3 Executor] Failed to auto-trigger ALIFF-RECRUITER:', error);
+      // Don't fail Phase 3 if recruiter trigger fails
+    }
   }
 
   /**
