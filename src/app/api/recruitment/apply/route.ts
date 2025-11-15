@@ -87,11 +87,14 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    // In Phase 1 Task 4, we'll trigger AI resume parsing here
-    // await triggerResumeParser(application.id, resumeUrl);
+    // Phase 1 Task 4: Trigger AI resume parsing (async)
+    const { triggerResumeParser } = await import(
+      "@/lib/aliff/recruiter/queue"
+    );
+    await triggerResumeParser(application.id, resumeUrl);
 
-    // In Phase 1 Task 5, we'll trigger initial screening
-    // await triggerInitialScreening(application.id);
+    // Phase 1 Task 5: Initial screening will be triggered after parsing completes
+    // See queue.ts > triggerInitialScreening()
 
     console.log("Application submitted:", {
       id: application.id,
