@@ -88,13 +88,13 @@ export async function POST(request: NextRequest) {
     };
 
     // Phase 1 Task 4: Trigger AI resume parsing (async)
+    // Phase 1 Task 5: Initial screening triggered after parsing completes
     const { triggerResumeParser } = await import(
       "@/lib/aliff/recruiter/queue"
     );
-    await triggerResumeParser(application.id, resumeUrl);
+    await triggerResumeParser(application.id, resumeUrl, jobSlug);
 
-    // Phase 1 Task 5: Initial screening will be triggered after parsing completes
-    // See queue.ts > triggerInitialScreening()
+    // Full pipeline: Parse → Screen → (if TOP tier) → Chat Interview → Skills Test
 
     console.log("Application submitted:", {
       id: application.id,

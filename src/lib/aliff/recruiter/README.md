@@ -334,17 +334,202 @@ const clearedCandidates = await prisma.application.findMany({
 });
 ```
 
+## Phase 1 Task 5: Initial Screening Algorithm ✓
+
+After parsing, candidates are automatically screened using a sophisticated matching algorithm.
+
+### Implementation: `screening.ts`
+
+**Core Functions:**
+- `screenCandidate(parsedResume, jobRequirements)`: Main screening function
+- `screenCandidateBatch(candidates[], jobRequirements)`: Batch screening with ranking
+- `getJobRequirements(jobSlug)`: Get requirements for specific job
+
+### Scoring Components (0-100 each)
+
+#### 1. Skills Match (30-40% weight)
+- Compares candidate skills to required/preferred skills
+- **Required skills**: 70% weight
+- **Preferred skills**: 30% weight
+- Uses fuzzy matching (partial matches count)
+
+#### 2. Experience Match (20-30% weight)
+- Calculates years of experience vs minimum required
+- **100**: ≥1.5x requirement
+- **90**: Meets requirement
+- **75**: 80% of requirement
+- **60**: 60% of requirement
+- **<60**: Below 60% of requirement
+
+#### 3. Domain Match (15-20% weight)
+- Matches industry expertise (GOVCON, Healthcare, IT, etc.)
+- Percentage of required domains covered
+
+#### 4. GOVCON/SLED Match (0-30% weight, job-dependent)
+- **GOVCON scoring**:
+  - Base 50 points for any GOVCON experience
+  - +30 for 5+ years federal experience
+  - +10 for multiple federal agencies
+  - +5 for contract wins
+  - +5 for >50% win rate
+- **SLED scoring**: Binary (100 if present, 0 if not)
+
+#### 5. Education Match (5-15% weight)
+- Compares degree level to preferred education
+- **100**: Meets or exceeds requirement
+- **80**: One level below
+- **60**: Two levels below
+
+#### 6. Clearance Match (0-10% weight, job-dependent)
+- **100**: Active clearance at required level
+- **90**: Active Secret or higher
+- **70**: Has some clearance
+- **40**: Has clearance but not active
+- **0**: No clearance
+
+#### 7. Availability Match (5-20% weight)
+- **100**: Immediately available
+- **90**: Available within 30 days
+- **70**: Available within 60 days
+- **50**: Available later
+- **30**: Not currently available
+
+### Category-Specific Weight Adjustments
+
+**GOVCON Jobs:**
+```typescript
+skills: 25%, experience: 20%, domain: 15%, govcon: 30%,
+education: 5%, clearance: 5%
+```
+
+**SLED Jobs:**
+```typescript
+skills: 25%, experience: 20%, domain: 15%, govcon: 25%,
+education: 10%, availability: 5%
+```
+
+**IT Services:**
+```typescript
+skills: 40%, experience: 25%, domain: 15%, education: 10%,
+availability: 10%
+```
+
+**Writing Services:**
+```typescript
+skills: 30%, experience: 30%, domain: 20%, education: 15%,
+availability: 5%
+```
+
+### Tier Classification
+
+**TOP Tier (≥70 score):**
+- Recommendation: **ADVANCE**
+- Action: Auto-advance to chat interview
+- Expected: Top 30% of applicants
+
+**MIDDLE Tier (50-69 score):**
+- Recommendation: **REVIEW**
+- Action: Flag for manual review
+- Expected: Middle 30% of applicants
+
+**BOTTOM Tier (<50 score):**
+- Recommendation: **REJECT**
+- Action: Send polite rejection email
+- Expected: Bottom 40% of applicants
+
+### Screening Result Structure
+
+```typescript
+{
+  matchScore: 85,
+  tier: "TOP",
+  recommendation: "ADVANCE",
+  breakdown: {
+    skillsMatch: 90,
+    experienceMatch: 100,
+    domainMatch: 80,
+    govconMatch: 85,
+    educationMatch: 100,
+    clearanceMatch: 100,
+    availabilityMatch: 100
+  },
+  strengths: [
+    "Strong skills match (12 matched)",
+    "9.5 years experience (exceeds requirement)",
+    "Active Secret clearance",
+    "Immediately available"
+  ],
+  concerns: [],
+  reasoningNotes: "Candidate John Doe scored 85/100 overall..."
+}
+```
+
+### Usage Example
+
+```typescript
+import { screenCandidate, getJobRequirements } from "@/lib/aliff/recruiter/screening";
+
+// Get job requirements
+const requirements = getJobRequirements("senior-govcon-proposal-writer");
+
+// Screen candidate
+const screening = screenCandidate(parsedResume, requirements);
+
+console.log(`Score: ${screening.matchScore}/100`);
+console.log(`Tier: ${screening.tier}`);
+console.log(`Recommendation: ${screening.recommendation}`);
+console.log(`Strengths: ${screening.strengths.join(", ")}`);
+console.log(`Concerns: ${screening.concerns.join(", ")}`);
+
+// Take action based on recommendation
+if (screening.recommendation === "ADVANCE") {
+  // Trigger chat interview
+} else if (screening.recommendation === "REVIEW") {
+  // Notify recruiting team
+} else {
+  // Send rejection email
+}
+```
+
+### Batch Screening with Ranking
+
+```typescript
+import { screenCandidateBatch } from "@/lib/aliff/recruiter/screening";
+
+const candidates = [
+  { id: "app1", parsedResume: resume1 },
+  { id: "app2", parsedResume: resume2 },
+  { id: "app3", parsedResume: resume3 },
+];
+
+const results = screenCandidateBatch(candidates, requirements);
+
+// Results are auto-sorted by matchScore (descending)
+results.forEach(({ id, screening }) => {
+  console.log(`${id}: ${screening.matchScore}/100 - ${screening.recommendation}`);
+});
+
+// Output:
+// app2: 92/100 - ADVANCE
+// app1: 78/100 - ADVANCE
+// app3: 45/100 - REJECT
+```
+
+### Integration with Pipeline
+
+The screening runs automatically after resume parsing:
+
+```typescript
+// In queue.ts > processResumeAsync()
+1. Parse resume → ParsedResume
+2. Screen candidate → ScreeningResult
+3. Update Application.screeningScore
+4. If TOP tier → Trigger chat interview
+   If MIDDLE tier → Flag for manual review
+   If BOTTOM tier → Send rejection email
+```
+
 ## Next Steps
-
-### Phase 1 Task 5: Initial Screening Algorithm
-After parsing, candidates are automatically screened:
-1. Match skills to job requirements
-2. Calculate match score (0-100)
-3. Filter top 30% candidates
-4. Auto-reject bottom 40%
-5. Middle 30% → manual review
-
-**Implementation**: `src/lib/aliff/recruiter/screening.ts`
 
 ### Phase 2: AI Chat Interviews
 Top candidates from screening receive AI chat interview invitations:

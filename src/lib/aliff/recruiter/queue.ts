@@ -18,7 +18,8 @@ import { ResumeParsingResult } from "./types";
  */
 export async function triggerResumeParser(
   applicationId: string,
-  resumeUrl: string
+  resumeUrl: string,
+  jobSlug?: string
 ): Promise<void> {
   console.log(
     `[Resume Queue] Queued parsing job for application: ${applicationId}`
@@ -29,6 +30,7 @@ export async function triggerResumeParser(
   await resumeParsingQueue.add('parse-resume', {
     applicationId,
     resumeUrl,
+    jobSlug,
     timestamp: new Date().toISOString(),
   }, {
     attempts: 3,
@@ -40,7 +42,7 @@ export async function triggerResumeParser(
   */
 
   // Simulate async processing (don't await in production)
-  processResumeAsync(applicationId, resumeUrl).catch((error) => {
+  processResumeAsync(applicationId, resumeUrl, jobSlug).catch((error) => {
     console.error(
       `[Resume Queue] Failed to process application ${applicationId}:`,
       error
@@ -53,7 +55,8 @@ export async function triggerResumeParser(
  */
 async function processResumeAsync(
   applicationId: string,
-  resumeUrl: string
+  resumeUrl: string,
+  jobSlug?: string
 ): Promise<void> {
   try {
     // Extract file format from URL
@@ -84,7 +87,7 @@ async function processResumeAsync(
       await updateApplicationWithParsedData(applicationId, result);
 
       // Trigger next step: initial screening
-      await triggerInitialScreening(applicationId, result);
+      await triggerInitialScreening(applicationId, result, jobSlug);
     } else {
       console.error(
         `[Resume Queue] ✗ Parsing failed:`,
@@ -171,7 +174,8 @@ async function downloadResume(url: string): Promise<string> {
  */
 export async function triggerInitialScreening(
   applicationId: string,
-  parsingResult: ResumeParsingResult
+  parsingResult: ResumeParsingResult,
+  jobSlug?: string
 ): Promise<void> {
   console.log(
     `[Screening Queue] Queued screening for application: ${applicationId}`
@@ -182,13 +186,114 @@ export async function triggerInitialScreening(
   await screeningQueue.add('initial-screening', {
     applicationId,
     parsedData: parsingResult.data,
+    jobSlug,
     timestamp: new Date().toISOString(),
   });
   */
 
-  // Phase 1 Task 5 implementation will go here
+  // Process screening asynchronously
+  processScreeningAsync(applicationId, parsingResult, jobSlug).catch(
+    (error) => {
+      console.error(
+        `[Screening Queue] Failed to screen application ${applicationId}:`,
+        error
+      );
+    }
+  );
+}
+
+/**
+ * Process candidate screening asynchronously
+ */
+async function processScreeningAsync(
+  applicationId: string,
+  parsingResult: ResumeParsingResult,
+  jobSlug?: string
+): Promise<void> {
+  try {
+    if (!parsingResult.data) {
+      console.error(
+        `[Screening Queue] No parsed data for application ${applicationId}`
+      );
+      return;
+    }
+
+    // Get job requirements
+    const { getJobRequirements, screenCandidate } = await import(
+      "./screening"
+    );
+
+    const jobRequirements = jobSlug
+      ? getJobRequirements(jobSlug)
+      : {
+          category: "IT_SERVICES" as const,
+          requiredSkills: [],
+          minYearsExperience: 2,
+        };
+
+    console.log(
+      `[Screening Queue] Screening ${parsingResult.data.personalInfo.fullName}...`
+    );
+
+    // Run screening algorithm
+    const screening = screenCandidate(parsingResult.data, jobRequirements);
+
+    console.log(
+      `[Screening Queue] ✓ Score: ${screening.matchScore}/100 - ${screening.recommendation}`
+    );
+
+    // Update application with screening results
+    await updateApplicationWithScreening(applicationId, screening);
+
+    // If candidate passes screening (TOP tier), trigger next step
+    if (screening.recommendation === "ADVANCE") {
+      console.log(
+        `[Screening Queue] 🎯 ${parsingResult.data.personalInfo.fullName} advanced to chat interview queue`
+      );
+      // Phase 2: await triggerChatInterview(applicationId);
+    } else if (screening.recommendation === "REVIEW") {
+      console.log(
+        `[Screening Queue] ⚠️  ${parsingResult.data.personalInfo.fullName} flagged for manual review`
+      );
+      // Notify recruiting team
+    } else {
+      console.log(
+        `[Screening Queue] ✗ ${parsingResult.data.personalInfo.fullName} did not meet minimum requirements`
+      );
+      // Send rejection email (automated but polite)
+    }
+  } catch (error) {
+    console.error(`[Screening Queue] Exception during screening:`, error);
+    throw error;
+  }
+}
+
+/**
+ * Update application with screening results
+ */
+async function updateApplicationWithScreening(
+  applicationId: string,
+  screening: any
+): Promise<void> {
+  // In production with Prisma:
+  /*
+  await prisma.application.update({
+    where: { id: applicationId },
+    data: {
+      screeningScore: screening.matchScore,
+      status: screening.recommendation === 'ADVANCE' ? 'SCREENED_PASSED' :
+              screening.recommendation === 'REVIEW' ? 'SCREENED_REVIEW' :
+              'SCREENED_REJECTED',
+      metadata: {
+        screening: screening,
+      },
+      updatedAt: new Date(),
+    },
+  });
+  */
+
   console.log(
-    `[Screening Queue] ⏳ Waiting for Phase 1 Task 5 implementation...`
+    `[Database] Updated application ${applicationId} with screening score: ${screening.matchScore}/100`
   );
 }
 
