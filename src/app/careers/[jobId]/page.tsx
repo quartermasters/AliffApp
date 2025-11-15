@@ -11,6 +11,9 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
 
+// Force dynamic rendering (requires database access)
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: {
     jobId: string;

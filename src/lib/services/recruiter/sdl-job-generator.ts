@@ -108,7 +108,7 @@ export class SDLJobGenerator {
       statedRequirements,
       unstatedRequirements,
       solutionApproach,
-      winStrategyBrief.executiveSummary.complexityScore
+      winStrategyBrief.diagnosisContext.complexityScore
     ));
 
     // 2. SUBJECT MATTER EXPERTS (from capability gaps)
@@ -142,7 +142,7 @@ export class SDLJobGenerator {
 
     // 7. EDITOR (quality control - always needed)
     jobs.push(this.generateEditorJob(
-      winStrategyBrief.executiveSummary.complexityScore
+      winStrategyBrief.diagnosisContext.complexityScore
     ));
 
     // Sort by priority

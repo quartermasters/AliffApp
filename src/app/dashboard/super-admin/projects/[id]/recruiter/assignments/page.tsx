@@ -22,6 +22,18 @@ import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc/client';
 
+// Type for SDL-generated job package
+interface JobPackageData {
+  jobs: Array<{
+    jobTitle: string;
+    category: string;
+    priority: string;
+    requiredSkills: string[];
+    experienceLevel: string;
+    clearanceRequired?: string;
+  }>;
+}
+
 // Mock hired candidate data (in production, this comes from CV Bank + Interview system)
 interface HiredCandidate {
   id: string;
@@ -48,8 +60,11 @@ export default function ProviderAssignmentsPage() {
 
   // Fetch data
   const { data: project } = trpc.project.getById.useQuery({ id: projectId });
-  const { data: jobPackage } = trpc.recruiter.getJobPackage.useQuery({ projectId });
+  const { data: jobPackageRaw } = trpc.recruiter.getJobPackage.useQuery({ projectId });
   const { data: pipelineStatus } = trpc.recruiter.getPipelineStatus.useQuery({ projectId });
+
+  // Cast job package to typed data
+  const jobPackage = jobPackageRaw as JobPackageData | null | undefined;
 
   // Mock hired candidates (in production, this would come from Interview system)
   const hiredCandidates: HiredCandidate[] = [
@@ -62,7 +77,7 @@ export default function ProviderAssignmentsPage() {
 
   // Get job details by job title
   const getJobByTitle = (jobTitle: string) => {
-    return jobPackage?.jobs.find((j: any) => j.jobTitle === jobTitle);
+    return jobPackage?.jobs.find((j) => j.jobTitle === jobTitle);
   };
 
   // Toggle candidate selection
@@ -383,7 +398,7 @@ export default function ProviderAssignmentsPage() {
               <div className="bg-white rounded-lg shadow-lg p-6 sticky top-24">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">Job Requirements</h2>
                 <div className="space-y-3">
-                  {jobPackage.jobs.map((job: any, index: number) => {
+                  {jobPackage?.jobs.map((job, index: number) => {
                     const assigned = Object.values(assignmentMap).filter(
                       (jobTitle) => jobTitle === job.jobTitle
                     ).length;

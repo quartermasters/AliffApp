@@ -9,6 +9,9 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
 
+// Force dynamic rendering (requires database access)
+export const dynamic = 'force-dynamic';
+
 export default async function CareersPage() {
   // Fetch published jobs
   const jobs = await prisma.jobPosting.findMany({

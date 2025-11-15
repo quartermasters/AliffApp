@@ -15,6 +15,29 @@ import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc/client';
 
+// Type for SDL-generated job package
+interface JobPackageData {
+  totalRolesNeeded: number;
+  criticalRolesCount: number;
+  estimatedTotalHours: number;
+  jobs: Array<{
+    jobTitle: string;
+    category: string;
+    priority: string;
+    requiredSkills: string[];
+    preferredSkills: string[];
+    experienceLevel: string;
+    yearsExperience: number;
+    estimatedHours: number;
+    urgency: string;
+    rationale: string;
+    clearanceRequired?: string;
+    industryExperience?: string[];
+    certifications?: string[];
+    alignsWithUnstatedRequirement?: string;
+  }>;
+}
+
 export default function RecruiterDashboard() {
   const params = useParams();
   const projectId = params.id as string;
@@ -23,9 +46,12 @@ export default function RecruiterDashboard() {
 
   // Fetch data
   const { data: project } = trpc.project.getById.useQuery({ id: projectId });
-  const { data: jobPackage, isLoading: jobsLoading } = trpc.recruiter.getJobPackage.useQuery({ projectId });
+  const { data: jobPackageRaw, isLoading: jobsLoading } = trpc.recruiter.getJobPackage.useQuery({ projectId });
   const { data: pipelineStatus, isLoading: statusLoading } = trpc.recruiter.getPipelineStatus.useQuery({ projectId });
   const { data: winStrategyBrief } = trpc.sdl.getWinStrategyBrief.useQuery({ projectId });
+
+  // Cast job package to typed data
+  const jobPackage = jobPackageRaw as JobPackageData | null | undefined;
 
   // Mutations
   const triggerPipeline = trpc.recruiter.executePipeline.useMutation({
@@ -212,7 +238,7 @@ export default function RecruiterDashboard() {
                   </p>
                 </div>
                 <div className="divide-y divide-gray-200">
-                  {jobPackage.jobs.map((job: any, index: number) => (
+                  {jobPackage.jobs.map((job, index: number) => (
                     <button
                       key={index}
                       onClick={() => setSelectedJobIndex(index)}
@@ -317,7 +343,7 @@ export default function RecruiterDashboard() {
                         Required Skills (from SDL)
                       </h3>
                       <div className="flex flex-wrap gap-2">
-                        {selectedJob.requiredSkills.map((skill: string, i: number) => (
+                        {selectedJob.requiredSkills.map((skill, i: number) => (
                           <span
                             key={i}
                             className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium"
@@ -333,7 +359,7 @@ export default function RecruiterDashboard() {
                       <div>
                         <h3 className="text-sm font-bold text-gray-900 mb-2">Preferred Skills</h3>
                         <div className="flex flex-wrap gap-2">
-                          {selectedJob.preferredSkills.map((skill: string, i: number) => (
+                          {selectedJob.preferredSkills.map((skill, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs"
@@ -364,7 +390,7 @@ export default function RecruiterDashboard() {
                           Industry Experience
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                          {selectedJob.industryExperience.map((industry: string, i: number) => (
+                          {selectedJob.industryExperience.map((industry, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium"
@@ -381,7 +407,7 @@ export default function RecruiterDashboard() {
                       <div>
                         <h3 className="text-sm font-bold text-gray-900 mb-2">Certifications</h3>
                         <div className="flex flex-wrap gap-2">
-                          {selectedJob.certifications.map((cert: string, i: number) => (
+                          {selectedJob.certifications.map((cert, i: number) => (
                             <span
                               key={i}
                               className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium"
