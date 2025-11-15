@@ -7,6 +7,7 @@
 
 import type {
   AIModel,
+  TaskType,
   OrchestrationRequest,
   OrchestrationResult,
   OrchestrationStrategy,
@@ -133,7 +134,7 @@ function selectModels(
   strategy: OrchestrationStrategy,
   prompt: string,
   systemPrompt?: string,
-  taskType?: string
+  taskType?: TaskType
 ): AIModel[] {
   switch (strategy) {
     case 'single': {
@@ -211,7 +212,7 @@ export async function askWithConsensus(
   options?: {
     systemPrompt?: string;
     strategy?: 'dual' | 'triple';
-    taskType?: string;
+    taskType?: TaskType;
     temperature?: number;
     userId?: string;
     sessionId?: string;

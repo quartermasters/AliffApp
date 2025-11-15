@@ -6,6 +6,7 @@
  */
 
 import type { AliffRole, SensitivityLevel, KnowledgeCategory } from '../../types';
+import type { LeakType } from '../leak-detection/types';
 
 /**
  * Types of auditable events
@@ -137,7 +138,7 @@ export interface LeakEvent extends AuditEvent {
   eventType: 'leak_detected';
   severity: 'warning' | 'error' | 'critical';
   metadata: {
-    leakType: 'pricing' | 'strategy' | 'methodology' | 'competitive' | 'client-data';
+    leakType: LeakType;
     confidence: number; // 0.0-1.0
     textFlagged: string;
     autoBlocked: boolean;

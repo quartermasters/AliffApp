@@ -4,7 +4,7 @@
  * Parses PDF documents and extracts text, metadata, and structure.
  */
 
-import pdf from 'pdf-parse';
+import * as pdf from 'pdf-parse';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs/promises';
 import type {
@@ -35,7 +35,7 @@ export class PDFParser implements IDocumentParser {
 
     try {
       // Parse PDF
-      const data = await pdf(buffer, {
+      const data = await (pdf as any).default(buffer, {
         max: options?.maxPages,
         password: options?.password,
       });

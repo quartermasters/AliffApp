@@ -32,9 +32,9 @@ Scoring scale:
 Return responses in valid JSON format only.`;
 
 /**
- * Complexity scoring prompt
+ * Opportunity complexity scoring prompt
  */
-export function getComplexityPrompt(
+export function getOpportunityComplexityPrompt(
   metadata: SolicitationMetadata,
   requirements: Requirement[],
   compliance: ComplianceAnalysisResult

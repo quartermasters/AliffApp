@@ -14,5 +14,4 @@ export * from './docx';
 // Export main parser
 export * from './parser';
 export { DocumentParser } from './parser';
-
-export default DocumentParser;
+export { default } from './parser';

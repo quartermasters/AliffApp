@@ -5,13 +5,18 @@
  * using various strategies to achieve higher accuracy.
  */
 
-import type { AIResponse, ConsensusResult, ConsensusMethod } from '../types';
+import type {
+  AIResponse,
+  ConsensusResult,
+  ConsensusMethod,
+  AIModel,
+} from '../types';
 import type {
   ConsensusConfig,
   AgreementAnalysis,
   ConsensusValidation,
-  DEFAULT_CONSENSUS_CONFIGS,
 } from './types';
+import { DEFAULT_CONSENSUS_CONFIGS } from './types';
 import { ConsensusStrategies } from './strategies';
 
 /**
@@ -204,8 +209,8 @@ export async function analyzeAgreement(
 
   // Calculate pairwise similarities (simplified - could use embeddings)
   const similarities: Array<{
-    model1: string;
-    model2: string;
+    model1: AIModel;
+    model2: AIModel;
     similarity: number;
   }> = [];
 

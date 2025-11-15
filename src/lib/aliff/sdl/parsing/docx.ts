@@ -191,7 +191,7 @@ export class DOCXParser implements IDocumentParser {
 
     // Get all body content
     const bodyHtml = $('body').html() || '';
-    const $ body = cheerio.load(bodyHtml);
+    const $body = cheerio.load(bodyHtml);
 
     // Extract sections based on headings
     for (let i = 0; i < headings.length; i++) {

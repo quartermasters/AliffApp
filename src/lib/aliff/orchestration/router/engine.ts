@@ -11,9 +11,8 @@ import type {
   RoutingDecision,
   TaskAnalysis,
   RouterConfig,
-  DEFAULT_ROUTER_CONFIG,
-  TASK_TYPE_KEYWORDS,
 } from './types';
+import { DEFAULT_ROUTER_CONFIG, TASK_TYPE_KEYWORDS } from './types';
 import { MODEL_INFO } from '../types';
 import { estimateTokens } from '../models';
 
@@ -267,9 +266,9 @@ export function getSuitableModels(taskType: TaskType): AIModel[] {
 }
 
 /**
- * Compare models for a specific task
+ * Evaluate models for a specific task
  */
-export function compareModels(
+export function evaluateModels(
   prompt: string,
   models: AIModel[],
   systemPrompt?: string
@@ -326,7 +325,7 @@ export const Router = {
   routeTask,
   getBestModel,
   getSuitableModels,
-  compareModels,
+  evaluateModels,
 } as const;
 
 export default Router;

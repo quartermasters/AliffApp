@@ -89,7 +89,7 @@ export interface ModelInfo {
   strengths: string[];
   weaknesses: string[];
   speed: 'fast' | 'medium' | 'slow';
-  recommended For: TaskType[];
+  recommendedFor: TaskType[];
 }
 
 /**

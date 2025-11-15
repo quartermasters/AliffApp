@@ -10,5 +10,4 @@ export * from './types';
 // Export tracker
 export * from './tracker';
 export { CostTracker } from './tracker';
-
-export default CostTracker;
+export { default } from './tracker';

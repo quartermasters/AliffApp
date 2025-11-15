@@ -128,9 +128,9 @@ export interface RequirementMatch {
 }
 
 /**
- * Compliance gap
+ * Requirement gap (simpler version for requirements extraction)
  */
-export interface ComplianceGap {
+export interface RequirementGap {
   requirement: Requirement;
   status: 'missing' | 'partial' | 'unclear';
   impact: 'critical' | 'high' | 'medium' | 'low';
@@ -146,6 +146,6 @@ export interface ComplianceAnalysis {
   partiallyCompliant: number;
   nonCompliant: number;
   complianceRate: number; // Percentage
-  gaps: ComplianceGap[];
+  gaps: RequirementGap[];
   riskLevel: 'low' | 'medium' | 'high' | 'critical';
 }

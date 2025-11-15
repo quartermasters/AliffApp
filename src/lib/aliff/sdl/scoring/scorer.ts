@@ -20,7 +20,7 @@ import type {
 import { DEFAULT_COMPLEXITY_WEIGHTS, DEFAULT_WIN_WEIGHTS, COMPLEXITY_LEVELS } from './types';
 import {
   SCORING_SYSTEM_PROMPT,
-  getComplexityPrompt,
+  getOpportunityComplexityPrompt,
   getWinProbabilityPrompt,
   getCompetitivePrompt,
   getBidDecisionPrompt,
@@ -194,7 +194,7 @@ async function calculateComplexity(
   compliance: ComplianceAnalysisResult,
   config: ScoringConfig
 ): Promise<ComplexityScore> {
-  const prompt = getComplexityPrompt(metadata, requirements, compliance);
+  const prompt = getOpportunityComplexityPrompt(metadata, requirements, compliance);
 
   const result = await callAI(prompt, config);
 
@@ -282,11 +282,11 @@ function calculateComplexityHeuristic(
 
   // Weighted average
   const overall = Math.round(
-    technical * weights.technical +
-      complianceComplexity * weights.compliance +
-      scheduleComplexity * weights.schedule +
-      teamComplexity * weights.team +
-      costComplexity * weights.cost
+    technical * (weights.technical ?? 0.25) +
+      complianceComplexity * (weights.compliance ?? 0.25) +
+      scheduleComplexity * (weights.schedule ?? 0.2) +
+      teamComplexity * (weights.team ?? 0.15) +
+      costComplexity * (weights.cost ?? 0.15)
   );
 
   let riskLevel: 'low' | 'medium' | 'high' | 'very-high';
@@ -576,14 +576,16 @@ export function getComplexityLevel(score: number): {
     if (score >= data.range[0] && score <= data.range[1]) {
       return {
         level: level as keyof typeof COMPLEXITY_LEVELS,
-        ...data,
+        description: data.description,
+        characteristics: [...data.characteristics],
       };
     }
   }
 
   return {
     level: 'medium',
-    ...COMPLEXITY_LEVELS.medium,
+    description: COMPLEXITY_LEVELS.medium.description,
+    characteristics: [...COMPLEXITY_LEVELS.medium.characteristics],
   };
 }
 

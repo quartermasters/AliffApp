@@ -11,7 +11,6 @@ import type {
   AuditEventType,
   AuditSeverity,
   AuditConfig,
-  DEFAULT_AUDIT_CONFIG,
   AnyAuditEvent,
   QueryEvent,
   RetrievalEvent,
@@ -23,7 +22,9 @@ import type {
   RoleEvent,
   AuthEvent,
 } from './types';
+import { DEFAULT_AUDIT_CONFIG } from './types';
 import type { AliffRole } from '../../types';
+import type { LeakType } from '../leak-detection/types';
 import { storeAuditEvents, storeAuditEvent } from './storage';
 
 /**
@@ -268,12 +269,13 @@ export async function logAccessDenied(
   const event: AccessDeniedEvent = {
     ...createBaseEvent('access_denied', 'warning', role, userId, sessionId),
     eventType: 'access_denied',
+    severity: 'warning',
     metadata: {
       attemptedAction,
       reason,
       ...options,
     },
-  };
+  } as AccessDeniedEvent;
 
   await writeEvent(event);
 }
@@ -300,6 +302,7 @@ export async function logFilterTriggered(
   const event: FilterEvent = {
     ...createBaseEvent('filter_triggered', 'warning', role, userId, sessionId),
     eventType: 'filter_triggered',
+    severity: 'warning',
     metadata: {
       ruleId,
       ruleName,
@@ -310,7 +313,7 @@ export async function logFilterTriggered(
         : originalText,
       ...options,
     },
-  };
+  } as FilterEvent;
 
   await writeEvent(event);
 }
@@ -319,7 +322,7 @@ export async function logFilterTriggered(
  * Log a leak detected event
  */
 export async function logLeakDetected(
-  leakType: 'pricing' | 'strategy' | 'methodology' | 'competitive' | 'client-data',
+  leakType: LeakType,
   confidence: number,
   textFlagged: string,
   autoBlocked: boolean,
@@ -330,7 +333,7 @@ export async function logLeakDetected(
     alertSent?: boolean;
   }
 ): Promise<void> {
-  const severity: AuditSeverity =
+  const severity: 'warning' | 'error' | 'critical' =
     confidence > 0.9 ? 'critical' : confidence > 0.7 ? 'error' : 'warning';
 
   if (!shouldLog(severity)) return;
@@ -338,6 +341,7 @@ export async function logLeakDetected(
   const event: LeakEvent = {
     ...createBaseEvent('leak_detected', severity, role, userId, sessionId),
     eventType: 'leak_detected',
+    severity,
     metadata: {
       leakType,
       confidence,
@@ -347,7 +351,7 @@ export async function logLeakDetected(
       autoBlocked,
       alertSent: options?.alertSent || false,
     },
-  };
+  } as LeakEvent;
 
   await writeEvent(event);
 }
@@ -399,18 +403,19 @@ export async function logRoleEvent(
   sessionId?: string,
   reason?: string
 ): Promise<void> {
-  if (!shouldLog('info')) return;
+  if (!shouldLog('warning')) return;
 
   const event: RoleEvent = {
     ...createBaseEvent(eventType, 'warning', adminRole, adminUserId, sessionId),
     eventType,
+    severity: 'warning',
     metadata: {
       targetUserId,
       roleChanged,
       adminUserId,
       reason,
     },
-  };
+  } as RoleEvent;
 
   await writeEvent(event);
 }
@@ -430,7 +435,7 @@ export async function logAuthEvent(
     sessionDuration?: number;
   }
 ): Promise<void> {
-  const severity: AuditSeverity =
+  const severity: 'info' | 'warning' | 'error' =
     eventType === 'authentication_failed' ? 'warning' : 'info';
 
   if (!shouldLog(severity)) return;
@@ -438,10 +443,11 @@ export async function logAuthEvent(
   const event: AuthEvent = {
     ...createBaseEvent(eventType, severity, role, userId, sessionId),
     eventType,
+    severity,
     metadata: {
       ...options,
     },
-  };
+  } as AuthEvent;
 
   await writeEvent(event);
 }

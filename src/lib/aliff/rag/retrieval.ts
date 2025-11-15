@@ -334,6 +334,10 @@ export async function retrieveSimilar(
       throw new RetrievalError(`Document ${documentId} not found`);
     }
 
+    if (!document.values) {
+      throw new RetrievalError(`Document ${documentId} has no embedding values`);
+    }
+
     // Use document's embedding for similarity search
     const filter = buildMetadataFilter(options as RetrievalOptions);
 

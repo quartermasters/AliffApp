@@ -10,5 +10,4 @@ export * from './types';
 // Export engine
 export * from './engine';
 export { Router } from './engine';
-
-export default Router;
+export { default } from './engine';

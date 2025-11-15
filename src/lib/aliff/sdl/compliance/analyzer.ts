@@ -304,7 +304,7 @@ function detectFrameworksByKeywords(content: string): FrameworkDetection[] {
         framework: framework as ComplianceFramework,
         confidence: Math.min(0.6 + matches.length * 0.1, 0.95),
         evidence: matches.map((kw) => `Keyword detected: "${kw}"`),
-        requiredControls: frameworkInfo?.keyControls || [],
+        requiredControls: frameworkInfo?.keyControls ? [...frameworkInfo.keyControls] : [],
         estimatedComplexity: frameworkInfo?.estimatedComplexity || 5,
       });
     }
