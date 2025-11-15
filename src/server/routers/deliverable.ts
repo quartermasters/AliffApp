@@ -80,6 +80,7 @@ export const deliverableRouter = createTRPCRouter({
           fileSize: input.fileSize,
           status: 'SUBMITTED',
           submittedAt: new Date(),
+          submittedById: ctx.session.user.id,
         },
       });
 

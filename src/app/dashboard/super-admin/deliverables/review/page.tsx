@@ -50,6 +50,7 @@ export default function DeliverablesReviewPage() {
             label="This Week"
             value={
               deliverables?.filter((d) => {
+                if (!d.submittedAt) return false;
                 const weekAgo = new Date();
                 weekAgo.setDate(weekAgo.getDate() - 7);
                 return new Date(d.submittedAt) > weekAgo;
@@ -170,10 +171,12 @@ function DeliverableCard({
   deliverable: any;
   onClick: () => void;
 }) {
-  const daysWaiting = Math.floor(
-    (Date.now() - new Date(deliverable.submittedAt).getTime()) /
-      (1000 * 60 * 60 * 24)
-  );
+  const daysWaiting = deliverable.submittedAt
+    ? Math.floor(
+        (Date.now() - new Date(deliverable.submittedAt).getTime()) /
+          (1000 * 60 * 60 * 24)
+      )
+    : 0;
 
   return (
     <div
@@ -211,7 +214,7 @@ function DeliverableCard({
               📄 {deliverable.filePath?.split('/').pop() || 'N/A'}
             </span>
             <span>
-              📅 {new Date(deliverable.submittedAt).toLocaleDateString()}
+              📅 {deliverable.submittedAt ? new Date(deliverable.submittedAt).toLocaleDateString() : 'N/A'}
             </span>
             <span>
               📦 {((deliverable.fileSize || 0) / 1024 / 1024).toFixed(2)} MB
@@ -315,10 +318,10 @@ function ReviewModal({
         <div className="p-6 space-y-6">
           {/* Deliverable Info */}
           <div className="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-lg">
-            <InfoItem label="Submitted By" value={deliverable.submittedBy.name} />
+            <InfoItem label="Submitted By" value={deliverable.submittedBy?.name || 'N/A'} />
             <InfoItem
               label="Submitted At"
-              value={new Date(deliverable.submittedAt).toLocaleString()}
+              value={deliverable.submittedAt ? new Date(deliverable.submittedAt).toLocaleString() : 'N/A'}
             />
             <InfoItem label="Type" value={deliverable.deliverableType.replace(/_/g, ' ')} />
             <InfoItem label="File" value={deliverable.filePath?.split('/').pop() || 'N/A'} />

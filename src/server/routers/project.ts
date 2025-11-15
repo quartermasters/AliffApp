@@ -133,12 +133,20 @@ export const projectRouter = createTRPCRouter({
               role: true,
             },
           },
+          assignments: {
+            select: {
+              id: true,
+              teamMemberId: true,
+              status: true,
+            },
+          },
           _count: {
             select: {
               documents: true,
               assignments: true,
               sdlTasks: true,
               deliverables: true,
+              updates: true,
             },
           },
         },
@@ -203,6 +211,14 @@ export const projectRouter = createTRPCRouter({
           updates: {
             orderBy: { createdAt: 'desc' },
             take: 10,
+          },
+          _count: {
+            select: {
+              documents: true,
+              assignments: true,
+              deliverables: true,
+              updates: true,
+            },
           },
         },
       });

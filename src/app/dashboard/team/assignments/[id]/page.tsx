@@ -95,12 +95,12 @@ export default function TeamAssignmentDetailPage({
           </div>
 
           {/* Assignment Description */}
-          {myAssignment.description && (
+          {myAssignment.assignmentDescription && (
             <div className="mb-4 p-3 bg-indigo-50 rounded-lg border border-indigo-200">
               <p className="text-sm font-medium text-indigo-800 mb-1">
                 Your Assignment
               </p>
-              <p className="text-sm text-indigo-900">{myAssignment.description}</p>
+              <p className="text-sm text-indigo-900">{myAssignment.assignmentDescription}</p>
             </div>
           )}
 
@@ -111,13 +111,13 @@ export default function TeamAssignmentDetailPage({
                 Your Progress
               </span>
               <span className="text-sm font-semibold text-gray-900">
-                {myAssignment.progressPercentage || 0}%
+                0%
               </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2.5">
               <div
                 className="bg-indigo-600 h-2.5 rounded-full transition-all duration-500"
-                style={{ width: `${myAssignment.progressPercentage || 0}%` }}
+                style={{ width: '0%' }}
               ></div>
             </div>
           </div>
@@ -127,16 +127,16 @@ export default function TeamAssignmentDetailPage({
             <InfoCard
               label="Due Date"
               value={
-                myAssignment.dueDate
-                  ? new Date(myAssignment.dueDate).toLocaleDateString()
+                myAssignment.deadline
+                  ? new Date(myAssignment.deadline).toLocaleDateString()
                   : 'Not specified'
               }
             />
             <InfoCard
-              label="Compensation"
+              label="Estimated Hours"
               value={
-                myAssignment.compensation
-                  ? `$${myAssignment.compensation.toLocaleString()}`
+                myAssignment.hoursEstimated
+                  ? `${myAssignment.hoursEstimated} hrs`
                   : 'TBD'
               }
             />
@@ -157,7 +157,7 @@ export default function TeamAssignmentDetailPage({
                 onClick={() => setSelectedTab('overview')}
               />
               <TabButton
-                label={`My Deliverables (${myAssignment.deliverables?.length || 0})`}
+                label="My Deliverables"
                 isActive={selectedTab === 'deliverables'}
                 onClick={() => setSelectedTab('deliverables')}
               />
@@ -275,12 +275,10 @@ function OverviewTab({
               value={new Date(project.deadline).toLocaleDateString()}
             />
           )}
-          {assignment.startedAt && (
-            <DetailRow
-              label="Started"
-              value={new Date(assignment.startedAt).toLocaleDateString()}
-            />
-          )}
+          <DetailRow
+            label="Assigned"
+            value={new Date(assignment.assignedAt).toLocaleDateString()}
+          />
         </div>
       </div>
 
@@ -292,15 +290,15 @@ function OverviewTab({
         <div className="space-y-2">
           <TaskItem
             label="Review project requirements"
-            completed={assignment.progressPercentage > 0}
+            completed={assignment.status !== 'ASSIGNED'}
           />
           <TaskItem
             label="Submit initial deliverable"
-            completed={assignment.deliverables?.some((d: any) => d.status !== 'PENDING')}
+            completed={assignment.status === 'IN_PROGRESS'}
           />
           <TaskItem
             label="Address feedback"
-            completed={assignment.progressPercentage >= 75}
+            completed={assignment.status === 'IN_PROGRESS'}
           />
           <TaskItem
             label="Submit final deliverable"

@@ -39,6 +39,10 @@ export async function scoreDeliverableQuality(deliverableId: string) {
       throw new Error('Deliverable not found');
     }
 
+    if (!deliverable.filePath) {
+      throw new Error('Deliverable has no file path');
+    }
+
     // Read deliverable file
     const fileBuffer = await readFile(deliverable.filePath);
     const fileContent = fileBuffer.toString('utf-8');
@@ -61,7 +65,7 @@ export async function scoreDeliverableQuality(deliverableId: string) {
       where: { id: deliverableId },
       data: {
         qualityScore: score.overall,
-        aiValidation: score as any, // Store detailed breakdown
+        aiValidationResult: score as any, // Store detailed breakdown
       },
     });
 
@@ -235,6 +239,10 @@ export async function validateAgainstRFP(
 
     if (!deliverable || !rfpDocument) {
       throw new Error('Deliverable or RFP not found');
+    }
+
+    if (!deliverable.filePath || !rfpDocument.filePath) {
+      throw new Error('Deliverable or RFP has no file path');
     }
 
     // Read files

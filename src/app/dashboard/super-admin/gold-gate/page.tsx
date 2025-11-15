@@ -261,7 +261,7 @@ function GoldGateCard({
           </div>
 
           <div className="flex items-center gap-6 text-sm text-gray-600 mb-3">
-            <span>👤 {deliverable.submittedBy.name}</span>
+            <span>👤 {deliverable.submittedBy?.name || 'N/A'}</span>
             <span>📋 {deliverable.deliverableType.replace(/_/g, ' ')}</span>
             <span>📄 {deliverable.filePath?.split('/').pop() || 'N/A'}</span>
           </div>
@@ -470,14 +470,14 @@ function GoldGateReviewModal({
           <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
             <InfoItem
               label="Submitted By"
-              value={deliverable.submittedBy.name}
+              value={deliverable.submittedBy?.name || 'N/A'}
             />
             <InfoItem label="Type" value={deliverable.deliverableType.replace(/_/g, ' ')} />
             <InfoItem label="File" value={deliverable.filePath?.split('/').pop() || 'N/A'} />
           </div>
 
           {/* AI Analysis */}
-          {deliverable.aiValidation && (
+          {deliverable.aiValidationResult && (
             <div>
               <h4 className="text-base font-semibold text-gray-900 mb-3">
                 AI Quality Analysis
@@ -488,7 +488,7 @@ function GoldGateReviewModal({
                     Strengths
                   </p>
                   <ul className="text-sm text-blue-800 space-y-1">
-                    {deliverable.aiValidation.strengths?.map(
+                    {(deliverable.aiValidationResult as any).strengths?.map(
                       (strength: string, i: number) => (
                         <li key={i}>• {strength}</li>
                       )
@@ -500,7 +500,7 @@ function GoldGateReviewModal({
                     Recommendations
                   </p>
                   <ul className="text-sm text-orange-800 space-y-1">
-                    {deliverable.aiValidation.recommendations?.map(
+                    {(deliverable.aiValidationResult as any).recommendations?.map(
                       (rec: string, i: number) => (
                         <li key={i}>• {rec}</li>
                       )

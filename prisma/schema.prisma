@@ -50,12 +50,14 @@ model User {
   activities   Activity[]
 
   // Business Dashboard Relations
-  projectsCreated      Project[]           @relation("ProjectCreator")
-  teamAssignments      ProjectAssignment[] @relation("TeamMemberAssignments")
-  assignerAssignments  ProjectAssignment[] @relation("AssignerAssignments")
-  consensusReviews     ConsensusLog[]
-  deliverablesReviewed Deliverable[]
-  projectUpdates       ProjectUpdate[]
+  projectsCreated       Project[]           @relation("ProjectCreator")
+  teamAssignments       ProjectAssignment[] @relation("TeamMemberAssignments")
+  assignerAssignments   ProjectAssignment[] @relation("AssignerAssignments")
+  consensusReviews      ConsensusLog[]
+  deliverablesSubmitted Deliverable[]       @relation("DeliverableSubmitter")
+  deliverablesReviewed  Deliverable[]       @relation("DeliverableReviewer")
+  deliverablesApproved  Deliverable[]       @relation("DeliverableApprover")
+  projectUpdates        ProjectUpdate[]
 
   @@map("users")
 }
@@ -813,21 +815,28 @@ model Deliverable {
   aiValidationResult Json?             @map("ai_validation_result")
 
   // Review
-  reviewerNotes String?   @map("reviewer_notes") @db.Text
-  reviewedBy    String?   @map("reviewed_by")
-  reviewedAt    DateTime? @map("reviewed_at")
+  reviewerNotes    String? @map("reviewer_notes") @db.Text
+  reviewerFeedback String? @map("reviewer_feedback") @db.Text
+  clientFeedback   String? @map("client_feedback") @db.Text
+  visibleToClient  Boolean @default(false) @map("visible_to_client")
+  submittedById    String? @map("submitted_by_id")
+  reviewedById     String? @map("reviewed_by_id")
+  approvedById     String? @map("approved_by_id")
 
   // Timing
   dueDate     DateTime? @map("due_date")
   submittedAt DateTime? @map("submitted_at")
+  reviewedAt  DateTime? @map("reviewed_at")
   approvedAt  DateTime? @map("approved_at")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
   // Relations
-  project    Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  assignment ProjectAssignment? @relation(fields: [assignmentId], references: [id])
-  reviewer   User?              @relation(fields: [reviewedBy], references: [id])
+  project     Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignment  ProjectAssignment? @relation(fields: [assignmentId], references: [id])
+  submittedBy User?              @relation("DeliverableSubmitter", fields: [submittedById], references: [id])
+  reviewedBy  User?              @relation("DeliverableReviewer", fields: [reviewedById], references: [id])
+  approvedBy  User?              @relation("DeliverableApprover", fields: [approvedById], references: [id])
 
   @@index([projectId])
   @@index([status])

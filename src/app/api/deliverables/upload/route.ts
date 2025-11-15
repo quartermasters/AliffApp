@@ -107,6 +107,7 @@ export async function POST(request: NextRequest) {
         fileSize: file.size,
         status: 'SUBMITTED',
         submittedAt: new Date(),
+        submittedById: session.user.id,
       },
     });
 
