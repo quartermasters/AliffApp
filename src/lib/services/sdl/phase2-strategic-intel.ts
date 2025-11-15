@@ -716,10 +716,9 @@ export class Phase2StrategicIntelExecutor {
     const prompt = this.buildPrompt(taskNumber, phase1Results);
 
     // Execute with multiple AIs
-    const aiProviders = [AIProvider.OPENAI, AIProvider.CLAUDE];
-    if (taskNumber === 20) {
-      aiProviders.push(AIProvider.GEMINI); // Budget assessment uses 3 AIs
-    }
+    const aiProviders: AIProvider[] = taskNumber === 20
+      ? [AIProvider.OPENAI, AIProvider.CLAUDE, AIProvider.GEMINI] // Budget assessment uses 3 AIs
+      : [AIProvider.OPENAI, AIProvider.CLAUDE];
 
     const results = await this.aiRouter.executeMultiAI(
       taskNumber,
@@ -810,11 +809,11 @@ ${basePrompt}
     });
 
     return {
-      complexityScore: phase1Tasks.find((t) => t.taskNumber === 10)?.primaryResult?.complexityScore,
-      riskLevel: phase1Tasks.find((t) => t.taskNumber === 11)?.primaryResult?.overallRiskLevel,
-      contractType: phase1Tasks.find((t) => t.taskNumber === 2)?.primaryResult?.contractType,
-      estimatedValue: phase1Tasks.find((t) => t.taskNumber === 2)?.primaryResult?.estimatedValue,
-      agencyName: phase1Tasks.find((t) => t.taskNumber === 2)?.primaryResult?.agencyName,
+      complexityScore: (phase1Tasks.find((t) => t.taskNumber === 10)?.primaryResult as any)?.complexityScore,
+      riskLevel: (phase1Tasks.find((t) => t.taskNumber === 11)?.primaryResult as any)?.overallRiskLevel,
+      contractType: (phase1Tasks.find((t) => t.taskNumber === 2)?.primaryResult as any)?.contractType,
+      estimatedValue: (phase1Tasks.find((t) => t.taskNumber === 2)?.primaryResult as any)?.estimatedValue,
+      agencyName: (phase1Tasks.find((t) => t.taskNumber === 2)?.primaryResult as any)?.agencyName,
     };
   }
 

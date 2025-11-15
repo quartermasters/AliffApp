@@ -578,34 +578,24 @@ export const sdlRouter = createTRPCRouter({
     }),
 
   /**
-   * Get Diagnosis Brief (from database)
+   * Get Diagnosis Brief (generates on-demand)
    * Access: Protected
    */
   getDiagnosisBrief: protectedProcedure
     .input(z.object({ projectId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const project = await ctx.prisma.project.findUnique({
-        where: { id: input.projectId },
-        select: {
-          sdlDiagnosisBrief: true,
-        },
-      });
-      return project?.sdlDiagnosisBrief;
+    .query(async ({ input }) => {
+      const reportGenerator = createReportGenerator(input.projectId);
+      return await reportGenerator.generateDiagnosisBrief();
     }),
 
   /**
-   * Get Win Strategy Brief (from database)
+   * Get Win Strategy Brief (generates on-demand)
    * Access: Protected
    */
   getWinStrategyBrief: protectedProcedure
     .input(z.object({ projectId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const project = await ctx.prisma.project.findUnique({
-        where: { id: input.projectId },
-        select: {
-          sdlWinStrategyBrief: true,
-        },
-      });
-      return project?.sdlWinStrategyBrief;
+    .query(async ({ input }) => {
+      const reportGenerator = createReportGenerator(input.projectId);
+      return await reportGenerator.generateWinStrategyBrief();
     }),
 });

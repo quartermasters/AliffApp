@@ -295,7 +295,7 @@ export class ReportGenerator {
 
     const brief: DiagnosisBrief = {
       executiveSummary: {
-        opportunityName: project.projectName,
+        opportunityName: project.title,
         agency: metadata?.agency || 'Unknown Agency',
         contractValue: metadata?.contractValue || 'TBD',
         solicitationNumber: metadata?.solicitationNumber || 'N/A',
@@ -460,7 +460,7 @@ export class ReportGenerator {
 
     const brief: WinStrategyBrief = {
       executiveSummary: {
-        opportunityName: project.projectName,
+        opportunityName: project.title,
         agency: metadata?.agency || 'Unknown Agency',
         contractValue: metadata?.contractValue || 'TBD',
         winProbability: winProbability?.winProbability || 50,
@@ -676,7 +676,6 @@ export class ReportGenerator {
     await prisma.project.update({
       where: { id: this.projectId },
       data: {
-        sdlDiagnosisBrief: brief as any,
         sdlComplexityScore: brief.executiveSummary.complexityScore,
       },
     });
@@ -686,7 +685,6 @@ export class ReportGenerator {
     await prisma.project.update({
       where: { id: this.projectId },
       data: {
-        sdlWinStrategyBrief: brief as any,
         sdlWinProbability: brief.executiveSummary.winProbability,
         sdlStatus: 'COMPLETED',
       },

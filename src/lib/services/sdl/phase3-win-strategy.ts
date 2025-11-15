@@ -555,8 +555,7 @@ export class Phase3WinStrategyExecutor {
           status: SDLTaskStatus.COMPLETED,
           completedAt: new Date(),
           primaryResult: result.result,
-          primaryAIProvider: result.provider,
-          primaryAIModel: result.model,
+          primaryAI: result.provider,
           confidenceScore: result.result?.confidence || 85,
         },
       });
@@ -639,10 +638,8 @@ export class Phase3WinStrategyExecutor {
           primaryResult: results[0].result,
           secondaryResult: results[1]?.result,
           consensusResult: consensus.finalResult,
-          primaryAIProvider: results[0].provider,
-          primaryAIModel: results[0].model,
-          secondaryAIProvider: results[1]?.provider,
-          secondaryAIModel: results[1]?.model,
+          primaryAI: results[0].provider,
+          secondaryAI: results[1]?.provider,
           confidenceScore: consensus.consensusConfidence,
         },
       });

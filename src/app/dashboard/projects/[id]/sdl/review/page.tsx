@@ -32,7 +32,7 @@ export default function SDLReviewPage() {
   });
 
   // Fetch project details
-  const { data: project } = trpc.projects.getById.useQuery({ id: projectId });
+  const { data: project } = trpc.project.getById.useQuery({ id: projectId });
 
   // Submit adjudication mutation
   const submitAdjudication = trpc.sdl.submitAdjudication.useMutation({
@@ -102,7 +102,7 @@ export default function SDLReviewPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">SDL Human Review</h1>
               <p className="mt-1 text-sm text-gray-500">
-                Review and adjudicate AI consensus conflicts for {project?.projectName}
+                Review and adjudicate AI consensus conflicts for {project?.title}
               </p>
             </div>
             <div className="flex items-center gap-4">

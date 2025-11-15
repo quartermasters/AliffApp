@@ -618,8 +618,8 @@ export class Phase1TriageExecutor {
       completed,
       failed,
       pending: tasks.length - completed - failed,
-      complexityScore: complexityTask?.primaryResult?.complexityScore,
-      riskLevel: riskTask?.primaryResult?.overallRiskLevel,
+      complexityScore: (complexityTask?.primaryResult as any)?.complexityScore,
+      riskLevel: (riskTask?.primaryResult as any)?.overallRiskLevel,
       readyForPhase2: completed === tasks.length,
     };
   }

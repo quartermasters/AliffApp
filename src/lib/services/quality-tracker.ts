@@ -76,7 +76,7 @@ export class QualityTracker {
   ): Promise<AIPerformanceMetrics> {
     // Get all tasks executed by this provider
     const whereClause: any = {
-      OR: [{ primaryAIProvider: provider }, { secondaryAIProvider: provider }],
+      OR: [{ primaryAI: provider }, { secondaryAI: provider }],
     };
     if (projectId) {
       whereClause.projectId = projectId;
@@ -313,7 +313,7 @@ export class QualityTracker {
 
     for (const provider of Object.values(AIProvider)) {
       const providerTasks = tasks.filter(
-        (t) => t.primaryAIProvider === provider || t.secondaryAIProvider === provider
+        (t) => t.primaryAI === provider || t.secondaryAI === provider
       );
 
       if (providerTasks.length === 0) {
@@ -383,7 +383,7 @@ export class QualityTracker {
     startDate.setDate(startDate.getDate() - days);
 
     const whereClause: any = {
-      OR: [{ primaryAIProvider: provider }, { secondaryAIProvider: provider }],
+      OR: [{ primaryAI: provider }, { secondaryAI: provider }],
       createdAt: { gte: startDate },
     };
     if (projectId) {
