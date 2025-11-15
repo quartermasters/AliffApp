@@ -13,6 +13,7 @@ import { JobStatus, JobType, JobLocation } from '@prisma/client';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 interface PageProps {
   params: {
@@ -23,35 +24,42 @@ interface PageProps {
 export default async function JobDetailPage({ params }: PageProps) {
   const { jobId } = params;
 
-  // Fetch job by slug
-  const job = await prisma.jobPosting.findUnique({
-    where: {
-      slug: jobId,
-      status: JobStatus.PUBLISHED,
-    },
-    include: {
-      creator: {
-        select: {
-          name: true,
-        },
-      },
-      _count: {
-        select: {
-          applications: true,
-        },
-      },
-    },
-  });
+  // Fetch job by slug with error handling
+  let job;
 
-  if (!job) {
+  try {
+    job = await prisma.jobPosting.findUnique({
+      where: {
+        slug: jobId,
+        status: JobStatus.PUBLISHED,
+      },
+      include: {
+        creator: {
+          select: {
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            applications: true,
+          },
+        },
+      },
+    });
+
+    if (!job) {
+      notFound();
+    }
+
+    // Increment view count
+    await prisma.jobPosting.update({
+      where: { id: job.id },
+      data: { views: { increment: 1 } },
+    });
+  } catch (error) {
+    console.error('Error fetching job:', error);
     notFound();
   }
-
-  // Increment view count
-  await prisma.jobPosting.update({
-    where: { id: job.id },
-    data: { views: { increment: 1 } },
-  });
 
   const getTypeColor = (type: JobType) => {
     switch (type) {

@@ -11,33 +11,55 @@ import { JobStatus, JobType, JobLocation } from '@prisma/client';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export default async function CareersPage() {
-  // Fetch published jobs
-  const jobs = await prisma.jobPosting.findMany({
-    where: {
-      status: JobStatus.PUBLISHED,
-    },
-    orderBy: {
-      publishedAt: 'desc',
-    },
-    select: {
-      id: true,
-      slug: true,
-      title: true,
-      department: true,
-      type: true,
-      location: true,
-      salary: true,
-      description: true,
-      publishedAt: true,
-      _count: {
-        select: {
-          applications: true,
+  // Fetch published jobs with error handling
+  let jobs: Array<{
+    id: string;
+    slug: string;
+    title: string;
+    department: string | null;
+    type: JobType;
+    location: JobLocation;
+    salary: string | null;
+    description: string;
+    publishedAt: Date | null;
+    _count: {
+      applications: number;
+    };
+  }> = [];
+
+  try {
+    jobs = await prisma.jobPosting.findMany({
+      where: {
+        status: JobStatus.PUBLISHED,
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        department: true,
+        type: true,
+        location: true,
+        salary: true,
+        description: true,
+        publishedAt: true,
+        _count: {
+          select: {
+            applications: true,
+          },
         },
       },
-    },
-  });
+    });
+  } catch (error) {
+    console.error('Error fetching jobs:', error);
+    // Return empty array on error - will show "No Open Positions" message
+    jobs = [];
+  }
 
   const getTypeColor = (type: JobType) => {
     switch (type) {
