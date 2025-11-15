@@ -291,11 +291,11 @@ function OverviewTab({
           />
           <MilestoneItem
             label="Proposal Development"
-            completed={['PROPOSAL_DEVELOPMENT', 'INTERNAL_REVIEW', 'CLIENT_REVIEW', 'FINAL_APPROVAL', 'SUBMITTED'].includes(project.currentStage)}
+            completed={['TEAM_EXECUTION', 'AI_VALIDATION', 'GOLD_GATE', 'CLIENT_APPROVAL', 'SUBMITTED', 'WON', 'LOST'].includes(project.currentStage)}
           />
           <MilestoneItem
             label="Client Review"
-            completed={['CLIENT_REVIEW', 'FINAL_APPROVAL', 'SUBMITTED'].includes(project.currentStage)}
+            completed={['CLIENT_APPROVAL', 'SUBMITTED', 'WON', 'LOST'].includes(project.currentStage)}
           />
           <MilestoneItem
             label="Submission"
@@ -437,12 +437,14 @@ function InfoCard({ label, value }: { label: string; value: string }) {
 function StageBadge({ stage }: { stage: string }) {
   const stageConfig: Record<string, { label: string; color: string }> = {
     PENDING_REVIEW: { label: 'Pending Review', color: 'bg-yellow-100 text-yellow-800' },
+    INTAKE: { label: 'Intake Review', color: 'bg-indigo-100 text-indigo-800' },
     SDL_PROCESSING: { label: 'Analysis in Progress', color: 'bg-purple-100 text-purple-800' },
-    TEAM_ASSIGNMENT: { label: 'Team Assignment', color: 'bg-blue-100 text-blue-800' },
-    PROPOSAL_DEVELOPMENT: { label: 'In Development', color: 'bg-indigo-100 text-indigo-800' },
-    INTERNAL_REVIEW: { label: 'Internal Review', color: 'bg-orange-100 text-orange-800' },
-    CLIENT_REVIEW: { label: 'Ready for Your Review', color: 'bg-green-100 text-green-800' },
-    FINAL_APPROVAL: { label: 'Final Approval', color: 'bg-teal-100 text-teal-800' },
+    HUMAN_VALIDATION: { label: 'Expert Validation', color: 'bg-orange-100 text-orange-800' },
+    RECRUITER_HIRING: { label: 'Team Assignment', color: 'bg-blue-100 text-blue-800' },
+    TEAM_EXECUTION: { label: 'In Development', color: 'bg-indigo-100 text-indigo-800' },
+    AI_VALIDATION: { label: 'Quality Check', color: 'bg-purple-100 text-purple-800' },
+    GOLD_GATE: { label: 'Final Review', color: 'bg-amber-100 text-amber-800' },
+    CLIENT_APPROVAL: { label: 'Ready for Your Review', color: 'bg-green-100 text-green-800' },
     SUBMITTED: { label: 'Submitted', color: 'bg-gray-100 text-gray-800' },
     WON: { label: 'Won', color: 'bg-green-100 text-green-800' },
     LOST: { label: 'Lost', color: 'bg-red-100 text-red-800' },

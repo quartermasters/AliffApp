@@ -35,7 +35,6 @@ export const deliverableRouter = createTRPCRouter({
           'OTHER',
         ]),
         filePath: z.string(),
-        fileName: z.string(),
         fileSize: z.number().optional(),
       })
     )
@@ -78,11 +77,9 @@ export const deliverableRouter = createTRPCRouter({
           description: input.description,
           deliverableType: input.deliverableType,
           filePath: input.filePath,
-          fileName: input.fileName,
           fileSize: input.fileSize,
           status: 'SUBMITTED',
           submittedAt: new Date(),
-          submittedById: ctx.session.user.id,
         },
       });
 

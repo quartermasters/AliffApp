@@ -46,14 +46,14 @@ export default function ClientDashboardPage() {
           <StatsCard
             label="In Progress"
             value={
-              myProjects?.filter((p) => p.currentStage === 'SDL_PROCESSING' || p.currentStage === 'TEAM_ASSIGNMENT').length || 0
+              myProjects?.filter((p) => p.currentStage === 'SDL_PROCESSING' || p.currentStage === 'RECRUITER_HIRING' || p.currentStage === 'TEAM_EXECUTION').length || 0
             }
             icon="⏳"
           />
           <StatsCard
             label="Ready for Review"
             value={
-              myProjects?.filter((p) => p.currentStage === 'CLIENT_REVIEW').length || 0
+              myProjects?.filter((p) => p.currentStage === 'CLIENT_APPROVAL').length || 0
             }
             icon="👀"
           />
@@ -222,12 +222,14 @@ function StageBadge({ stage }: { stage: string }) {
     { label: string; color: string }
   > = {
     PENDING_REVIEW: { label: 'Pending Review', color: 'bg-yellow-100 text-yellow-800' },
+    INTAKE: { label: 'Intake Review', color: 'bg-indigo-100 text-indigo-800' },
     SDL_PROCESSING: { label: 'Analysis in Progress', color: 'bg-purple-100 text-purple-800' },
-    TEAM_ASSIGNMENT: { label: 'Team Assignment', color: 'bg-blue-100 text-blue-800' },
-    PROPOSAL_DEVELOPMENT: { label: 'In Development', color: 'bg-indigo-100 text-indigo-800' },
-    INTERNAL_REVIEW: { label: 'Internal Review', color: 'bg-orange-100 text-orange-800' },
-    CLIENT_REVIEW: { label: 'Ready for Your Review', color: 'bg-green-100 text-green-800' },
-    FINAL_APPROVAL: { label: 'Final Approval', color: 'bg-teal-100 text-teal-800' },
+    HUMAN_VALIDATION: { label: 'Expert Validation', color: 'bg-orange-100 text-orange-800' },
+    RECRUITER_HIRING: { label: 'Team Assignment', color: 'bg-blue-100 text-blue-800' },
+    TEAM_EXECUTION: { label: 'In Development', color: 'bg-indigo-100 text-indigo-800' },
+    AI_VALIDATION: { label: 'Quality Check', color: 'bg-purple-100 text-purple-800' },
+    GOLD_GATE: { label: 'Final Review', color: 'bg-amber-100 text-amber-800' },
+    CLIENT_APPROVAL: { label: 'Ready for Your Review', color: 'bg-green-100 text-green-800' },
     SUBMITTED: { label: 'Submitted', color: 'bg-gray-100 text-gray-800' },
     WON: { label: 'Won', color: 'bg-green-100 text-green-800' },
     LOST: { label: 'Lost', color: 'bg-red-100 text-red-800' },

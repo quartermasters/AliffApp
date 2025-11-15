@@ -103,12 +103,10 @@ export async function POST(request: NextRequest) {
         title,
         description: description || undefined,
         deliverableType: deliverableType as any,
-        fileName: file.name,
         filePath: filepath,
         fileSize: file.size,
         status: 'SUBMITTED',
         submittedAt: new Date(),
-        submittedById: session.user.id,
       },
     });
 
@@ -123,7 +121,7 @@ export async function POST(request: NextRequest) {
       deliverable: {
         id: deliverable.id,
         title: deliverable.title,
-        fileName: deliverable.fileName,
+        filePath: deliverable.filePath,
         fileSize: deliverable.fileSize,
         deliverableType: deliverable.deliverableType,
         status: deliverable.status,

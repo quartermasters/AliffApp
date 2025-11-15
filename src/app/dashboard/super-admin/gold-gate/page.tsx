@@ -263,7 +263,7 @@ function GoldGateCard({
           <div className="flex items-center gap-6 text-sm text-gray-600 mb-3">
             <span>👤 {deliverable.submittedBy.name}</span>
             <span>📋 {deliverable.deliverableType.replace(/_/g, ' ')}</span>
-            <span>📄 {deliverable.fileName}</span>
+            <span>📄 {deliverable.filePath?.split('/').pop() || 'N/A'}</span>
           </div>
 
           {/* Quality Metrics */}
@@ -271,7 +271,7 @@ function GoldGateCard({
             <MetricBadge
               label="Quality Score"
               value={`${deliverable.qualityScore || 0}%`}
-              passing={deliverable.qualityScore >= 85}
+              passing={(deliverable.qualityScore || 0) >= 85}
             />
             <MetricBadge
               label="Reviewed"
@@ -291,10 +291,10 @@ function GoldGateCard({
           </div>
 
           {/* Reviewer Feedback Preview */}
-          {deliverable.reviewerFeedback && (
+          {deliverable.reviewerNotes && (
             <div className="bg-blue-50 rounded p-2 text-sm text-blue-900 line-clamp-2">
               <span className="font-medium">Review:</span>{' '}
-              {deliverable.reviewerFeedback}
+              {deliverable.reviewerNotes}
             </div>
           )}
         </div>
@@ -473,7 +473,7 @@ function GoldGateReviewModal({
               value={deliverable.submittedBy.name}
             />
             <InfoItem label="Type" value={deliverable.deliverableType.replace(/_/g, ' ')} />
-            <InfoItem label="File" value={deliverable.fileName} />
+            <InfoItem label="File" value={deliverable.filePath?.split('/').pop() || 'N/A'} />
           </div>
 
           {/* AI Analysis */}

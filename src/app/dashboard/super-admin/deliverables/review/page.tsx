@@ -208,7 +208,7 @@ function DeliverableCard({
               📋 {deliverable.deliverableType.replace(/_/g, ' ')}
             </span>
             <span>
-              📄 {deliverable.fileName}
+              📄 {deliverable.filePath?.split('/').pop() || 'N/A'}
             </span>
             <span>
               📅 {new Date(deliverable.submittedAt).toLocaleDateString()}
@@ -321,7 +321,7 @@ function ReviewModal({
               value={new Date(deliverable.submittedAt).toLocaleString()}
             />
             <InfoItem label="Type" value={deliverable.deliverableType.replace(/_/g, ' ')} />
-            <InfoItem label="File" value={deliverable.fileName} />
+            <InfoItem label="File" value={deliverable.filePath?.split('/').pop() || 'N/A'} />
             <InfoItem
               label="Size"
               value={`${((deliverable.fileSize || 0) / 1024 / 1024).toFixed(2)} MB`}

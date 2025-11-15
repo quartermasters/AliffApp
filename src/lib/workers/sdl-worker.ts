@@ -108,7 +108,7 @@ async function processProjectTasks(projectId: string) {
           where: { id: projectId },
           data: {
             sdlStatus: 'PHASE3_WIN_STRATEGY',
-            currentStage: 'TEAM_ASSIGNMENT',
+            currentStage: 'RECRUITER_HIRING',
           },
         });
 
