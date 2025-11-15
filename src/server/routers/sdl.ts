@@ -16,6 +16,7 @@ import { createPhase1TriageExecutor } from '@/lib/services/sdl/phase1-triage';
 import { createPhase2StrategicIntelExecutor } from '@/lib/services/sdl/phase2-strategic-intel';
 import { createPhase3WinStrategyExecutor } from '@/lib/services/sdl/phase3-win-strategy';
 import { getQualityTracker } from '@/lib/services/quality-tracker';
+import { createReportGenerator } from '@/lib/services/sdl/report-generator';
 
 /**
  * SDL Task definitions (34 tasks across 3 phases)
@@ -550,5 +551,61 @@ export const sdlRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const qualityTracker = getQualityTracker();
       return await qualityTracker.getRoutingRecommendations(input.projectId);
+    }),
+
+  /**
+   * Generate Diagnosis Brief (after Phase 1 & 2)
+   * Access: Admin and above
+   */
+  generateDiagnosisBrief: adminProcedure
+    .input(z.object({ projectId: z.string() }))
+    .mutation(async ({ input }) => {
+      const reportGenerator = createReportGenerator(input.projectId);
+      const brief = await reportGenerator.generateDiagnosisBrief();
+      return brief;
+    }),
+
+  /**
+   * Generate Win Strategy Brief (after all phases)
+   * Access: Admin and above
+   */
+  generateWinStrategyBrief: adminProcedure
+    .input(z.object({ projectId: z.string() }))
+    .mutation(async ({ input }) => {
+      const reportGenerator = createReportGenerator(input.projectId);
+      const brief = await reportGenerator.generateWinStrategyBrief();
+      return brief;
+    }),
+
+  /**
+   * Get Diagnosis Brief (from database)
+   * Access: Protected
+   */
+  getDiagnosisBrief: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findUnique({
+        where: { id: input.projectId },
+        select: {
+          sdlDiagnosisBrief: true,
+        },
+      });
+      return project?.sdlDiagnosisBrief;
+    }),
+
+  /**
+   * Get Win Strategy Brief (from database)
+   * Access: Protected
+   */
+  getWinStrategyBrief: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const project = await ctx.prisma.project.findUnique({
+        where: { id: input.projectId },
+        select: {
+          sdlWinStrategyBrief: true,
+        },
+      });
+      return project?.sdlWinStrategyBrief;
     }),
 });
