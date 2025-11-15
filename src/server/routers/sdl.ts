@@ -14,6 +14,7 @@ import {
 import { TRPCError } from '@trpc/server';
 import { createPhase1TriageExecutor } from '@/lib/services/sdl/phase1-triage';
 import { createPhase2StrategicIntelExecutor } from '@/lib/services/sdl/phase2-strategic-intel';
+import { createPhase3WinStrategyExecutor } from '@/lib/services/sdl/phase3-win-strategy';
 
 /**
  * SDL Task definitions (34 tasks across 3 phases)
@@ -183,6 +184,37 @@ export const sdlRouter = createTRPCRouter({
     .input(z.object({ projectId: z.string() }))
     .query(async ({ input }) => {
       const executor = createPhase2StrategicIntelExecutor(input.projectId);
+      return await executor.getSummary();
+    }),
+
+  /**
+   * Execute Phase 3 Win Strategy (Tasks 26-34)
+   * Access: Admin and above
+   */
+  executePhase3: adminProcedure
+    .input(z.object({ projectId: z.string() }))
+    .mutation(async ({ input }) => {
+      const executor = createPhase3WinStrategyExecutor(input.projectId);
+
+      // Execute Phase 3 in background (don't await)
+      executor.executeAll().catch((error) => {
+        console.error('[SDL Router] Phase 3 execution error:', error);
+      });
+
+      return {
+        success: true,
+        message: 'Phase 3 Win Strategy execution started. Tasks will complete asynchronously.',
+      };
+    }),
+
+  /**
+   * Get Phase 3 summary
+   * Access: Protected
+   */
+  getPhase3Summary: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ input }) => {
+      const executor = createPhase3WinStrategyExecutor(input.projectId);
       return await executor.getSummary();
     }),
 
