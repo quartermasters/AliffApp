@@ -152,7 +152,7 @@ model JobPosting {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  creator            User                   @relation(fields: [createdBy], references: [id])
+  creator            User                 @relation(fields: [createdBy], references: [id])
   applications       Application[]
   projectAssignments ProjectAssignment[] // Link to Business Dashboard
   externalPostings   ExternalJobPosting[] // Multi-platform tracking
@@ -161,15 +161,18 @@ model JobPosting {
 }
 
 enum ApplicationStatus {
-  SUBMITTED
-  SCREENING
-  SHORTLISTED
-  INTERVIEW_SCHEDULED
-  INTERVIEWING
+  SUBMITTED // Just submitted
+  PARSING // AI extracting resume data
+  INTERVIEWING // In embedded AI chat interview
+  INTERVIEW_COMPLETE // Interview done, awaiting review
+  SCREENING // AI resume screening
+  SHORTLISTED // Passed initial screening
+  INTERVIEW_SCHEDULED // Traditional interview scheduled
+  UNDER_REVIEW // Human review in progress
   OFFER_EXTENDED
-  ACCEPTED
-  REJECTED
-  WITHDRAWN
+  ACCEPTED // Moving to CV Bank as VALIDATED
+  REJECTED // Not a fit
+  WITHDRAWN // Candidate dropped out
 }
 
 model Application {
@@ -186,12 +189,41 @@ model Application {
   coverLetter  String? @map("cover_letter") @db.Text
   linkedinUrl  String? @map("linkedin_url")
   portfolioUrl String? @map("portfolio_url")
+  githubUrl    String? @map("github_url")
+
+  // NEW: Dual Photo System
+  uploadedPhotoUrl    String? @map("uploaded_photo_url") // Required headshot
+  cvExtractedPhotoUrl String? @map("cv_extracted_photo_url") // Photo from resume
+  photoMetadata       Json?   @map("photo_metadata") // Source, quality, dimensions
+
+  // NEW: Salary & Compensation
+  currentSalary  Float?  @map("current_salary") // Current hourly/annual
+  expectedSalary Float?  @map("expected_salary") // Expected hourly/annual
+  salaryType     String? @map("salary_type") // HOURLY or ANNUAL
+  salaryNotes    String? @map("salary_notes") @db.Text
+
+  // NEW: Availability
+  hoursPerDay      Int?      @map("hours_per_day") // Hours available per day
+  daysPerMonth     Int?      @map("days_per_month") // Days available per month
+  startDate        DateTime? @map("start_date") // When can start
+  employmentStatus String?   @map("employment_status") // AVAILABLE, EMPLOYED, etc
 
   // Status & Scoring
   status     ApplicationStatus @default(SUBMITTED)
-  aiScore    Float?            @map("ai_score")
+  aiScore    Float?            @map("ai_score") // Resume fit score 0-100
   aiNotes    String?           @map("ai_notes") @db.Text
   humanNotes String?           @map("human_notes") @db.Text
+
+  // NEW: Resume Parsing
+  resumeText       String? @map("resume_text") @db.Text // Full extracted text
+  resumeParsedData Json?   @map("resume_parsed_data") // 50+ extracted fields
+  fitScore         Float?  @map("fit_score") // Initial match score 0-100
+
+  // NEW: Interview Integration
+  interviewCompleted  Boolean   @default(false) @map("interview_completed")
+  interviewTranscript Json?     @map("interview_transcript") // Full conversation
+  interviewScore      Float?    @map("interview_score") // Multi-AI consensus 0-100
+  interviewDate       DateTime? @map("interview_date")
 
   // Relations
   jobId  String  @map("job_id")
@@ -202,11 +234,12 @@ model Application {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
-  job        JobPosting  @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  user       User?       @relation(fields: [userId], references: [id])
-  interviews Interview[]
-  tests      Test[]
-  candidate  Candidate? // If applicant becomes provider
+  job              JobPosting        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  user             User?             @relation(fields: [userId], references: [id])
+  interviews       Interview[]
+  tests            Test[]
+  candidate        Candidate? // If applicant becomes provider
+  interviewSession InterviewSession? // NEW: AI Interview session
 
   @@map("applications")
 }
@@ -265,6 +298,93 @@ model Interview {
 }
 
 // ============================================================================
+// AI INTERVIEW SYSTEM (ALIFF-RECRUITER)
+// ============================================================================
+
+enum QuestionCategory {
+  EXPERIENCE_VALIDATION // Verify claimed experience
+  PROBLEM_SOLVING // Scenario-based questions
+  SKILLS_ASSESSMENT // Technical knowledge
+  CULTURE_FIT // Working style, preferences
+  AVAILABILITY // Logistics, commitment
+}
+
+// Interview Question Bank (100+ role-specific questions)
+model InterviewQuestion {
+  id       String           @id @default(cuid())
+  category QuestionCategory
+
+  // Question Content
+  roleType          String[] // ["GOVCON", "SLED", "IT", "WRITER"]
+  question          String   @db.Text
+  followUpQuestions String[] // Adaptive follow-ups
+
+  // Evaluation Criteria
+  evaluationCriteria String   @db.Text
+  idealAnswer        String?  @db.Text
+  redFlags           String[] // Warning signs in answers
+
+  // Usage Stats
+  timesAsked Int    @default(0) @map("times_asked")
+  avgScore   Float? @map("avg_score")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@index([roleType])
+  @@map("interview_questions")
+}
+
+// AI Interview Session (100% of applicants)
+model InterviewSession {
+  id            String @id @default(cuid())
+  applicationId String @unique @map("application_id")
+
+  // Session Info
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+  duration    Int?      @default(0) // Seconds
+
+  // Questions & Answers
+  messages       Json     @default("[]") // Full conversation array
+  questionsAsked String[] @map("questions_asked") // Question IDs from bank
+
+  // Multi-AI Evaluation
+  gpt4Score      Float? @map("gpt4_score") // 0-100
+  claudeScore    Float? @map("claude_score") // 0-100
+  geminiScore    Float? @map("gemini_score") // 0-100
+  consensusScore Float? @map("consensus_score") // Average
+
+  // Feedback
+  strengths        String[] // Key strengths identified
+  concerns         String[] // Red flags or gaps
+  recommendation   String? // HIRE, MAYBE, REJECT
+  detailedFeedback String?  @map("detailed_feedback") @db.Text
+
+  // Breakdown Scores
+  experienceScore     Float? @map("experience_score") // 0-30
+  technicalScore      Float? @map("technical_score") // 0-25
+  problemSolvingScore Float? @map("problem_solving_score") // 0-20
+  communicationScore  Float? @map("communication_score") // 0-15
+  cultureFitScore     Float? @map("culture_fit_score") // 0-10
+
+  // Metadata
+  userAgent String? @map("user_agent") // Browser info
+  ipAddress String? @map("ip_address") // For fraud detection
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  @@index([applicationId])
+  @@index([consensusScore])
+  @@map("interview_sessions")
+}
+
+// ============================================================================
 // AI TESTING SYSTEM
 // ============================================================================
 
@@ -320,10 +440,15 @@ model Test {
 // ============================================================================
 
 enum CandidateStatus {
-  AVAILABLE
-  BUSY
-  INACTIVE
-  BLACKLISTED
+  APPLIED // Just submitted application
+  SCREENING // AI resume screening in progress
+  INTERVIEWED // Completed AI interview
+  VALIDATED // Passed all checks, in talent pool
+  ACTIVE // Currently working on projects
+  BUSY // Assigned to projects
+  INACTIVE // In pool but not active
+  BLACKLISTED // Blocked
+  ARCHIVED // Opted out or disqualified
 }
 
 enum ClearanceLevel {
@@ -345,58 +470,99 @@ model Candidate {
   location String? // City, Country
   timezone String?
 
+  // NEW: Dual Photo System
+  uploadedPhotoUrl    String? @map("uploaded_photo_url") // Required headshot from application
+  cvExtractedPhotoUrl String? @map("cv_extracted_photo_url") // Photo extracted from resume
+  photoMetadata       Json?   @map("photo_metadata") // Source, upload date, quality score
+
   // Professional Links
   linkedIn  String? @map("linkedin_url")
   github    String? @map("github_url")
   portfolio String? @map("portfolio_url")
 
   // Skills & Experience (extracted from resume + validated via tests)
-  skills           String[] // ["GOVCON Proposal Writing", "Technical Writing", "FAR/DFARS"]
-  yearsExperience  Int      @default(0) @map("years_experience")
-  domains          String[] // ["Healthcare", "Cybersecurity", "Federal IT"]
-  certifications   String[] // ["PMP", "APMP", "CISSP"]
-  clearance        ClearanceLevel @default(NONE)
-  industryExp      String[]       @map("industry_experience") // Industries worked in
+  skills          String[] // ["GOVCON Proposal Writing", "Technical Writing", "FAR/DFARS"]
+  yearsExperience Int            @default(0) @map("years_experience")
+  domains         String[] // ["Healthcare", "Cybersecurity", "Federal IT"]
+  certifications  String[] // ["PMP", "APMP", "CISSP"]
+  clearance       ClearanceLevel @default(NONE)
+  industryExp     String[]       @map("industry_experience") // Industries worked in
+  tools           String[]       @default([]) // ["MS Word", "Shipley", "GPT-4"]
+  languages       String[]       @default([]) // ["English", "Spanish", "Urdu"]
+
+  // NEW: Salary & Compensation
+  currentSalary  Float?  @map("current_salary") // Current hourly/annual rate
+  expectedSalary Float?  @map("expected_salary") // Expected hourly/annual rate
+  salaryType     String? @map("salary_type") // "HOURLY" or "ANNUAL"
+  salaryNotes    String? @map("salary_notes") @db.Text
+  hourlyRatePKR  Float?  @map("hourly_rate_pkr") // Pakistani Rupees (CONFIDENTIAL - admin only)
+
+  // NEW: Availability (from application)
+  hoursPerDay      Int?      @map("hours_per_day") // Available hours per day
+  daysPerMonth     Int?      @map("days_per_month") // Available days per month
+  startDate        DateTime? @map("start_date") // When can start
+  employmentStatus String?   @map("employment_status") // "AVAILABLE", "EMPLOYED", "STUDENT"
+  hoursPerWeek     Int?      @map("hours_per_week") // Legacy field
+
+  // NEW: AI Interview Data
+  interviewTranscript Json?     @map("interview_transcript") // Full conversation
+  interviewScore      Float?    @map("interview_score") // 0-100 overall multi-AI score
+  interviewScores     Json?     @map("interview_scores") // {gpt4: 85, claude: 88, gemini: 82}
+  interviewFeedback   String?   @map("interview_feedback") @db.Text
+  interviewDate       DateTime? @map("interview_date")
+
+  // NEW: Screening Scores
+  fitScore         Float? @map("fit_score") // Initial resume match 0-100
+  skillsMatchScore Float? @map("skills_match_score") // Required skills match %
+  experienceScore  Float? @map("experience_score") // Years experience adequacy
 
   // Performance Metrics (from completed projects)
-  overallScore     Float   @default(0) @map("overall_score") // 0-100 average
-  projectsCompleted Int    @default(0) @map("projects_completed")
-  onTimeRate       Float   @default(0) @map("on_time_rate") // 0-100%
-  satisfactionAvg  Float   @default(0) @map("satisfaction_avg") // 0-5 stars
-  revisionRate     Float   @default(0) @map("revision_rate") // 0-100% (lower is better)
+  overallScore      Float @default(0) @map("overall_score") // 0-100 average
+  projectsCompleted Int   @default(0) @map("projects_completed")
+  onTimeRate        Float @default(0) @map("on_time_rate") // 0-100%
+  satisfactionAvg   Float @default(0) @map("satisfaction_avg") // 0-5 stars
+  revisionRate      Float @default(0) @map("revision_rate") // 0-100% (lower is better)
 
-  // Availability & Rates
-  status           CandidateStatus @default(AVAILABLE)
-  hoursPerWeek     Int?            @map("hours_per_week") // Availability
-  hourlyRatePKR    Float?          @map("hourly_rate_pkr") // Pakistani Rupees (CONFIDENTIAL)
-  preferredProjects String[]       @map("preferred_projects") // ["GOVCON", "SLED", "Technical Writing"]
+  // Status & Engagement
+  status            CandidateStatus @default(APPLIED)
+  preferredProjects String[]        @default([]) @map("preferred_projects") // ["GOVCON", "SLED"]
 
   // Pinecone Integration
   vectorEmbeddingId String? @unique @map("vector_embedding_id") // Reference to Pinecone vector
+  searchEmbedding   Float[] @default([]) @map("search_embedding") // Vector embedding for semantic search
 
   // Engagement Tracking
-  lastContacted    DateTime? @map("last_contacted")
-  responseTime     Int?      @map("response_time") // avg minutes to respond
-  emailEngagement  Float?    @map("email_engagement") // open rate %
-  smsEngagement    Float?    @map("sms_engagement") // response rate %
+  lastContacted   DateTime? @map("last_contacted")
+  responseTime    Int?      @map("response_time") // avg minutes to respond
+  emailEngagement Float?    @map("email_engagement") // open rate %
+  smsEngagement   Float?    @map("sms_engagement") // response rate %
+
+  // NEW: Application Metadata
+  appliedForJobId   String   @map("applied_for_job_id") // Which job they originally applied for
+  applicationDate   DateTime @default(now()) @map("application_date")
+  applicationSource String?  @map("application_source") // "LinkedIn", "Indeed", "Referral"
 
   // Parsed Resume Data (JSON storage for 50+ fields)
-  parsedResumeData Json? @map("parsed_resume_data")
+  parsedResumeData Json?   @map("parsed_resume_data")
+  resumeUrl        String? @map("resume_url") // Link to original resume
+  resumeText       String? @map("resume_text") @db.Text // Full extracted text
 
   // Timestamps
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
   activatedAt DateTime? @map("activated_at") // When hired as provider
 
   // Relations
-  application         Application          @relation(fields: [applicationId], references: [id], onDelete: Cascade)
-  projectAssignments  ProjectAssignment[]  @relation("CandidateAssignments")
-  performanceReviews  ProviderPerformance[]
-  timeEntries         TimeEntry[]
+  application        Application           @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  projectAssignments ProjectAssignment[]   @relation("CandidateAssignments")
+  performanceReviews ProviderPerformance[]
+  timeEntries        TimeEntry[]
 
   @@index([email])
   @@index([status])
   @@index([vectorEmbeddingId])
+  @@index([appliedForJobId])
+  @@index([applicationDate])
   @@map("candidates")
 }
 
@@ -412,17 +578,17 @@ enum TimeEntryStatus {
 }
 
 model TimeEntry {
-  id         String @id @default(cuid())
-  candidateId String @map("candidate_id")
-  projectId   String @map("project_id")
+  id          String   @id @default(cuid())
+  candidateId String   @map("candidate_id")
+  projectId   String   @map("project_id")
   date        DateTime
 
   // Time Tracking
-  hoursWorked    Float  @map("hours_worked")
-  hoursClaimed   Float  @map("hours_claimed") // May differ if idle time detected
-  hoursApproved  Float? @map("hours_approved") // After AI/human review
-  hoursRejected  Float? @map("hours_rejected")
-  idleMinutes    Int    @default(0) @map("idle_minutes")
+  hoursWorked   Float  @map("hours_worked")
+  hoursClaimed  Float  @map("hours_claimed") // May differ if idle time detected
+  hoursApproved Float? @map("hours_approved") // After AI/human review
+  hoursRejected Float? @map("hours_rejected")
+  idleMinutes   Int    @default(0) @map("idle_minutes")
 
   // Activity Monitoring (from Time Doctor/Hubstaff)
   activityPercent Float @default(0) @map("activity_percent") // 0-100
@@ -433,10 +599,10 @@ model TimeEntry {
   redFlags Json? @map("red_flags") // Array of detected issues
 
   // Review
-  status     TimeEntryStatus @default(PENDING)
-  reviewedBy String?         @map("reviewed_by") // "AI" or human reviewer ID
-  reviewedAt DateTime?       @map("reviewed_at")
-  reviewNotes String?        @map("review_notes") @db.Text
+  status      TimeEntryStatus @default(PENDING)
+  reviewedBy  String?         @map("reviewed_by") // "AI" or human reviewer ID
+  reviewedAt  DateTime?       @map("reviewed_at")
+  reviewNotes String?         @map("review_notes") @db.Text
 
   // Timestamps
   createdAt DateTime @default(now()) @map("created_at")
@@ -454,8 +620,8 @@ model TimeEntry {
 }
 
 model ProviderPerformance {
-  id                 String @id @default(cuid())
-  candidateId        String @unique @map("candidate_id")
+  id                   String @id @default(cuid())
+  candidateId          String @unique @map("candidate_id")
   currentHourlyRatePKR Float  @map("current_hourly_rate_pkr") // Pakistani Rupees
 
   // Rolling 30-day metrics
@@ -514,15 +680,15 @@ enum PostingPlatform {
 }
 
 model ExternalJobPosting {
-  id          String @id @default(cuid())
-  jobId       String @map("job_id")
+  id          String          @id @default(cuid())
+  jobId       String          @map("job_id")
   platform    PostingPlatform
-  externalUrl String? @map("external_url")
+  externalUrl String?         @map("external_url")
 
   // Status
-  status      PostingStatus @default(DRAFT)
-  postedAt    DateTime?     @map("posted_at")
-  expiresAt   DateTime?     @map("expires_at")
+  status    PostingStatus @default(DRAFT)
+  postedAt  DateTime?     @map("posted_at")
+  expiresAt DateTime?     @map("expires_at")
 
   // Analytics
   views        Int   @default(0)
@@ -790,10 +956,10 @@ model Project {
   anonymizeForTeam   Boolean      @default(true) @map("anonymize_for_team")
 
   // ALIFF-RECRUITER Integration
-  recruiterJobPackage      Json?     @map("recruiter_job_package") // SDL-generated job descriptions
-  recruiterPipelineStatus  Json?     @map("recruiter_pipeline_status") // Pipeline status
-  recruiterStatus          String?   @map("recruiter_status") // HIRING_IN_PROGRESS, etc.
-  recruiterActivatedAt     DateTime? @map("recruiter_activated_at")
+  recruiterJobPackage     Json?     @map("recruiter_job_package") // SDL-generated job descriptions
+  recruiterPipelineStatus Json?     @map("recruiter_pipeline_status") // Pipeline status
+  recruiterStatus         String?   @map("recruiter_status") // HIRING_IN_PROGRESS, etc.
+  recruiterActivatedAt    DateTime? @map("recruiter_activated_at")
 
   // Metadata
   createdBy   String        @map("created_by")
