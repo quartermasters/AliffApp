@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
         cvExtractedPhotoUrl: extractedPhotoUrl,
 
         // Parsed Data
-        parsedResumeData: parsedResumeData as any,
+        resumeParsedData: parsedResumeData as any,
 
         // Salary & Availability
         currentSalary,
