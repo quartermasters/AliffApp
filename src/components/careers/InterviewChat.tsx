@@ -1,10 +1,10 @@
 /**
- * AI Interview Chat Component
+ * Interview Chat Component
  *
- * Real-time conversational interview with ALIFF (recruiter)
+ * Real-time conversational interview with assigned recruiter
  * - WhatsApp/Slack-style chat interface
  * - Typing indicators
- * - Progress tracking through 7 stages
+ * - Human recruiter appearance (no AI mentions)
  * - Auto-scroll to latest message
  * - Mobile-responsive
  */
@@ -12,7 +12,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Send, Loader, CheckCircle, User, Bot, AlertCircle, Sparkles } from 'lucide-react';
+import { Send, Loader, User, AlertCircle } from 'lucide-react';
+import type { RecruiterPersona } from '@/lib/recruiter-personas';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -27,16 +28,6 @@ interface InterviewChatProps {
   onComplete: (interviewId: string) => void;
 }
 
-const STAGES = [
-  { id: 1, name: 'Welcome', key: 'WELCOME' },
-  { id: 2, name: 'Availability', key: 'AVAILABILITY' },
-  { id: 3, name: 'Skills', key: 'SKILLS' },
-  { id: 4, name: 'Remote Work', key: 'REMOTE_WORK' },
-  { id: 5, name: 'Compensation', key: 'COMPENSATION' },
-  { id: 6, name: 'Motivation', key: 'MOTIVATION' },
-  { id: 7, name: 'Closing', key: 'CLOSING' },
-];
-
 export default function InterviewChat({
   applicationId,
   candidateName,
@@ -47,8 +38,8 @@ export default function InterviewChat({
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSending, setIsSending] = useState(false);
-  const [currentStage, setCurrentStage] = useState(1);
   const [interviewId, setInterviewId] = useState<string | null>(null);
+  const [recruiterPersona, setRecruiterPersona] = useState<RecruiterPersona | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
 
@@ -93,8 +84,9 @@ export default function InterviewChat({
 
       const data = await response.json();
       setInterviewId(data.interviewId);
+      setRecruiterPersona(data.recruiterPersona); // NEW: Save recruiter persona
 
-      // Add welcome message from ALIFF
+      // Add welcome message from recruiter
       if (data.welcomeMessage) {
         setMessages([
           {
@@ -103,7 +95,6 @@ export default function InterviewChat({
             timestamp: new Date().toISOString(),
           },
         ]);
-        setCurrentStage(1);
       }
     } catch (err) {
       console.error('Failed to initialize interview:', err);
@@ -162,14 +153,6 @@ export default function InterviewChat({
 
       setMessages((prev) => [...prev, assistantMessage]);
 
-      // Update stage if changed
-      if (data.currentStage) {
-        const stageIndex = STAGES.findIndex((s) => s.key === data.currentStage);
-        if (stageIndex !== -1) {
-          setCurrentStage(stageIndex + 1);
-        }
-      }
-
       // Check if interview is complete
       if (data.isComplete) {
         setTimeout(() => {
@@ -201,7 +184,7 @@ export default function InterviewChat({
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-600">Starting your interview with ALIFF...</p>
+          <p className="text-gray-600">Connecting you to your recruiter...</p>
         </div>
       </div>
     );
@@ -213,37 +196,25 @@ export default function InterviewChat({
       <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between">
-            {/* ALIFF Info */}
+            {/* Recruiter Info */}
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-green-600 rounded-full flex items-center justify-center">
-                <Bot className="w-7 h-7 text-white" />
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-green-600 rounded-full flex items-center justify-center text-2xl">
+                {recruiterPersona?.avatar || '👤'}
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">ALIFF</h1>
-                <p className="text-sm text-gray-600">Recruitment Agent</p>
+                <h1 className="text-xl font-bold text-gray-900">
+                  {recruiterPersona?.name || 'Recruiter'}
+                </h1>
+                <p className="text-sm text-gray-600">
+                  {recruiterPersona?.title || 'Senior Recruiter'} • Aliff Services
+                </p>
               </div>
             </div>
 
-            {/* Progress Indicator */}
+            {/* Status Indicator */}
             <div className="hidden md:flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium text-gray-700">
-                Stage {currentStage} of {STAGES.length}: {STAGES[currentStage - 1]?.name}
-              </span>
-            </div>
-          </div>
-
-          {/* Mobile Progress Bar */}
-          <div className="md:hidden mt-3">
-            <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
-              <span>Stage {currentStage} of {STAGES.length}</span>
-              <span>{Math.round((currentStage / STAGES.length) * 100)}%</span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-gradient-to-r from-blue-600 to-green-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${(currentStage / STAGES.length) * 100}%` }}
-              ></div>
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-sm text-gray-600">Online</span>
             </div>
           </div>
         </div>
@@ -280,7 +251,7 @@ export default function InterviewChat({
                 {message.role === 'user' ? (
                   <User className="w-6 h-6 text-gray-600" />
                 ) : (
-                  <Bot className="w-6 h-6 text-white" />
+                  <span className="text-xl">{recruiterPersona?.avatar || '👤'}</span>
                 )}
               </div>
 
@@ -312,8 +283,8 @@ export default function InterviewChat({
           {/* Typing Indicator */}
           {isTyping && (
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
-                <Bot className="w-6 h-6 text-white" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center text-xl">
+                {recruiterPersona?.avatar || '👤'}
               </div>
               <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm">
                 <div className="flex items-center gap-1">
@@ -372,45 +343,6 @@ export default function InterviewChat({
           <p className="text-xs text-gray-500 mt-2 text-center">
             This interview typically takes 5-10 minutes. Be honest and clear in your responses.
           </p>
-        </div>
-      </div>
-
-      {/* Stage Progress (Desktop) - Fixed at bottom */}
-      <div className="hidden md:block bg-gray-50 border-t border-gray-200 px-6 py-3">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between">
-            {STAGES.map((stage, index) => (
-              <div key={stage.id} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold ${
-                      index + 1 < currentStage
-                        ? 'bg-green-600 text-white'
-                        : index + 1 === currentStage
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-gray-600'
-                    }`}
-                  >
-                    {index + 1 < currentStage ? (
-                      <CheckCircle className="w-5 h-5" />
-                    ) : (
-                      stage.id
-                    )}
-                  </div>
-                  <span className="text-xs text-gray-600 mt-1 whitespace-nowrap">
-                    {stage.name}
-                  </span>
-                </div>
-                {index < STAGES.length - 1 && (
-                  <div
-                    className={`w-12 h-0.5 mx-1 ${
-                      index + 1 < currentStage ? 'bg-green-600' : 'bg-gray-300'
-                    }`}
-                  ></div>
-                )}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </div>

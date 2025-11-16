@@ -1,14 +1,16 @@
 /**
  * Interview Start API Endpoint
  *
- * Initializes a new AI interview session
+ * Initializes a new interview session with assigned recruiter
  * - Creates InterviewSession record
- * - Generates personalized welcome message
- * - Returns session ID and first ALIFF message
+ * - Uses recruiter persona from application
+ * - Generates personalized welcome message from recruiter
+ * - Returns session ID and first recruiter message
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import type { RecruiterPersona } from '@/lib/recruiter-personas';
 
 const prisma = new PrismaClient();
 
@@ -64,13 +66,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Get assigned recruiter persona from application
+    const recruiterPersona = (application.resumeParsedData as any)?.assignedRecruiter as RecruiterPersona;
+
     // Create new interview session
     const firstName = candidateName?.split(' ')[0] || application.firstName;
-    const welcomeMessage = `Hi ${firstName}! 👋 Thanks for applying to the ${jobTitle || application.job.title} position.
 
-I'm ALIFF, your recruitment agent at Aliff Services. I'll be conducting your interview today, which should only take 5-10 minutes.
-
-I've reviewed your CV and I'm impressed by your background. Let's start - can you tell me a bit about your current situation? Are you currently working or available to start immediately?`;
+    // Use recruiter's personalized greeting
+    const welcomeMessage = recruiterPersona?.greeting
+      ? `${recruiterPersona.greeting.replace('Thanks for applying', `Thanks for applying to the ${jobTitle || application.job.title} position`)}\n\nI've reviewed your CV and I'm really impressed by your background. This interview will only take 5-10 minutes.\n\nLet's start - can you tell me a bit about your current situation? Are you currently working or available to start immediately?`
+      : `Hi ${firstName}! Thanks for applying to the ${jobTitle || application.job.title} position.\n\nI've reviewed your CV and I'm impressed by your background. Let's start - can you tell me a bit about your current situation? Are you currently working or available to start immediately?`;
 
     const interviewSession = await prisma.interviewSession.create({
       data: {
@@ -106,6 +111,7 @@ I've reviewed your CV and I'm impressed by your background. Let's start - can yo
       success: true,
       interviewId: interviewSession.id,
       welcomeMessage,
+      recruiterPersona, // NEW: Include recruiter persona for frontend
       isResuming: false,
     });
   } catch (error) {
