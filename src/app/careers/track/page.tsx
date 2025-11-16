@@ -12,7 +12,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Search, CheckCircle, Clock, XCircle, Loader, ArrowRight, MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 
@@ -36,7 +36,7 @@ interface ApplicationStatus {
   timeline: TimelineStep[];
 }
 
-export default function ApplicationTrackingPage() {
+function ApplicationTrackingContent() {
   const searchParams = useSearchParams();
   const idFromUrl = searchParams.get('id');
 
@@ -324,5 +324,22 @@ export default function ApplicationTrackingPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ApplicationTrackingPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <ApplicationTrackingContent />
+    </Suspense>
   );
 }
