@@ -9,9 +9,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
 import { Briefcase } from 'lucide-react';
-import AIChatWidget from '@/components/careers/AIChatWidget';
 import InteractiveJobCard from '@/components/careers/InteractiveJobCard';
-import ScrollToChatButton from '@/components/careers/ScrollToChatButton';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -145,11 +143,10 @@ export default async function CareersPage() {
             We're always open to exceptional talent. Join our talent pool and we'll notify you
             when positions matching your skills become available.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <ScrollToChatButton />
+          <div className="flex justify-center">
             <Link
               href="/candidate-portal"
-              className="inline-flex items-center gap-2 bg-white text-navy-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border-2 border-navy-900"
+              className="inline-flex items-center gap-2 bg-navy-900 text-white px-6 py-3 rounded-lg font-semibold hover:bg-navy-800 transition-colors"
             >
               <span>Access Candidate Portal</span>
             </Link>
@@ -160,9 +157,6 @@ export default async function CareersPage() {
         </div>
       </div>
       </section>
-
-      {/* AI Chat Widget */}
-      <AIChatWidget />
     </main>
   );
 }

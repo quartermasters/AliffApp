@@ -11,8 +11,6 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
 import { Globe, Building, MapPin, DollarSign, Eye, FileText, ArrowLeft } from 'lucide-react';
-import AIChatWidget from '@/components/careers/AIChatWidget';
-import ScrollToChatButton from '@/components/careers/ScrollToChatButton';
 import ShareButtons from '@/components/careers/ShareButtons';
 
 // Force dynamic rendering (requires database access)
@@ -640,13 +638,8 @@ export default async function JobDetailPage({ params }: PageProps) {
               <div className="bg-navy-50 rounded-lg p-6 border border-navy-200">
                 <h3 className="text-lg font-bold text-navy-900 mb-2">Need Help?</h3>
                 <p className="text-sm text-gray-700 mb-4">
-                  Have questions about this role or the application process?
+                  Have questions about this role or the application process? Use the ALIFF chat widget at the bottom-right of your screen for instant answers 24/7.
                 </p>
-                <ScrollToChatButton
-                  variant="compact"
-                  fullWidth
-                  subtitle="Get instant answers 24/7"
-                />
               </div>
 
               {/* Share Card */}
@@ -662,9 +655,6 @@ export default async function JobDetailPage({ params }: PageProps) {
         </div>
       </div>
       </section>
-
-      {/* AI Chat Widget - Context-aware for this specific job */}
-      <AIChatWidget jobId={job.slug} jobTitle={job.title} />
     </main>
   );
 }
