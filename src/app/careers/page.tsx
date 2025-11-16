@@ -8,8 +8,9 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
-import { Briefcase, Globe, Building, Laptop, MapPin, DollarSign, Calendar, FileText, MessageCircle } from 'lucide-react';
+import { Briefcase, MessageCircle } from 'lucide-react';
 import AIChatWidget from '@/components/careers/AIChatWidget';
+import InteractiveJobCard from '@/components/careers/InteractiveJobCard';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -63,34 +64,6 @@ export default async function CareersPage() {
     jobs = [];
   }
 
-  const getTypeColor = (type: JobType) => {
-    switch (type) {
-      case 'FULL_TIME':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'PART_TIME':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'CONTRACT':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'INTERNSHIP':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
-
-  const LocationIcon = ({ location }: { location: JobLocation }) => {
-    switch (location) {
-      case 'REMOTE':
-        return <Globe className="w-5 h-5" />;
-      case 'HYBRID':
-        return <Building className="w-5 h-5" />;
-      case 'ON_SITE':
-        return <Building className="w-5 h-5" />;
-      default:
-        return <MapPin className="w-5 h-5" />;
-    }
-  };
-
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -141,80 +114,22 @@ export default async function CareersPage() {
               </p>
             </div>
 
-            {/* Job Listings */}
-            <div className="grid grid-cols-1 gap-6">
+            {/* Job Listings - Interactive Cards */}
+            <div className="grid grid-cols-1 gap-8">
               {jobs.map((job) => (
-                <Link
+                <InteractiveJobCard
                   key={job.id}
-                  href={`/careers/${job.slug}`}
-                  className="block bg-white rounded-lg shadow hover:shadow-lg transition-shadow border border-gray-200 hover:border-teal-300"
-                >
-                  <div className="p-6">
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2 hover:text-teal-600">
-                          {job.title}
-                        </h2>
-                        {job.department && (
-                          <p className="text-sm text-gray-600">{job.department}</p>
-                        )}
-                      </div>
-                      <div className="ml-4">
-                        <span
-                          className={`px-3 py-1 rounded-full text-xs font-medium border ${getTypeColor(
-                            job.type
-                          )}`}
-                        >
-                          {job.type.replace('_', ' ')}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Job Details */}
-                    <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <LocationIcon location={job.location} />
-                        <span>{job.location.replace('_', ' ')}</span>
-                      </div>
-                      {job.salary && (
-                        <div className="flex items-center gap-2">
-                          <DollarSign className="w-5 h-5" />
-                          <span>{job.salary}</span>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-5 h-5" />
-                        <span>
-                          Posted {new Date(job.publishedAt!).toLocaleDateString('en-US', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                          })}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Description Preview */}
-                    <p className="text-gray-700 line-clamp-2 mb-4">
-                      {job.description.substring(0, 200)}...
-                    </p>
-
-                    {/* Footer */}
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <FileText className="w-4 h-4" />
-                        <span>
-                          {job._count.applications} application
-                          {job._count.applications !== 1 && 's'}
-                        </span>
-                      </div>
-                      <div className="text-teal-600 font-medium">
-                        View Details →
-                      </div>
-                    </div>
-                  </div>
-                </Link>
+                  id={job.id}
+                  slug={job.slug}
+                  title={job.title}
+                  department={job.department}
+                  type={job.type}
+                  location={job.location}
+                  salary={job.salary}
+                  description={job.description}
+                  publishedAt={job.publishedAt}
+                  applicationsCount={job._count.applications}
+                />
               ))}
             </div>
           </>
