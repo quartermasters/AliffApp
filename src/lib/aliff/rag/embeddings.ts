@@ -8,10 +8,20 @@
 import OpenAI from 'openai';
 import { DEFAULT_EMBEDDING_CONFIG, type EmbeddingConfig } from '../types';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '',
-});
+// Lazy initialization to avoid build-time errors
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY environment variable is not set');
+    }
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openaiClient;
+}
 
 /**
  * Generate embedding for a single text
@@ -30,12 +40,8 @@ export async function embedText(
       throw new Error('Cannot embed empty text');
     }
 
-    // Check for API key
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY environment variable not set');
-    }
-
     // Generate embedding
+    const openai = getOpenAIClient();
     const response = await openai.embeddings.create({
       model: config.model,
       input: text.trim(),
@@ -77,11 +83,6 @@ export async function embedBatch(
       throw new Error('Cannot embed empty text array');
     }
 
-    // Check for API key
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY environment variable not set');
-    }
-
     // Filter out empty texts
     const validTexts = texts.filter((t) => t && t.trim().length > 0);
 
@@ -90,6 +91,7 @@ export async function embedBatch(
     }
 
     // Process in batches to avoid API limits
+    const openai = getOpenAIClient();
     const batchSize = config.batchSize;
     const embeddings: number[][] = [];
 

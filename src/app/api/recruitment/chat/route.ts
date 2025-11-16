@@ -15,10 +15,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { prisma } from '@/lib/prisma';
 
-// Initialize OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid build-time errors
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY environment variable is not set');
+    }
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openaiClient;
+}
 
 // System prompt for ALIFF-RECRUITER personality
 const SYSTEM_PROMPT = `You are ALIFF, an AI Recruiter for Aliff Services - a government contracting and AI-powered solutions company.
@@ -136,6 +146,7 @@ Use this context to provide specific answers about this role.`;
     });
 
     // Call OpenAI API
+    const openai = getOpenAIClient();
     const completion = await openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: messages,
