@@ -14,8 +14,10 @@
 
 import OpenAI from 'openai';
 import { readFile } from 'fs/promises';
-import pdfParse = require('pdf-parse');
-import mammoth = require('mammoth');
+// @ts-ignore - pdf-parse has no types
+import pdfParse from 'pdf-parse';
+// @ts-ignore - mammoth types may be incompatible
+import mammoth from 'mammoth';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
