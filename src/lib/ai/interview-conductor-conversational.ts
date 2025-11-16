@@ -12,13 +12,27 @@
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// Lazy initialization to avoid build-time errors
+let anthropic: Anthropic | null = null;
+let openai: OpenAI | null = null;
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+function getAnthropic(): Anthropic {
+  if (!anthropic) {
+    anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY || '',
+    });
+  }
+  return anthropic;
+}
+
+function getOpenAI(): OpenAI {
+  if (!openai) {
+    openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY || '',
+    });
+  }
+  return openai;
+}
 
 // Interview Stage Flow
 export enum InterviewStage {
@@ -92,7 +106,7 @@ export async function generateAliffResponse(
   const conversationHistory = buildConversationHistory(context, userMessage);
 
   try {
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1024,
       temperature: 0.7,
@@ -132,7 +146,7 @@ export async function extractStructuredData(
   const extractionPrompt = buildExtractionPrompt(stage, userMessage);
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o',
       temperature: 0.1,
       messages: [
@@ -275,7 +289,7 @@ Return your analysis as JSON in this exact format:
 }`;
 
   try {
-    const response = await anthropic.messages.create({
+    const response = await getAnthropic().messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 2048,
       temperature: 0.3,
@@ -351,7 +365,7 @@ Format your response as JSON with this structure:
 }`;
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o',
       temperature: 0.3,
       messages: [
