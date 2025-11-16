@@ -1298,52 +1298,6 @@ High performers (75+) advance to interview and talent pool immediately.`,
 • Daily engagement and monitoring
 • Weekly content publication schedule
 • Monthly strategic planning and reporting`,
-      responsibilities: `**Primary Responsibilities:**
-
-**Content Strategy & Creation (40%):**
-• Develop monthly content calendars aligned with marketing goals
-• Create daily LinkedIn posts targeting GOVCON professionals
-• Write thought leadership content for executives
-• Design visual content (graphics, infographics, short videos)
-• Curate relevant industry news and insights
-• Develop content themes and campaign narratives
-
-**Community Management (25%):**
-• Engage with followers, comments, and messages daily
-• Build relationships with GOVCON influencers and companies
-• Monitor brand mentions and industry conversations
-• Respond to inquiries and route leads to sales team
-• Foster community discussions in LinkedIn groups
-• Manage online reputation and address concerns
-
-**Paid Social Campaigns (20%):**
-• Develop LinkedIn sponsored content campaigns
-• Create ad creative and copy for GOVCON audiences
-• Set up audience targeting and campaign parameters
-• Monitor campaign performance and optimize
-• Manage advertising budget efficiently
-• Report on campaign ROI and lead quality
-
-**Analytics & Reporting (10%):**
-• Track key metrics (engagement, reach, leads, conversions)
-• Prepare monthly performance reports with insights
-• Analyze competitor social media strategies
-• Identify trends and optimization opportunities
-• Test content formats and posting times
-• Provide strategic recommendations
-
-**Collaboration & Time Tracking (5%):**
-• Coordinate with content and design teams
-• Align social strategy with overall marketing campaigns
-• Participate in weekly marketing planning sessions
-• Log hours accurately in Time Doctor
-• Maintain content asset library
-
-**Expected Activity:**
-• 60%+ Time Doctor activity (content creation time)
-• Daily engagement and monitoring
-• Weekly content publication schedule
-• Monthly strategic planning and reporting`,
       benefits: `**Social Media Provider Benefits:**
 
 **Performance-Based Compensation:**
@@ -1440,48 +1394,6 @@ Join our mentorship-driven program where you'll learn federal proposal writing f
 5. Training program interview and CV Bank entry
 
 Strong candidates (75+) receive immediate training program offer.`,
-      requirements: `**Education & Background:**
-• Master's degree in English, Communications, Business, or related field required
-• Fresh graduates or up to 2-3 years professional writing experience
-• Strong academic writing background (thesis, research papers)
-• Interest in government contracting and public sector work
-
-**Writing Fundamentals:**
-• Excellent English grammar, spelling, and composition
-• Strong research and analytical skills
-• Ability to synthesize complex information
-• Clear, concise, and persuasive writing style
-• Attention to detail and accuracy
-• Ability to follow style guides and templates
-
-**Desired Qualities:**
-• Eagerness to learn federal contracting and proposal writing
-• Coachability and receptiveness to feedback
-• Strong work ethic and self-motivation
-• Curiosity about government and policy
-• Ability to work independently in remote environment
-• Commitment to professional development
-
-**Technical Skills:**
-• Proficient in Microsoft Word (styles, formatting, track changes)
-• Basic Microsoft Excel and PowerPoint
-• Comfortable with cloud collaboration tools (Google Docs, Notion)
-• Willingness to learn proposal management software
-• Basic internet research skills
-
-**Bonus Qualifications:**
-• Any exposure to government contracting or public sector
-• Internship experience in writing or research roles
-• Familiarity with project management concepts
-• Basic understanding of business or technical writing
-• Multilingual abilities (English + Urdu/other languages)
-
-**Learning Mindset:**
-• Growth-oriented attitude toward skill development
-• Comfort with structured training and milestones
-• Willingness to start with editing/research and progress to writing
-• Open to AI-assisted writing (with human oversight)
-• Interest in long-term GOVCON career development`,
       requirements: `**Education & Background:**
 • Master's degree in English, Communications, Business, or related field required
 • Fresh graduates or up to 2-3 years professional writing experience
