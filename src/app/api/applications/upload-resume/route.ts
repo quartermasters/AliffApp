@@ -105,10 +105,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// Configure for larger file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
