@@ -58,8 +58,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create uploads directory
-    const uploadsDir = join(process.cwd(), 'uploads', 'resumes');
+    // Create uploads directory (use /tmp on Vercel)
+    const uploadsDir = join('/tmp', 'uploads', 'resumes');
     if (!existsSync(uploadsDir)) {
       await mkdir(uploadsDir, { recursive: true });
     }
