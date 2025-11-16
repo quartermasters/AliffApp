@@ -42,7 +42,7 @@ async function main() {
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'GOVCON Proposal Writing',
-      salary: 'PKR 3,000-6,000/hour (competitive rates based on experience)',
+      salary: 'PKR 200-300/hour (competitive rates based on experience)',
       description: `Join Aliff Services as a Government Contracting Proposal Writer and become part of our strategic CV Bank—an elite talent pool of validated professionals who power federal contract wins.
 
 **About This Role:**
@@ -135,7 +135,7 @@ Candidates scoring 75+ in our screening automatically advance to the CV Bank and
       benefits: `**Provider Benefits & Perks:**
 
 **Compensation & Growth:**
-💰 Competitive PKR 3,000-6,000/hour based on experience and performance
+💰 Competitive PKR 200-300/hour based on experience and performance
 📈 Performance-based rate increases every 6 months
 🎯 Bonus opportunities for high-performing proposals and client wins
 💼 Access to premium GOVCON training and certifications
@@ -183,14 +183,14 @@ As you prove your capabilities, you'll gain access to:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Technical Services',
-      salary: 'PKR 4,000-8,000/hour (expert-level compensation)',
+      salary: 'PKR 300-350/hour (expert-level compensation)',
       description: `Aliff Services seeks seasoned Technical Subject Matter Experts (SMEs) to join our strategic CV Bank and support federal IT proposal development. This provider role offers flexible hourly engagement for experts who can translate complex technical solutions into winning proposal narratives.
 
 **About This Opportunity:**
 As a Technical SME in our CV Bank, you'll provide critical technical expertise for federal IT proposals across domains like cybersecurity, cloud infrastructure, enterprise architecture, DevSecOps, and data analytics. Your deep technical knowledge will directly influence multi-million dollar contract wins.
 
 **Why Join as a Provider:**
-✅ Premium hourly rates (PKR 4,000-8,000/hour) reflecting your expertise
+✅ Premium hourly rates (PKR 300-350/hour) reflecting your expertise
 ✅ Work only on projects matching your technical specialization
 ✅ Remote engagement with flexible scheduling around your commitments
 ✅ Collaborate with elite GOVCON teams on high-impact federal contracts
@@ -329,7 +329,7 @@ Top performers (75+ screening score) fast-track to interviews and CV Bank entry.
       benefits: `**Expert-Level Provider Benefits:**
 
 **Premium Compensation:**
-💰 PKR 4,000-8,000/hour based on expertise, clearance level, and specialization
+💰 PKR 300-350/hour based on expertise, clearance level, and specialization
 🎖️ Clearance bonuses: +20% for TS/SCI, +10% for Top Secret
 🏆 Performance bonuses for proposal wins (up to 15% of hours worked)
 📈 Bi-annual rate reviews with performance-based increases
@@ -386,14 +386,14 @@ Each level unlocks:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Creative Services',
-      salary: 'PKR 2,000-4,000/hour (based on portfolio and experience)',
+      salary: 'PKR 100-400/hour (based on portfolio and experience)',
       description: `Join Aliff Services' creative team as a Graphic Designer specializing in government proposal graphics, infographics, and marketing collateral. This flexible provider role lets you leverage your design expertise for high-stakes federal contract proposals.
 
 **About the Role:**
 Create compelling visual narratives that help win multi-million dollar federal contracts. You'll design everything from technical architecture diagrams to executive-level infographics, ensuring proposals stand out while maintaining strict government compliance.
 
 **Provider Model Benefits:**
-✅ Hourly engagement (PKR 2,000-4,000/hour) with project flexibility
+✅ Hourly engagement (PKR 100-400/hour) with project flexibility
 ✅ Build portfolio with prestigious federal agency work
 ✅ Remote work with async collaboration
 ✅ Creative freedom within GOVCON compliance guidelines
@@ -482,7 +482,7 @@ High scorers (75+) advance immediately to interview and talent pool.`,
       benefits: `**Creative Provider Benefits:**
 
 **Compensation & Growth:**
-💰 PKR 2,000-4,000/hour based on portfolio strength and experience
+💰 PKR 100-400/hour based on portfolio strength and experience
 🎨 Project bonuses for exceptional creative work
 📈 Rate increases tied to skill development and client satisfaction
 🏆 Performance bonuses when proposals win
@@ -544,14 +544,14 @@ Each level includes:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Quality Assurance',
-      salary: 'PKR 2,500-5,000/hour (based on legal/compliance background)',
+      salary: 'PKR 250-300/hour (based on legal/compliance background)',
       description: `Aliff Services seeks meticulous Compliance & Quality Reviewers to join our CV Bank and ensure government proposals meet all solicitation requirements. This provider role is ideal for legal professionals or compliance experts who want flexible hourly engagement.
 
 **About This Critical Role:**
 You'll be the final safeguard ensuring proposals are compliant with RFP instructions, FAR/DFARS regulations, and agency-specific requirements. Your eagle-eyed attention to detail directly impacts win rates on federal contracts.
 
 **Why Join as a Provider:**
-✅ Competitive hourly rates (PKR 2,500-5,000/hour) for specialized expertise
+✅ Competitive hourly rates (PKR 250-300/hour) for specialized expertise
 ✅ Remote, flexible engagement around your schedule
 ✅ Work on diverse federal proposals across agencies
 ✅ Clear advancement: Reviewer → Senior Reviewer → Quality Director
@@ -640,7 +640,7 @@ Top candidates (75+ score) fast-track to interviews and talent pool.`,
       benefits: `**Compliance Provider Benefits:**
 
 **Competitive Compensation:**
-💰 PKR 2,500-5,000/hour (higher rates for legal backgrounds)
+💰 PKR 250-300/hour (higher rates for legal backgrounds)
 📜 Bonus for zero-defect final submissions
 📈 Rate increases based on accuracy and efficiency metrics
 🎯 Win bonuses when proposals are awarded
@@ -696,14 +696,14 @@ Each promotion brings:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Pricing & Finance',
-      salary: 'PKR 3,000-6,000/hour (based on finance expertise)',
+      salary: 'PKR 150-250/hour (based on finance expertise)',
       description: `Aliff Services seeks detail-oriented Pricing & Cost Analysts to join our CV Bank and develop winning pricing strategies for federal proposals. This provider role offers flexible hourly engagement for finance professionals with GOVCON experience.
 
 **About the Role:**
 Develop competitive, compliant pricing for federal IT and services contracts. You'll create cost models, basis of estimates, and pricing narratives that balance competitiveness with profitability while meeting strict government cost accounting standards.
 
 **Provider Benefits:**
-✅ Strong hourly compensation (PKR 3,000-6,000/hour)
+✅ Strong hourly compensation (PKR 150-250/hour)
 ✅ Remote work with project-based flexibility
 ✅ Exposure to diverse contract types and pricing models
 ✅ Career path: Analyst → Senior Analyst → Pricing Director
@@ -796,7 +796,7 @@ High performers (75+) advance directly to interviews and talent pool.`,
       benefits: `**Pricing Provider Benefits:**
 
 **Compensation & Incentives:**
-💰 PKR 3,000-6,000/hour based on experience and certifications
+💰 PKR 150-250/hour based on experience and certifications
 🎯 Win bonuses: 10-15% of hours worked when proposal is awarded
 📈 Bi-annual rate reviews with performance increases
 🏆 Accuracy bonuses for error-free final submissions
@@ -858,14 +858,14 @@ Each level unlocks:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Engineering',
-      salary: 'PKR 3,500-7,000/hour (based on tech stack expertise)',
+      salary: 'PKR 250-300/hour (based on tech stack expertise)',
       description: `Join Aliff Services' engineering team as an AI-powered Full-Stack Web Developer. This provider role is perfect for developers who leverage modern AI tools to build enterprise applications at exceptional velocity.
 
 **About This Role:**
 Build production-ready web applications using cutting-edge AI development tools (GitHub Copilot, Claude Code, GPT-4, etc.). You'll develop internal tools for our GOVCON platform, client dashboards, and proposal management systems.
 
 **Why Join Our CV Bank:**
-✅ Premium hourly rates (PKR 3,500-7,000/hour) for skilled developers
+✅ Premium hourly rates (PKR 250-300/hour) for skilled developers
 ✅ Work with modern tech stack (Next.js, React, TypeScript, Prisma, tRPC)
 ✅ Fully remote with asynchronous collaboration
 ✅ Career growth: Developer → Senior Developer → Tech Lead → CTO
@@ -972,7 +972,7 @@ Top performers (75+) advance to technical interview and talent pool.`,
       benefits: `**Developer Provider Benefits:**
 
 **Competitive Compensation:**
-💰 PKR 3,500-7,000/hour based on experience and tech stack expertise
+💰 PKR 250-300/hour based on experience and tech stack expertise
 🚀 Bonuses for successful feature launches
 📈 Rate increases based on code quality and velocity metrics
 🏆 Recognition bonuses for innovative solutions
@@ -1035,14 +1035,14 @@ Each level includes:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Content & Marketing',
-      salary: 'PKR 2,500-5,000/hour (based on portfolio strength)',
+      salary: 'PKR 250-300/hour (based on portfolio strength)',
       description: `Aliff Services seeks exceptional copywriters who can craft compelling narratives for government proposals and marketing content. Join our CV Bank as a provider with flexible hourly engagement.
 
 **About This Role:**
 Write persuasive copy that wins federal contracts and attracts clients. You'll create everything from executive summaries and win themes to website content and thought leadership articles.
 
 **Provider Model Benefits:**
-✅ Competitive hourly rates (PKR 2,500-5,000/hour)
+✅ Competitive hourly rates (PKR 250-300/hour)
 ✅ Diverse projects: GOVCON proposals + marketing content
 ✅ Remote work with creative freedom
 ✅ Career path: Copywriter → Senior Copywriter → Content Director
@@ -1149,7 +1149,7 @@ Strong candidates (75+) fast-track to interview and talent pool.`,
       benefits: `**Copywriter Provider Benefits:**
 
 **Compensation & Recognition:**
-💰 PKR 2,500-5,000/hour based on experience and portfolio
+💰 PKR 250-300/hour based on experience and portfolio
 📈 Bonuses for high-performing content (proposal wins, conversion rates)
 🏆 Rate increases based on client satisfaction and content performance
 ✍️ Byline credit on thought leadership articles
@@ -1218,14 +1218,14 @@ Each level includes:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'Marketing',
-      salary: 'PKR 2,000-4,500/hour (based on proven results)',
+      salary: 'PKR 200-250/hour (based on proven results)',
       description: `Join Aliff Services as a Social Media Marketing Expert specializing in B2B GOVCON outreach. This provider role offers flexible hourly engagement for social media professionals who understand government contracting audiences.
 
 **About This Role:**
 Build Aliff's presence on LinkedIn and other B2B platforms, engaging federal contractors, government decision-makers, and GOVCON professionals. You'll create content, manage campaigns, and drive lead generation.
 
 **Provider Benefits:**
-✅ Competitive hourly rates (PKR 2,000-4,500/hour)
+✅ Competitive hourly rates (PKR 200-250/hour)
 ✅ Remote work with creative autonomy
 ✅ Performance bonuses tied to engagement metrics
 ✅ Career path: SMM Expert → Senior SMM → Marketing Director
@@ -1385,7 +1385,7 @@ High performers (75+) advance to interview and talent pool immediately.`,
       benefits: `**Social Media Provider Benefits:**
 
 **Performance-Based Compensation:**
-💰 PKR 2,000-4,500/hour based on experience and proven results
+💰 PKR 200-250/hour based on experience and proven results
 📈 Performance bonuses tied to engagement growth and lead generation
 🎯 Campaign win bonuses for high-converting social campaigns
 🏆 Recognition rewards for viral content
@@ -1455,14 +1455,14 @@ Each level brings:
       type: JobType.CONTRACT,
       location: JobLocation.REMOTE,
       department: 'GOVCON Proposal Writing',
-      salary: 'PKR 1,500-3,000/hour (training program with growth path)',
+      salary: 'PKR 150-200/hour (training program with growth path)',
       description: `Launch your GOVCON proposal writing career with Aliff Services' structured training program. This provider role is designed for talented writers ready to break into federal government contracting.
 
 **About This Opportunity:**
 Join our mentorship-driven program where you'll learn federal proposal writing from experienced GOVCON professionals. Start with editing and research tasks, gradually taking on full proposal sections as you develop expertise.
 
 **Why Join as a Junior Provider:**
-✅ Competitive entry-level rates (PKR 1,500-3,000/hour) with rapid growth potential
+✅ Competitive entry-level rates (PKR 150-200/hour) with rapid growth potential
 ✅ Structured training program with clear advancement milestones
 ✅ Mentorship from senior proposal writers and SMEs
 ✅ Remote work with flexible learning schedule
@@ -1564,7 +1564,7 @@ Strong candidates (75+) receive immediate training program offer.`,
 • Interest in long-term GOVCON career development`,
       responsibilities: `**Training Program Phases:**
 
-**Phase 1: Foundation (Months 1-3) - PKR 1,500-2,000/hour:**
+**Phase 1: Foundation (Months 1-3) - PKR 150/hour:**
 • Study GOVCON fundamentals (FAR, RFP structure, evaluation criteria)
 • Review past winning proposals and annotate learning points
 • Edit and proofread proposal sections written by senior writers
@@ -1573,7 +1573,7 @@ Strong candidates (75+) receive immediate training program offer.`,
 • Shadow senior writers during proposal development
 • Complete GOVCON training modules and assessments
 
-**Phase 2: Assisted Writing (Months 4-6) - PKR 2,000-2,500/hour:**
+**Phase 2: Assisted Writing (Months 4-6) - PKR 175/hour:**
 • Draft past performance descriptions under mentorship
 • Write capability statements and company qualifications
 • Develop sections of technical volumes with guidance
@@ -1582,7 +1582,7 @@ Strong candidates (75+) receive immediate training program offer.`,
 • Begin interviewing SMEs to gather content
 • Learn proposal management workflow and tools
 
-**Phase 3: Independent Writing (Months 7-12) - PKR 2,500-3,000/hour:**
+**Phase 3: Independent Writing (Months 7-12) - PKR 200/hour:**
 • Take ownership of complete proposal sections
 • Write executive summaries for smaller proposals
 • Develop win themes and discriminators
@@ -1592,7 +1592,7 @@ Strong candidates (75+) receive immediate training program offer.`,
 • Manage proposal schedules for assigned sections
 
 **Phase 4: Advancement (Months 12+) - Promotion to Mid-Level:**
-• Transition to mid-level proposal writer rates (PKR 3,000-4,500/hour)
+• Transition to mid-level proposal writer rates (PKR 250-300/hour)
 • Lead entire proposal volumes
 • Mentor incoming junior writers
 • Contribute to capture planning and strategy
@@ -1616,10 +1616,10 @@ Strong candidates (75+) receive immediate training program offer.`,
       benefits: `**Junior Writer Training Benefits:**
 
 **Structured Compensation Growth:**
-💰 Start: PKR 1,500-2,000/hour (Months 1-3)
-📈 Grow to: PKR 2,500-3,000/hour (Months 7-12)
-🚀 Advance to: PKR 3,000-4,500/hour (Mid-level promotion at 12-18 months)
-🎯 Long-term: PKR 6,000+/hour (Senior level at 24-30 months)
+💰 Start: PKR 150/hour (Months 1-3)
+📈 Grow to: PKR 200/hour (Months 7-12)
+🚀 Advance to: PKR 250-300/hour (Mid-level promotion at 12-18 months)
+🎯 Long-term: PKR 300+/hour (Senior level at 24-30 months)
 
 **Comprehensive Training:**
 🎓 Structured GOVCON curriculum covering FAR, DFARS, proposal management
@@ -1666,7 +1666,7 @@ Clear advancement criteria at each level:
 🎯 Regular check-ins and development planning
 
 **Long-Term Career Opportunities:**
-• Become senior proposal writer earning PKR 6,000+/hour
+• Become senior proposal writer earning PKR 300+/hour
 • Specialize in high-value technical or executive writing
 • Transition to proposal management or capture leadership
 • Potential full-time employment as company scales

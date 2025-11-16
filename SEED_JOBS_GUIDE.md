@@ -6,15 +6,15 @@ This guide explains how to populate your database with the 9 ALIFF-RECRUITER ada
 
 We've created 9 job postings adapted from the existing careers.php file with ALIFF-RECRUITER enhancements:
 
-1. **Government Contracting Proposal Writer** - PKR 3,000-6,000/hour
-2. **Technical Subject Matter Expert (SME) - Federal IT** - PKR 4,000-8,000/hour
-3. **Graphic Designer - Proposal & Marketing** - PKR 2,000-4,000/hour
-4. **Compliance & Quality Reviewer** - PKR 2,500-5,000/hour
-5. **Pricing & Cost Analyst** - PKR 3,000-6,000/hour
-6. **AI-Powered Full-Stack Web Developer** - PKR 3,500-7,000/hour
-7. **Expert Copywriter - GOVCON & Marketing** - PKR 2,500-5,000/hour
-8. **Social Media Marketing Expert - B2B GOVCON** - PKR 2,000-4,500/hour
-9. **Junior Proposal Writer - GOVCON Training Program** - PKR 1,500-3,000/hour
+1. **Proposal Writer** - PKR 200-300/hour
+2. **Technical Subject Matter Expert (SME) - Marketing, IT, Logistics, and many other subjects** - PKR 300-350/hour
+3. **Graphic Designer - Proposal & Marketing** - PKR 100-400/hour
+4. **Compliance & Quality Reviewer** - PKR 250-300/hour
+5. **Pricing & Cost Analyst** - PKR 150-250/hour
+6. **Full-Stack Web Developer** - PKR 250-300/hour
+7. **Expert Copywriter - GOVCON & Marketing** - PKR 250-300/hour
+8. **Social Media Marketing Expert - B2B GOVCON** - PKR 200-250/hour
+9. **Junior Proposal Writer - GOVCON Training Program** - PKR 150-200/hour
 
 ## ALIFF-RECRUITER Adaptations Applied
 
@@ -97,15 +97,15 @@ After seeding, verify jobs appear correctly:
 
 | # | Title | Slug | Type | Hourly Rate (PKR) | Department |
 |---|-------|------|------|-------------------|-----------|
-| 1 | Gov Contracting Proposal Writer | proposal-writer-govcon | CONTRACT | 3,000-6,000 | GOVCON Proposal Writing |
-| 2 | Technical SME - Federal IT | technical-sme-federal-it | CONTRACT | 4,000-8,000 | Technical Services |
-| 3 | Graphic Designer | graphic-designer-proposal | CONTRACT | 2,000-4,000 | Creative Services |
-| 4 | Compliance & Quality Reviewer | compliance-quality-reviewer | CONTRACT | 2,500-5,000 | Quality Assurance |
-| 5 | Pricing & Cost Analyst | pricing-cost-analyst-govcon | CONTRACT | 3,000-6,000 | Pricing & Finance |
-| 6 | AI-Powered Web Developer | full-stack-web-developer-ai | CONTRACT | 3,500-7,000 | Engineering |
-| 7 | Expert Copywriter | expert-copywriter-govcon-marketing | CONTRACT | 2,500-5,000 | Content & Marketing |
-| 8 | Social Media Expert | social-media-marketing-govcon | CONTRACT | 2,000-4,500 | Marketing |
-| 9 | Junior Proposal Writer | junior-proposal-writer-govcon | CONTRACT | 1,500-3,000 | GOVCON Proposal Writing |
+| 1 | Proposal Writer | proposal-writer-govcon | CONTRACT | 200-300 | GOVCON Proposal Writing |
+| 2 | Technical SME | technical-sme-federal-it | CONTRACT | 300-350 | Technical Services |
+| 3 | Graphic Designer | graphic-designer-proposal | CONTRACT | 100-400 | Creative Services |
+| 4 | Compliance & Quality Reviewer | compliance-quality-reviewer | CONTRACT | 250-300 | Quality Assurance |
+| 5 | Pricing & Cost Analyst | pricing-cost-analyst-govcon | CONTRACT | 150-250 | Pricing & Finance |
+| 6 | Web Developer | full-stack-web-developer-ai | CONTRACT | 250-300 | Engineering |
+| 7 | Expert Copywriter | expert-copywriter-govcon-marketing | CONTRACT | 250-300 | Content & Marketing |
+| 8 | Social Media Expert | social-media-marketing-govcon | CONTRACT | 200-250 | Marketing |
+| 9 | Junior Proposal Writer | junior-proposal-writer-govcon | CONTRACT | 150-200 | GOVCON Proposal Writing |
 
 ### Key Features by Job
 
@@ -117,13 +117,13 @@ After seeding, verify jobs appear correctly:
 - Career path: Provider → Lead → SME
 
 **Technical SME** (Premium Rate):
-- Highest compensation (PKR 4,000-8,000/hour)
+- Highest compensation (PKR 300-350/hour)
 - Clearance level bonuses mentioned
 - Expert-level positioning
 - Focus on federal IT domains
 
 **Junior Writer** (Training Program):
-- Lowest entry rate (PKR 1,500-2,000/hour)
+- Lowest entry rate (PKR 150/hour)
 - Structured advancement plan with milestones
 - Training time is paid
 - Fast-track to senior levels (18-30 months)

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
+import { Globe, Building, MapPin, DollarSign, Eye, FileText, ArrowLeft, MessageCircle } from 'lucide-react';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -76,16 +77,16 @@ export default async function JobDetailPage({ params }: PageProps) {
     }
   };
 
-  const getLocationIcon = (location: JobLocation) => {
+  const LocationIcon = ({ location }: { location: JobLocation }) => {
     switch (location) {
       case 'REMOTE':
-        return '🌍';
+        return <Globe className="w-5 h-5" />;
       case 'HYBRID':
-        return '🏢💻';
+        return <Building className="w-5 h-5" />;
       case 'ON_SITE':
-        return '🏢';
+        return <Building className="w-5 h-5" />;
       default:
-        return '📍';
+        return <MapPin className="w-5 h-5" />;
     }
   };
 
@@ -98,7 +99,8 @@ export default async function JobDetailPage({ params }: PageProps) {
             href="/careers"
             className="text-gold-400 hover:text-gold-300 font-medium flex items-center gap-2 mb-6"
           >
-            ← Back to all jobs
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to all jobs</span>
           </Link>
 
           <div className="flex items-start justify-between">
@@ -118,21 +120,21 @@ export default async function JobDetailPage({ params }: PageProps) {
           {/* Job Meta */}
           <div className="mt-6 flex flex-wrap items-center gap-6 text-gray-300">
             <div className="flex items-center gap-2">
-              <span className="text-xl">{getLocationIcon(job.location)}</span>
+              <LocationIcon location={job.location} />
               <span className="font-medium">{job.location.replace('_', ' ')}</span>
             </div>
             {job.salary && (
               <div className="flex items-center gap-2">
-                <span className="text-xl">💰</span>
+                <DollarSign className="w-5 h-5" />
                 <span className="font-medium">{job.salary}</span>
               </div>
             )}
             <div className="flex items-center gap-2">
-              <span className="text-xl">👁️</span>
+              <Eye className="w-5 h-5" />
               <span>{job.views} views</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xl">📝</span>
+              <FileText className="w-5 h-5" />
               <span>{job._count.applications} applications</span>
             </div>
           </div>
@@ -291,7 +293,7 @@ export default async function JobDetailPage({ params }: PageProps) {
       {/* TODO: Implement AI chat widget in Sprint 4 */}
       <div className="fixed bottom-6 right-6 z-50">
         <button className="bg-teal-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-teal-700 transition-all hover:scale-105 flex items-center gap-2">
-          <span className="text-xl">💬</span>
+          <MessageCircle className="w-5 h-5" />
           <span className="font-medium">Need Help?</span>
         </button>
       </div>

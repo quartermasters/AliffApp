@@ -8,6 +8,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
+import { Briefcase, Globe, Building, Laptop, MapPin, DollarSign, Calendar, FileText } from 'lucide-react';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -76,16 +77,16 @@ export default async function CareersPage() {
     }
   };
 
-  const getLocationIcon = (location: JobLocation) => {
+  const LocationIcon = ({ location }: { location: JobLocation }) => {
     switch (location) {
       case 'REMOTE':
-        return '🌍';
+        return <Globe className="w-5 h-5" />;
       case 'HYBRID':
-        return '🏢💻';
+        return <Building className="w-5 h-5" />;
       case 'ON_SITE':
-        return '🏢';
+        return <Building className="w-5 h-5" />;
       default:
-        return '📍';
+        return <MapPin className="w-5 h-5" />;
     }
   };
 
@@ -115,7 +116,9 @@ export default async function CareersPage() {
         {jobs.length === 0 ? (
           /* No jobs available */
           <div className="bg-white rounded-lg shadow p-12 text-center">
-            <div className="text-6xl mb-4">💼</div>
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Briefcase className="w-12 h-12 text-gray-400" />
+            </div>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               No Open Positions Right Now
             </h2>
@@ -170,17 +173,17 @@ export default async function CareersPage() {
                     {/* Job Details */}
                     <div className="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-600">
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">{getLocationIcon(job.location)}</span>
+                        <LocationIcon location={job.location} />
                         <span>{job.location.replace('_', ' ')}</span>
                       </div>
                       {job.salary && (
                         <div className="flex items-center gap-2">
-                          <span className="text-lg">💰</span>
+                          <DollarSign className="w-5 h-5" />
                           <span>{job.salary}</span>
                         </div>
                       )}
                       <div className="flex items-center gap-2">
-                        <span className="text-lg">📅</span>
+                        <Calendar className="w-5 h-5" />
                         <span>
                           Posted {new Date(job.publishedAt!).toLocaleDateString('en-US', {
                             month: 'short',
@@ -198,9 +201,12 @@ export default async function CareersPage() {
 
                     {/* Footer */}
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                      <div className="text-sm text-gray-500">
-                        {job._count.applications} application
-                        {job._count.applications !== 1 && 's'}
+                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <FileText className="w-4 h-4" />
+                        <span>
+                          {job._count.applications} application
+                          {job._count.applications !== 1 && 's'}
+                        </span>
                       </div>
                       <div className="text-teal-600 font-medium">
                         View Details →
