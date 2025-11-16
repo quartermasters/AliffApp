@@ -119,39 +119,3 @@ I've reviewed your CV and I'm impressed by your background. Let's start - can yo
     );
   }
 }
-
-/**
- * Determine role type from job title
- */
-function determineRoleType(jobTitle: string): RoleType {
-  const title = jobTitle.toLowerCase();
-
-  if (title.includes('engineer') || title.includes('developer')) {
-    return 'SOFTWARE_ENGINEER';
-  } else if (title.includes('product') || title.includes('pm')) {
-    return 'PRODUCT_MANAGER';
-  } else if (title.includes('design') || title.includes('ux') || title.includes('ui')) {
-    return 'DESIGNER';
-  } else if (title.includes('data') || title.includes('analyst') || title.includes('scientist')) {
-    return 'DATA_SCIENTIST';
-  } else if (title.includes('sales') || title.includes('business development')) {
-    return 'SALES';
-  } else if (title.includes('marketing')) {
-    return 'MARKETING';
-  } else if (title.includes('customer') || title.includes('support')) {
-    return 'CUSTOMER_SUCCESS';
-  } else if (title.includes('hr') || title.includes('people') || title.includes('talent')) {
-    return 'HR';
-  } else if (title.includes('finance') || title.includes('accounting')) {
-    return 'FINANCE';
-  } else if (title.includes('operations') || title.includes('ops')) {
-    return 'OPERATIONS';
-  }
-
-  return 'GENERAL';
-}
-
-/**
- * Export interview sessions for other endpoints
- */
-export { interviewSessions };
