@@ -12,7 +12,7 @@ import { JobStatus, JobType, JobLocation } from '@prisma/client';
 import {
   MapPin,
   Briefcase,
-  DollarSign,
+  Banknote,
   Clock,
   Eye,
   Users,
@@ -127,7 +127,7 @@ export default async function JobDetailPage({ params }: PageProps) {
 
             {job.salary && (
               <div className="flex items-center gap-2 text-emerald-400">
-                <DollarSign className="w-4 h-4" />
+                <Banknote className="w-4 h-4" />
                 <span className="text-sm font-semibold">{job.salary}</span>
               </div>
             )}

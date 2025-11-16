@@ -18,7 +18,7 @@ import {
   Search,
   Briefcase,
   MapPin,
-  DollarSign,
+  Banknote,
   Building2,
   Clock,
   Users,
@@ -173,7 +173,7 @@ export default function CareersPage({ jobs }: CareersPageProps) {
                   )}
                   {job.salary && (
                     <div className="flex items-center gap-2 text-teal-700 font-semibold text-sm">
-                      <DollarSign className="w-4 h-4" />
+                      <Banknote className="w-4 h-4" />
                       <span>{job.salary}</span>
                     </div>
                   )}
@@ -390,7 +390,7 @@ export default function CareersPage({ jobs }: CareersPageProps) {
                           </div>
                           {job.salary && (
                             <div className="flex items-center gap-2 text-teal-700 font-semibold">
-                              <DollarSign className="w-4 h-4" />
+                              <Banknote className="w-4 h-4" />
                               <span>{job.salary}</span>
                             </div>
                           )}

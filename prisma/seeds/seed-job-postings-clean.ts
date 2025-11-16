@@ -122,7 +122,7 @@ Performance Standards:
 Compensation:
 • PKR 250-300/hour based on experience and portfolio
 • Paid hourly for actual work performed
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere in Pakistan
@@ -243,7 +243,7 @@ Time Tracking & Reporting:
 Compensation:
 • PKR 200-300/hour based on experience
 • Paid hourly for logged, approved time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere in Pakistan
@@ -380,7 +380,7 @@ Performance Standards:
 Compensation:
 • PKR 250-300/hour based on experience
 • Paid hourly for logged, approved time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere
@@ -506,7 +506,7 @@ Performance Standards:
 Compensation:
 • PKR 180-250/hour based on portfolio
 • Paid hourly for logged, approved time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere in Pakistan
@@ -634,7 +634,7 @@ Performance Standards:
 Compensation:
 • PKR 200-250/hour based on experience
 • Paid hourly for logged time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere
@@ -928,7 +928,7 @@ Performance Standards:
 Compensation:
 • PKR 150-200/hour based on experience
 • Paid hourly for logged time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere
@@ -1074,7 +1074,7 @@ Performance Standards:
 Premium Compensation:
 • PKR 300-350/hour based on expertise
 • Paid hourly for logged time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote with async collaboration
@@ -1205,7 +1205,7 @@ Performance Standards:
 Compensation:
 • PKR 120-150/hour based on accuracy metrics
 • Paid hourly for logged time
-• Bi-weekly payment schedule
+• Monthly payment schedule
 
 Work Arrangement:
 • 100% remote from anywhere

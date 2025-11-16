@@ -20,7 +20,7 @@ import {
   Globe,
   Building,
   MapPin,
-  DollarSign,
+  Banknote,
   Calendar,
   FileText,
   TrendingUp,
@@ -214,7 +214,7 @@ export default function InteractiveJobCard({
                   onMouseEnter={() => setShowSalaryDetails(true)}
                   onMouseLeave={() => setShowSalaryDetails(false)}
                 >
-                  <DollarSign className="w-5 h-5" />
+                  <Banknote className="w-5 h-5" />
                   <span className="font-medium">{salary}</span>
 
                   {/* Salary Details Tooltip */}

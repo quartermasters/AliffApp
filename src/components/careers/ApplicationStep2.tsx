@@ -12,7 +12,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, AlertCircle, Calendar, DollarSign, Clock, Lightbulb } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Calendar, Banknote, Clock, Lightbulb } from 'lucide-react';
 
 interface ApplicationStep2Props {
   onNext: (data: Step2Data) => void;
@@ -343,7 +343,7 @@ export default function ApplicationStep2({
         {/* Compensation Details */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <div className="flex items-center gap-2 mb-4">
-            <DollarSign className="w-5 h-5 text-gray-700" />
+            <Banknote className="w-5 h-5 text-gray-700" />
             <h3 className="text-lg font-semibold text-gray-900">
               Compensation Details
             </h3>
@@ -356,14 +356,14 @@ export default function ApplicationStep2({
               </label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
-                  <span className="absolute left-3 top-2 text-gray-500">$</span>
+                  <span className="absolute left-3 top-2 text-gray-500">PKR</span>
                   <input
                     type="number"
                     name="currentSalary"
                     value={formData.currentSalary || ''}
                     onChange={(e) => handleNumberChange('currentSalary', e.target.value)}
-                    className="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="65"
+                    className="w-full pl-14 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="200"
                   />
                 </div>
                 <select
@@ -383,16 +383,16 @@ export default function ApplicationStep2({
                 Expected Salary *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-2 text-gray-500">$</span>
+                <span className="absolute left-3 top-2 text-gray-500">PKR</span>
                 <input
                   type="number"
                   name="expectedSalary"
                   value={formData.expectedSalary || ''}
                   onChange={(e) => handleNumberChange('expectedSalary', e.target.value)}
-                  className={`w-full pl-7 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`w-full pl-14 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     errors.expectedSalary ? 'border-red-300' : 'border-gray-300'
                   }`}
-                  placeholder="75"
+                  placeholder="250"
                 />
               </div>
               {errors.expectedSalary && (
