@@ -8,7 +8,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
-import { Briefcase, Globe, Building, Laptop, MapPin, DollarSign, Calendar, FileText } from 'lucide-react';
+import { Briefcase, Globe, Building, Laptop, MapPin, DollarSign, Calendar, FileText, MessageCircle } from 'lucide-react';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -225,17 +225,29 @@ export default async function CareersPage() {
             Don't see the right role?
           </h3>
           <p className="text-gray-600 mb-4">
-            We're always open to exceptional talent. Send us your resume and we'll keep you in mind
-            for future opportunities.
+            We're always open to exceptional talent. Join our talent pool and we'll notify you
+            when positions matching your skills become available.
           </p>
-          <p className="text-sm text-gray-500">
-            Email us at{' '}
-            <a
-              href="mailto:hr@aliffcapital.com"
-              className="text-teal-600 hover:text-teal-700 font-medium"
+          <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+            <button
+              onClick={() => {
+                // TODO: Implement AI chat widget in Phase 2
+                alert('AI Chat widget coming soon! For now, please apply to any open position to join our talent pool.');
+              }}
+              className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
             >
-              hr@aliffcapital.com
-            </a>
+              <MessageCircle className="w-5 h-5" />
+              <span>Chat with AI Recruiter</span>
+            </button>
+            <Link
+              href="/candidate-portal"
+              className="inline-flex items-center gap-2 bg-white text-navy-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border-2 border-navy-900"
+            >
+              <span>Access Candidate Portal</span>
+            </Link>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">
+            All communication is handled through our secure, AI-powered platform
           </p>
         </div>
       </div>

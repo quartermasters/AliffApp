@@ -263,12 +263,19 @@ export default async function JobDetailPage({ params }: PageProps) {
                 <p className="text-sm text-gray-700 mb-4">
                   Have questions about this role or the application process?
                 </p>
-                <a
-                  href="mailto:hr@aliffcapital.com"
-                  className="text-teal-600 hover:text-teal-700 font-medium text-sm"
+                <button
+                  onClick={() => {
+                    // TODO: Implement AI chat widget in Phase 2
+                    alert('AI Chat widget coming soon! Click the "Need Help?" button at the bottom right of your screen.');
+                  }}
+                  className="w-full bg-teal-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors text-sm flex items-center justify-center gap-2"
                 >
-                  hr@aliffcapital.com
-                </a>
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Chat with AI Recruiter</span>
+                </button>
+                <p className="text-xs text-gray-500 mt-3 text-center">
+                  Get instant answers 24/7
+                </p>
               </div>
 
               {/* Share Card */}
