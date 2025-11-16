@@ -12,7 +12,7 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, AlertCircle, Calendar, DollarSign, Clock } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Calendar, DollarSign, Clock, Lightbulb } from 'lucide-react';
 
 interface ApplicationStep2Props {
   onNext: (data: Step2Data) => void;
@@ -333,8 +333,9 @@ export default function ApplicationStep2({
           </div>
 
           <div className="mt-3 bg-blue-50 rounded-lg p-3">
-            <p className="text-xs text-gray-700">
-              <span className="font-semibold">💡 Tip:</span> Adding your LinkedIn increases your match score!
+            <p className="text-xs text-gray-700 flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 text-blue-600 flex-shrink-0" />
+              <span><span className="font-semibold">Tip:</span> Adding your LinkedIn increases your match score!</span>
             </p>
           </div>
         </div>

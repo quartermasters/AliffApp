@@ -11,7 +11,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FileText, MessageSquare, Send, Check } from 'lucide-react';
+import { FileText, MessageSquare, Send, Check, Lightbulb, Sparkles } from 'lucide-react';
 
 interface ApplicationStep3Props {
   onSubmit: (data: Step3Data) => void;
@@ -189,8 +189,9 @@ Best regards,
           />
 
           <div className="mt-3 bg-gray-50 rounded-lg p-3">
-            <p className="text-xs text-gray-700">
-              <span className="font-semibold">💡 Tip:</span> A personalized cover letter can increase your chances! Mention specific skills from the job description that match your experience.
+            <p className="text-xs text-gray-700 flex items-center gap-2">
+              <Lightbulb className="w-4 h-4 text-gray-600 flex-shrink-0" />
+              <span><span className="font-semibold">Tip:</span> A personalized cover letter can increase your chances! Mention specific skills from the job description that match your experience.</span>
             </p>
           </div>
         </div>
@@ -279,7 +280,10 @@ Best regards,
 
         {/* What Happens Next */}
         <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="font-semibold text-gray-900 mb-3">🎉 What happens next?</h3>
+          <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-blue-600" />
+            What happens next?
+          </h3>
           <div className="space-y-2 text-sm text-gray-700">
             <div className="flex items-start gap-2">
               <span className="text-blue-600 font-semibold">1.</span>

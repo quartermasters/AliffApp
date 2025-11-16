@@ -10,6 +10,7 @@
 import { useSearchParams, useParams } from 'next/navigation';
 import { Suspense } from 'react';
 import Link from 'next/link';
+import { CheckCircle, Lightbulb } from 'lucide-react';
 
 function ApplicationSuccessContent() {
   const searchParams = useSearchParams();
@@ -24,7 +25,7 @@ function ApplicationSuccessContent() {
           {/* Success Icon */}
           <div className="mb-6">
             <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100">
-              <span className="text-5xl">✅</span>
+              <CheckCircle className="w-12 h-12 text-green-600" />
             </div>
           </div>
 
@@ -126,7 +127,7 @@ function ApplicationSuccessContent() {
           {/* Important Notice */}
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8 text-left">
             <div className="flex items-start gap-3">
-              <span className="text-2xl">💡</span>
+              <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-0.5" />
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">Check Your Email!</h3>
                 <p className="text-sm text-gray-700">
