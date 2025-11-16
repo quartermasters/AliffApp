@@ -9,7 +9,7 @@ import OpenAI from 'openai';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
-import pdfParse from 'pdf-parse';
+import pdfParse = require('pdf-parse');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

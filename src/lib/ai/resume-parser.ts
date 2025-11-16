@@ -14,8 +14,8 @@
 
 import OpenAI from 'openai';
 import { readFile } from 'fs/promises';
-import pdfParse from 'pdf-parse';
-import mammoth from 'mammoth';
+import pdfParse = require('pdf-parse');
+import mammoth = require('mammoth');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
