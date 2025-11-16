@@ -288,44 +288,6 @@ Top performers (75+ screening score) fast-track to interviews and CV Bank entry.
 • Responsive communication within 4 hours during business days
 • Meet interim deadlines for technical content delivery
 • Available for proposal crunch times (with advance notice)`,
-      responsibilities: `**Core Responsibilities:**
-
-**Technical Solution Development (50%):**
-• Design compliant technical architectures for federal IT RFPs
-• Develop technical approach narratives and solution descriptions
-• Create system diagrams, data flow charts, and architecture models
-• Define technical requirements and acceptance criteria
-• Perform technical risk analysis and mitigation planning
-• Ensure alignment with agency technical standards and mandates
-
-**Proposal Technical Content (30%):**
-• Author technical volumes (Volume II) for federal proposals
-• Write technical white papers and solution overviews
-• Develop past performance descriptions highlighting technical wins
-• Contribute to oral proposal presentations and demonstrations
-• Support pricing teams with technical basis of estimates
-• Respond to technical questions from evaluators
-
-**SME Collaboration (15%):**
-• Provide technical guidance to proposal writers
-• Review and validate technical content for accuracy
-• Participate in color team reviews (technical focus)
-• Interview other SMEs to gather domain expertise
-• Bridge communication between engineers and proposal teams
-• Ensure technical feasibility of proposed solutions
-
-**Time Tracking & Coordination (5%):**
-• Log hours accurately in Time Doctor during active work
-• Maintain documentation of technical research and sources
-• Participate in virtual technical planning sessions
-• Provide status updates to proposal managers
-• Coordinate with other SMEs on integrated solutions
-
-**Expected Activity:**
-• 70%+ activity rate during logged hours (Time Doctor monitoring)
-• Responsive communication within 4 hours during business days
-• Meet interim deadlines for technical content delivery
-• Available for proposal crunch times (with advance notice)`,
       benefits: `**Expert-Level Provider Benefits:**
 
 **Premium Compensation:**
