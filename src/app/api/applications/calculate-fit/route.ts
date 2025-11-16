@@ -38,34 +38,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse job requirements from description and metadata
-    // In production, these would be stored as structured fields
+    // Parse job requirements from description and requirements fields
+    // JobPosting schema only has: title, description, requirements, responsibilities, type, location, department, salary
+    // We'll use basic parsing to extract skills from requirements text
+    const requiredSkillsFromText = job.requirements
+      .toLowerCase()
+      .match(/\b(?:python|javascript|react|node|java|sql|aws|docker|kubernetes|typescript|nextjs|next\.js)\b/gi) || [];
+
     const jobRequirements = {
       id: job.id,
       title: job.title,
       description: job.description,
-      requiredSkills: job.requiredSkills || [],
-      preferredSkills: job.preferredSkills || [],
-      minYearsExperience: job.experienceLevel === 'ENTRY_LEVEL' ? 0
-        : job.experienceLevel === 'MID_LEVEL' ? 3
-        : job.experienceLevel === 'SENIOR_LEVEL' ? 7
-        : job.experienceLevel === 'EXECUTIVE' ? 12
-        : 0,
-      maxYearsExperience: job.experienceLevel === 'ENTRY_LEVEL' ? 2
-        : job.experienceLevel === 'MID_LEVEL' ? 6
-        : job.experienceLevel === 'SENIOR_LEVEL' ? 15
-        : undefined,
-      educationLevel: job.educationRequirement ? [job.educationRequirement] : [],
+      requiredSkills: [...new Set(requiredSkillsFromText)], // Deduplicate
+      preferredSkills: [], // Not available in schema
+      minYearsExperience: job.type === 'INTERNSHIP' ? 0 : 2, // Default based on job type
+      educationLevel: [], // Not in schema
       salaryRange: {
-        min: job.salaryMin || 0,
-        max: job.salaryMax || 200000,
-        type: (job.salaryType || 'ANNUAL') as 'HOURLY' | 'ANNUAL',
+        min: 0,
+        max: 200000,
+        type: 'ANNUAL' as 'HOURLY' | 'ANNUAL',
       },
-      location: job.location,
-      remote: job.remote || false,
-      industry: [job.industry || 'Technology'],
-      employmentType: job.employmentType || 'FULL_TIME',
-      hoursPerWeek: job.employmentType === 'FULL_TIME' ? 40 : 20,
+      location: job.location, // REMOTE, HYBRID, or ON_SITE enum
+      remote: job.location === 'REMOTE',
+      industry: [job.department || 'Technology'], // Use department as industry proxy
+      employmentType: job.type, // FULL_TIME, PART_TIME, CONTRACT, or INTERNSHIP
+      hoursPerWeek: job.type === 'FULL_TIME' ? 40 : job.type === 'PART_TIME' ? 20 : 40,
     };
 
     // Calculate fit score

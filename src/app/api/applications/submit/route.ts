@@ -93,27 +93,30 @@ export async function POST(request: NextRequest) {
 
     // Calculate fit score
     console.log('[SUBMIT] Calculating fit score...');
+
+    // Parse skills from requirements text (JobPosting schema has limited fields)
+    const requiredSkillsFromText = jobPosting.requirements
+      .toLowerCase()
+      .match(/\b(?:python|javascript|react|node|java|sql|aws|docker|kubernetes|typescript|nextjs|next\.js)\b/gi) || [];
+
     const jobRequirements = {
       id: jobPosting.id,
       title: jobPosting.title,
       description: jobPosting.description,
-      requiredSkills: jobPosting.requiredSkills || [],
-      preferredSkills: jobPosting.preferredSkills || [],
-      minYearsExperience: jobPosting.experienceLevel === 'ENTRY_LEVEL' ? 0
-        : jobPosting.experienceLevel === 'MID_LEVEL' ? 3
-        : jobPosting.experienceLevel === 'SENIOR_LEVEL' ? 7
-        : 0,
-      educationLevel: jobPosting.educationRequirement ? [jobPosting.educationRequirement] : [],
+      requiredSkills: [...new Set(requiredSkillsFromText)], // Deduplicate
+      preferredSkills: [], // Not in schema
+      minYearsExperience: jobPosting.type === 'INTERNSHIP' ? 0 : 2, // Default
+      educationLevel: [], // Not in schema
       salaryRange: {
-        min: jobPosting.salaryMin || 0,
-        max: jobPosting.salaryMax || 200000,
-        type: (jobPosting.salaryType || 'ANNUAL') as 'HOURLY' | 'ANNUAL',
+        min: 0,
+        max: 200000,
+        type: 'ANNUAL' as 'HOURLY' | 'ANNUAL',
       },
       location: jobPosting.location,
-      remote: jobPosting.remote || false,
-      industry: [jobPosting.industry || 'Technology'],
-      employmentType: jobPosting.employmentType || 'FULL_TIME',
-      hoursPerWeek: 40,
+      remote: jobPosting.location === 'REMOTE',
+      industry: [jobPosting.department || 'Technology'],
+      employmentType: jobPosting.type,
+      hoursPerWeek: jobPosting.type === 'FULL_TIME' ? 40 : jobPosting.type === 'PART_TIME' ? 20 : 40,
     };
 
     const fitScore = calculateFitScore(
