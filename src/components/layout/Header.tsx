@@ -131,8 +131,14 @@ export function Header() {
             </Link>
           </div>
 
-          {/* CTA Button - Desktop */}
-          <div className="hidden lg:block">
+          {/* Auth & CTA Buttons - Desktop */}
+          <div className="hidden lg:flex items-center gap-3">
+            <Link
+              href="/auth/signin"
+              className="text-gray-300 hover:text-gold-400 font-medium transition-colors"
+            >
+              Sign In
+            </Link>
             <Link href="/contact">
               <Button size="lg">
                 Get Started
@@ -211,7 +217,15 @@ export function Header() {
                 Contact
               </Link>
 
-              {/* Mobile CTA */}
+              {/* Mobile Auth & CTA */}
+              <Link
+                href="/auth/signin"
+                className="text-gray-300 hover:text-gold-400 font-medium py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Sign In
+              </Link>
+
               <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full">
                   Get Started
