@@ -15,30 +15,45 @@ datasource db {
 // ============================================================================
 
 enum Role {
-  SUPER_ADMIN
-  ADMIN
-  RECRUITER
-  INTERVIEWER
-  USER
+  SUPER_ADMIN      // Full access - Operations Engine
+  CLIENT           // View-only + Feedback - B2B/B2C clients
+  TEAM_PROVIDER    // Anonymized execution - Contractors/providers
+  CANDIDATE        // Application tracking - Job applicants
+  ADMIN            // Legacy - can be deprecated
+  RECRUITER        // Legacy - can be deprecated
+  INTERVIEWER      // Legacy - can be deprecated
+  USER             // Legacy - can be deprecated
+}
+
+enum UserStatus {
+  ACTIVE           // Active user, can login
+  PENDING          // Awaiting admin approval (for CLIENT signups)
+  SUSPENDED        // Temporarily blocked
+  INACTIVE         // Account deactivated
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  emailVerified DateTime? @map("email_verified")
+  id            String     @id @default(cuid())
+  email         String     @unique
+  emailVerified DateTime?  @map("email_verified")
   password      String
   name          String?
   image         String?
-  role          Role      @default(USER)
+  role          Role       @default(USER)
+  status        UserStatus @default(PENDING)
 
   // 2FA
   twoFactorEnabled Boolean @default(false) @map("two_factor_enabled")
   twoFactorSecret  String? @map("two_factor_secret")
 
+  // Login Tracking (for audit trail)
+  lastLoginAt DateTime? @map("last_login_at")
+  lastLoginIp String?   @map("last_login_ip")
+  loginCount  Int       @default(0) @map("login_count")
+
   // Timestamps
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  lastLogin DateTime? @map("last_login")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relations
   accounts     Account[]
@@ -48,6 +63,7 @@ model User {
   interviews   Interview[]
   leads        Lead[]
   activities   Activity[]
+  auditLogs    AuditLog[]
 
   // Business Dashboard Relations
   projectsCreated       Project[]           @relation("ProjectCreator")
@@ -99,6 +115,31 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verification_tokens")
+}
+
+// ============================================================================
+// AUDIT TRAIL
+// ============================================================================
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  action     String   // "PROJECT_CREATE", "PROVIDER_ASSIGN", "DELIVERABLE_APPROVE", etc.
+  resource   String   // "Project", "Candidate", "Deliverable", "SDLTask", etc.
+  resourceId String?  @map("resource_id")
+  metadata   Json?    // Additional context (old values, new values, etc.)
+  ipAddress  String?  @map("ip_address")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([action])
+  @@index([resource])
+  @@index([createdAt])
+  @@map("audit_logs")
 }
 
 // ============================================================================
@@ -336,10 +377,33 @@ model InterviewQuestion {
   @@map("interview_questions")
 }
 
+enum InterviewMode {
+  CONVERSATIONAL // Free-flowing ALIFF chat (new prototype)
+  STRUCTURED // Question-bank approach (existing)
+}
+
+enum InterviewStage {
+  NOT_STARTED
+  WELCOME // Stage 1: Warm welcome
+  AVAILABILITY // Stage 2: Availability deep dive
+  SKILLS // Stage 3: Skills & experience validation
+  REMOTE_WORK // Stage 4: Remote work & communication
+  COMPENSATION // Stage 5: Compensation & expectations
+  MOTIVATION // Stage 6: Motivation & cultural fit
+  CLOSING // Stage 7: Final questions & next steps
+  COMPLETED // Interview finished
+  ABANDONED // Candidate left mid-interview
+}
+
 // AI Interview Session (100% of applicants)
 model InterviewSession {
   id            String @id @default(cuid())
   applicationId String @unique @map("application_id")
+
+  // NEW: Interview Mode & Flow
+  mode          InterviewMode  @default(CONVERSATIONAL)
+  currentStage  InterviewStage @default(NOT_STARTED) @map("current_stage")
+  stageProgress Json?          @map("stage_progress") // Track completed stages
 
   // Session Info
   startedAt   DateTime  @default(now()) @map("started_at")
@@ -347,8 +411,11 @@ model InterviewSession {
   duration    Int?      @default(0) // Seconds
 
   // Questions & Answers
-  messages       Json     @default("[]") // Full conversation array
-  questionsAsked String[] @map("questions_asked") // Question IDs from bank
+  messages       Json     @default("[]") // Full conversation array [{role, content, timestamp}]
+  questionsAsked String[] @map("questions_asked") // Question IDs from bank (for STRUCTURED mode)
+
+  // NEW: Structured Data Extraction (from conversational interview)
+  extractedData Json? @map("extracted_data") // {availability, skills, compensation, etc}
 
   // Multi-AI Evaluation
   gpt4Score      Float? @map("gpt4_score") // 0-100
@@ -357,21 +424,36 @@ model InterviewSession {
   consensusScore Float? @map("consensus_score") // Average
 
   // Feedback
-  strengths        String[] // Key strengths identified
-  concerns         String[] // Red flags or gaps
-  recommendation   String? // HIRE, MAYBE, REJECT
+  strengths        String[] @default([]) // Key strengths identified
+  concerns         String[] @default([]) // Red flags or gaps
+  recommendation   String? // PROCEED_TO_HUMAN_REVIEW, ADD_TO_TALENT_POOL, REJECT
   detailedFeedback String?  @map("detailed_feedback") @db.Text
 
-  // Breakdown Scores
+  // Breakdown Scores (0-100 scale)
+  availabilityFitScore Float? @default(0) @map("availability_fit_score") // NEW: Matches job hours/days
+  technicalScore       Float? @default(0) @map("technical_score") // Skills proficiency
+  communicationScore   Float? @default(0) @map("communication_score") // Grammar, clarity, professionalism
+  motivationScore      Float? @default(0) @map("motivation_score") // Career goals alignment
+
+  // Legacy breakdown scores (keep for backwards compatibility)
   experienceScore     Float? @map("experience_score") // 0-30
-  technicalScore      Float? @map("technical_score") // 0-25
   problemSolvingScore Float? @map("problem_solving_score") // 0-20
-  communicationScore  Float? @map("communication_score") // 0-15
   cultureFitScore     Float? @map("culture_fit_score") // 0-10
+
+  // NEW: Red Flags Tracking
+  redFlags     String[] @default([]) @map("red_flags") // List of detected issues
+  redFlagScore Int?     @default(0) @map("red_flag_score") // Penalty points
 
   // Metadata
   userAgent String? @map("user_agent") // Browser info
   ipAddress String? @map("ip_address") // For fraud detection
+
+  // NEW: Abandonment Tracking
+  lastActivityAt        DateTime? @map("last_activity_at")
+  remindersSent         Int       @default(0) @map("reminders_sent")
+  allowResumeUntil      DateTime? @map("allow_resume_until") // 24h window
+  abandonedReason       String?   @map("abandoned_reason") // timeout, explicit_exit, etc
+  messagesBeforeAbandon Int?      @default(0) @map("messages_before_abandon")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -381,6 +463,8 @@ model InterviewSession {
 
   @@index([applicationId])
   @@index([consensusScore])
+  @@index([currentStage])
+  @@index([mode])
   @@map("interview_sessions")
 }
 

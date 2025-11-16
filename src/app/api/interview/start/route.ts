@@ -2,85 +2,114 @@
  * Interview Start API Endpoint
  *
  * Initializes a new AI interview session
+ * - Creates InterviewSession record
+ * - Generates personalized welcome message
+ * - Returns session ID and first ALIFF message
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeInterview } from '@/lib/ai/interview-conductor';
-import { RoleType } from '@/lib/ai/interview-questions';
-import { prisma } from '@/lib/prisma';
+import { PrismaClient } from '@prisma/client';
 
-// In-memory interview state storage (in production, use Redis or database)
-const interviewSessions = new Map<string, any>();
+const prisma = new PrismaClient();
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { applicationId, candidateName, jobTitle } = body;
 
-    if (!applicationId || !candidateName || !jobTitle) {
+    if (!applicationId) {
+      return NextResponse.json({ error: 'Application ID is required' }, { status: 400 });
+    }
+
+    // Check if application exists
+    const application = await prisma.application.findUnique({
+      where: { id: applicationId },
+      include: {
+        job: true,
+      },
+    });
+
+    if (!application) {
+      return NextResponse.json({ error: 'Application not found' }, { status: 404 });
+    }
+
+    // Check if interview session already exists
+    const existingSession = await prisma.interviewSession.findUnique({
+      where: { applicationId },
+    });
+
+    if (existingSession) {
+      // Resume existing session or return error
+      if (existingSession.completedAt) {
+        return NextResponse.json(
+          { error: 'Interview already completed' },
+          { status: 400 }
+        );
+      }
+
+      // Allow resume if within 24 hours
+      const now = new Date();
+      if (existingSession.allowResumeUntil && existingSession.allowResumeUntil > now) {
+        return NextResponse.json({
+          interviewId: existingSession.id,
+          welcomeMessage: `Welcome back, ${candidateName?.split(' ')[0] || 'there'}! Let's continue where we left off.`,
+          isResuming: true,
+          messages: existingSession.messages,
+        });
+      }
+
       return NextResponse.json(
-        { error: 'Application ID, candidate name, and job title are required' },
+        { error: 'Interview session expired. Please start a new application.' },
         { status: 400 }
       );
     }
 
-    console.log(`[API] Starting interview for application: ${applicationId}`);
+    // Create new interview session
+    const firstName = candidateName?.split(' ')[0] || application.firstName;
+    const welcomeMessage = `Hi ${firstName}! 👋 Thanks for applying to the ${jobTitle || application.job.title} position.
 
-    // Fetch application to get job details
-    const application = await prisma.application.findUnique({
-      where: { id: applicationId },
-      include: { job: true },
+I'm ALIFF, your recruitment agent at Aliff Services. I'll be conducting your interview today, which should only take 5-10 minutes.
+
+I've reviewed your CV and I'm impressed by your background. Let's start - can you tell me a bit about your current situation? Are you currently working or available to start immediately?`;
+
+    const interviewSession = await prisma.interviewSession.create({
+      data: {
+        applicationId,
+        mode: 'CONVERSATIONAL',
+        currentStage: 'WELCOME',
+        messages: [
+          {
+            role: 'assistant',
+            content: welcomeMessage,
+            timestamp: new Date().toISOString(),
+          },
+        ],
+        lastActivityAt: new Date(),
+        allowResumeUntil: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+        userAgent: request.headers.get('user-agent') || undefined,
+        ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined,
+      },
     });
-
-    if (!application) {
-      return NextResponse.json(
-        { error: 'Application not found' },
-        { status: 404 }
-      );
-    }
-
-    // Determine role type based on job title
-    const roleType = determineRoleType(application.job.title);
-
-    // Initialize interview
-    const interviewState = await initializeInterview(
-      applicationId,
-      candidateName,
-      jobTitle,
-      roleType
-    );
-
-    // Store interview state
-    interviewSessions.set(applicationId, interviewState);
 
     // Update application status
     await prisma.application.update({
       where: { id: applicationId },
       data: {
         status: 'INTERVIEWING',
+        interviewDate: new Date(),
       },
     });
 
-    // Create interview session record
-    await prisma.interviewSession.create({
-      data: {
-        applicationId,
-        startedAt: new Date(),
-        messages: [],
-        questionsAsked: [],
-      },
-    });
-
-    console.log('[API] Interview initialized successfully');
+    console.log(`[INTERVIEW] Started session ${interviewSession.id} for application ${applicationId}`);
 
     return NextResponse.json({
       success: true,
-      welcomeMessage: interviewState.messages[0].content,
-      message: 'Interview session started',
+      interviewId: interviewSession.id,
+      welcomeMessage,
+      isResuming: false,
     });
   } catch (error) {
-    console.error('[API] Interview start error:', error);
-
+    console.error('[INTERVIEW] Start error:', error);
     return NextResponse.json(
       {
         error: 'Failed to start interview',

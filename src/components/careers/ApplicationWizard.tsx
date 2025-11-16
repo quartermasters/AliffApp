@@ -130,19 +130,38 @@ export default function ApplicationWizard({ jobId, jobTitle }: ApplicationWizard
         // Non-critical error, continue
       }
 
-      // Save data and move to step 2
-      setApplicationData({
-        ...applicationData,
-        step1: {
-          ...data,
+      // Save data and redirect to AI interview
+      // Store application data temporarily (in real app, save to database first)
+      const tempApplicationId = `temp_${Date.now()}`;
+
+      // Create initial application record
+      const createAppRes = await fetch('/api/applications/create-initial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jobId,
+          firstName: parseData.data.contactInfo?.name?.split(' ')[0] || 'Candidate',
+          lastName: parseData.data.contactInfo?.name?.split(' ').slice(1).join(' ') || '',
+          email: parseData.data.contactInfo?.email || '',
+          phone: parseData.data.contactInfo?.phone || '',
           resumeUrl: resumeUploadData.url,
-          photoUrl: photoUploadData.url,
-        },
-        parsedResumeData: parseData.data,
-        extractedPhotoUrl,
+          uploadedPhotoUrl: photoUploadData.url,
+          cvExtractedPhotoUrl: extractedPhotoUrl,
+          resumeParsedData: parseData.data,
+          resumeText: parseData.extractedText || '',
+        }),
       });
 
-      setCurrentStep(2);
+      if (!createAppRes.ok) {
+        throw new Error('Failed to create application record');
+      }
+
+      const createAppData = await createAppRes.json();
+
+      console.log('[WIZARD] Application created:', createAppData.applicationId);
+
+      // Redirect to AI interview
+      window.location.href = `/careers/interview?id=${createAppData.applicationId}`;
     } catch (err) {
       console.error('[WIZARD] Step 1 error:', err);
       setError(err instanceof Error ? err.message : 'An error occurred');

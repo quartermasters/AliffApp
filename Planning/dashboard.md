@@ -861,6 +861,418 @@ interface OperationalMetrics {
 
 ---
 
+## 11. RBAC & Authentication System
+
+### 11.1 Role-Based Access Control Architecture
+
+**4 Primary Roles + Granular Permissions:**
+
+```
+SUPER_ADMIN (God Mode - Full Access)
+    ↓
+CLIENT (View-Only + Feedback Submission)
+    ↓
+TEAM_PROVIDER (Anonymized Execution + Deliverables)
+    ↓
+CANDIDATE (Application Tracking Only)
+```
+
+### 11.2 Permission Model
+
+```typescript
+enum Permission {
+  // Projects
+  PROJECT_CREATE
+  PROJECT_VIEW_ALL
+  PROJECT_VIEW_ASSIGNED
+  PROJECT_EDIT
+  PROJECT_DELETE
+
+  // SDL
+  SDL_VIEW
+  SDL_EXECUTE
+  SDL_VALIDATE
+
+  // Providers
+  PROVIDER_MANAGE
+  PROVIDER_ASSIGN
+  PROVIDER_VIEW_PERFORMANCE
+
+  // Clients
+  CLIENT_MANAGE
+  CLIENT_VIEW_PROJECTS
+
+  // Quality Gates
+  GATE_PINK_APPROVE
+  GATE_RED_APPROVE
+  GATE_GOLD_APPROVE
+
+  // Financial
+  FINANCE_VIEW
+  PAYROLL_PROCESS
+  INVOICE_CREATE
+
+  // Analytics
+  ANALYTICS_VIEW_ALL
+  ANALYTICS_VIEW_OWN
+}
+```
+
+### 11.3 User Model & Database Schema
+
+```typescript
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  password          String   // Hashed with bcrypt
+  role              UserRole
+  status            UserStatus // ACTIVE, PENDING, SUSPENDED
+
+  // Polymorphic relations
+  clientProfile     Client?
+  providerProfile   Candidate?
+  adminProfile      Admin?
+
+  // Session management
+  sessions          Session[]
+
+  // Audit trail
+  lastLoginAt       DateTime?
+  lastLoginIp       String?
+  loginCount        Int      @default(0)
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  CLIENT
+  TEAM_PROVIDER
+  CANDIDATE
+}
+
+enum UserStatus {
+  ACTIVE
+  PENDING      // Awaiting admin approval
+  SUSPENDED    // Temporarily disabled
+  ARCHIVED     // Permanently disabled
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  token        String   @unique
+  expiresAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  userId       String
+  action       String   // "PROJECT_CREATE", "PROVIDER_ASSIGN", etc.
+  resource     String   // "Project", "Candidate", etc.
+  resourceId   String?
+  metadata     Json?    // Additional context
+  ipAddress    String?
+
+  createdAt    DateTime @default(now())
+}
+```
+
+### 11.4 Authentication Flow
+
+**Entry Points on Marketing Page:**
+
+```
+Homepage (/)
+    ↓
+┌─────────────────────────────────────────────┐
+│  [Sign Up] → Role Selection                 │
+│  [Login]   → Credential Entry               │
+└─────────────────────────────────────────────┘
+```
+
+**Sign Up Flow (Role-Based):**
+
+**Step 1: Choose Your Path** (Interactive Cards)
+```tsx
+<div className="grid grid-cols-2 gap-6">
+  <Card onClick={() => selectRole('CLIENT')}>
+    <Icon>🎯</Icon>
+    <h3>I'm a Client</h3>
+    <p>Submit RFPs, track projects</p>
+  </Card>
+
+  <Card onClick={() => selectRole('PROVIDER')}>
+    <Icon>👤</Icon>
+    <h3>I'm a Provider</h3>
+    <p>Join talent pool, work on projects</p>
+  </Card>
+
+  <Card onClick={() => selectRole('CANDIDATE')}>
+    <Icon>💼</Icon>
+    <h3>I'm Applying</h3>
+    <p>Browse jobs, submit applications</p>
+  </Card>
+
+  <Card onClick={() => window.location.href = '/auth/admin'}>
+    <Icon>🔐</Icon>
+    <h3>Admin Login</h3>
+    <p>Internal access only</p>
+  </Card>
+</div>
+```
+
+**Step 2: Registration Forms (Role-Specific)**
+
+**Client Signup** (`/auth/signup/client`):
+```typescript
+interface ClientSignupForm {
+  // Company Info
+  companyName: string
+  industry: string
+  clientType: 'AGENCY' | 'DIRECT'
+
+  // Contact
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  password: string
+
+  // Verification
+  emailVerified: boolean // Email verification required
+  adminApproved: boolean // Default: false (PENDING status)
+}
+```
+
+**Provider Signup** → Redirects to `/careers`:
+- Goes through full ALIFF-RECRUITER application flow
+- Account auto-created upon VALIDATED status
+- Seamless transition from applicant → provider
+
+**Candidate Signup** → Minimal:
+```typescript
+interface CandidateSignupForm {
+  email: string
+  password: string
+  // Account created during job application
+}
+```
+
+### 11.5 Login System
+
+**Unified Login** (`/auth/login`):
+```tsx
+<form onSubmit={handleLogin}>
+  <Input
+    type="email"
+    placeholder="Email"
+    required
+  />
+  <Input
+    type="password"
+    placeholder="Password"
+    required
+  />
+  <Button type="submit">Sign In</Button>
+
+  <Link href="/auth/forgot-password">
+    Forgot password?
+  </Link>
+</form>
+```
+
+**Smart Redirect Logic** (Based on Role):
+```typescript
+async function handleLogin(credentials: LoginCredentials) {
+  const user = await signIn(credentials)
+
+  switch (user.role) {
+    case 'SUPER_ADMIN':
+      redirect('/admin/dashboard')
+      break
+    case 'CLIENT':
+      redirect('/client/dashboard')
+      break
+    case 'TEAM_PROVIDER':
+      redirect('/team/dashboard')
+      break
+    case 'CANDIDATE':
+      redirect('/candidate/dashboard')
+      break
+  }
+}
+```
+
+### 11.6 Modern UX Features
+
+**Dynamic Navigation** (Menu items based on permissions):
+```tsx
+<nav>
+  {hasPermission('PROJECT_VIEW_ALL') && (
+    <NavItem href="/admin/projects">Projects</NavItem>
+  )}
+  {hasPermission('SDL_VIEW') && (
+    <NavItem href="/admin/sdl">SDL Queue</NavItem>
+  )}
+  {hasPermission('ANALYTICS_VIEW_ALL') && (
+    <NavItem href="/admin/analytics">Analytics</NavItem>
+  )}
+</nav>
+```
+
+**Real-Time Permission Sync** (via SSE):
+```typescript
+// When admin changes user role/permissions
+const eventSource = new EventSource('/api/auth/permissions/stream')
+
+eventSource.onmessage = (event) => {
+  const { permissions, role } = JSON.parse(event.data)
+  updateUserSession({ permissions, role })
+  revalidateNavigation()
+}
+```
+
+**Granular Field-Level Security**:
+```typescript
+// Hide sensitive data based on role
+<div>
+  {user.role === 'SUPER_ADMIN' && (
+    <p>Client: {project.clientName}</p> // Hidden from TEAM_PROVIDER
+  )}
+
+  {user.role === 'TEAM_PROVIDER' && (
+    <p>Project: {project.projectCodename}</p> // Anonymized
+  )}
+
+  {hasPermission('FINANCE_VIEW') && (
+    <p>Rate: PKR {provider.hourlyRatePKR}</p> // Hidden from others
+  )}
+</div>
+```
+
+**Interactive Role Switcher** (Super Admin Testing):
+```tsx
+{user.role === 'SUPER_ADMIN' && (
+  <RoleSwitcher>
+    <option value="SUPER_ADMIN">View as: Super Admin</option>
+    <option value="CLIENT">View as: Client</option>
+    <option value="TEAM_PROVIDER">View as: Provider</option>
+    <option value="CANDIDATE">View as: Candidate</option>
+  </RoleSwitcher>
+)}
+```
+
+### 11.7 Tech Stack
+
+**Authentication:**
+- NextAuth.js v5 (credentials provider)
+- JWT with role + permission claims
+- 24-hour token expiry
+- Refresh tokens for seamless renewal
+
+**Authorization:**
+- Prisma middleware for row-level security
+- Zod for permission validation
+- Middleware chains for route protection
+
+**Session Management:**
+```typescript
+// middleware.ts
+export async function middleware(request: NextRequest) {
+  const session = await getServerSession()
+
+  // Protect admin routes
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    if (!session || session.user.role !== 'SUPER_ADMIN') {
+      return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
+  }
+
+  // Protect client routes
+  if (request.nextUrl.pathname.startsWith('/client')) {
+    if (!session || session.user.role !== 'CLIENT') {
+      return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
+  }
+
+  // Protect team routes
+  if (request.nextUrl.pathname.startsWith('/team')) {
+    if (!session || session.user.role !== 'TEAM_PROVIDER') {
+      return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ['/admin/:path*', '/client/:path*', '/team/:path*', '/candidate/:path*']
+}
+```
+
+**Audit Trail:**
+```typescript
+// Log every action
+async function logAudit(params: {
+  userId: string
+  action: string
+  resource: string
+  resourceId?: string
+  metadata?: any
+  ipAddress?: string
+}) {
+  await prisma.auditLog.create({
+    data: {
+      userId: params.userId,
+      action: params.action,
+      resource: params.resource,
+      resourceId: params.resourceId,
+      metadata: params.metadata,
+      ipAddress: params.ipAddress,
+      createdAt: new Date(),
+    }
+  })
+}
+
+// Usage
+await logAudit({
+  userId: session.user.id,
+  action: 'PROJECT_CREATE',
+  resource: 'Project',
+  resourceId: project.id,
+  metadata: { projectCode: project.projectCode },
+  ipAddress: request.headers.get('x-forwarded-for')
+})
+```
+
+### 11.8 Security Features
+
+**Password Security:**
+- bcrypt hashing (10 rounds)
+- Minimum 8 characters, 1 uppercase, 1 number
+- Password reset via email token (1-hour expiry)
+
+**Session Security:**
+- HTTP-only cookies
+- CSRF protection
+- Rate limiting (10 login attempts/15 minutes)
+- IP-based suspicious activity detection
+
+**Data Anonymization:**
+- Team providers never see client names
+- Clients never see provider names
+- Field-level encryption for sensitive data (SSN, bank details)
+
+---
+
 ## Summary
 
 This is the **real dashboard** for Aliff Services—a comprehensive, multi-stakeholder platform managing:
