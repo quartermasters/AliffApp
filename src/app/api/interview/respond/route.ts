@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build conversation context
-    const messages = session.messages as Message[];
+    const messages = (session.messages as unknown) as Message[];
     const extractedData = (session.extractedData as any) || {};
 
     const context: ConversationContext = {

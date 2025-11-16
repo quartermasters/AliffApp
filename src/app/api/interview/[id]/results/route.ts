@@ -71,8 +71,8 @@ export async function GET(
     // Calculate scores using multi-AI consensus
     console.log(`[INTERVIEW] Calculating scores for session ${interviewId}`);
 
-    const messages = session.messages as Message[];
-    const extractedData = session.extractedData || {};
+    const messages = (session.messages as unknown) as Message[];
+    const extractedData = (session.extractedData as any) || {};
 
     const jobRequirements = {
       title: session.application.job.title,
