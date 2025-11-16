@@ -419,15 +419,9 @@ export default function CareersPage({ jobs }: CareersPageProps) {
           <h3 className="text-xl font-semibold text-slate-900 mb-2">
             Don't see the right role?
           </h3>
-          <p className="text-slate-600 mb-6 max-w-2xl mx-auto">
-            Join our talent pool and we'll notify you when positions matching your skills become available. Chat with ALIFF using the widget at the bottom-right for more information.
+          <p className="text-slate-600 max-w-2xl mx-auto">
+            Chat with <span className="font-semibold text-slate-900">ALIFF</span> using the widget at the bottom-right of your screen. Our AI recruiter can answer questions, discuss opportunities, and add you to our talent pool for future positions matching your skills.
           </p>
-          <Link
-            href="/candidate-portal"
-            className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-          >
-            <span>Access Candidate Portal</span>
-          </Link>
         </div>
       </section>
     </main>
