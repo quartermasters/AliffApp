@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
           detailedFeedback: report.summary,
           recommendation: report.recommendation,
           strengths: report.strengths || [],
-          concerns: report.concerns || [],
+          concerns: report.areasForImprovement || [], // Schema uses 'concerns', report uses 'areasForImprovement'
         },
       });
 
