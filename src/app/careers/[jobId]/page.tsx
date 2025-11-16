@@ -10,8 +10,10 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
-import { Globe, Building, MapPin, DollarSign, Eye, FileText, ArrowLeft, MessageCircle } from 'lucide-react';
+import { Globe, Building, MapPin, DollarSign, Eye, FileText, ArrowLeft } from 'lucide-react';
 import AIChatWidget from '@/components/careers/AIChatWidget';
+import ScrollToChatButton from '@/components/careers/ScrollToChatButton';
+import ShareButtons from '@/components/careers/ShareButtons';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -264,32 +266,20 @@ export default async function JobDetailPage({ params }: PageProps) {
                 <p className="text-sm text-gray-700 mb-4">
                   Have questions about this role or the application process?
                 </p>
-                <button
-                  onClick={() => {
-                    // Scroll to bottom to make AI chat widget visible
-                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-                  }}
-                  className="w-full bg-teal-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors text-sm flex items-center justify-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Chat with AI Recruiter</span>
-                </button>
-                <p className="text-xs text-gray-500 mt-3 text-center">
-                  Get instant answers 24/7
-                </p>
+                <ScrollToChatButton
+                  variant="compact"
+                  fullWidth
+                  subtitle="Get instant answers 24/7"
+                />
               </div>
 
               {/* Share Card */}
               <div className="bg-white rounded-lg shadow-lg p-6">
                 <h3 className="text-lg font-bold text-navy-900 mb-4">Share this Job</h3>
-                <div className="flex gap-3">
-                  <button className="flex-1 bg-teal-100 text-teal-700 px-4 py-2 rounded-lg hover:bg-teal-200 transition-colors text-sm font-medium">
-                    LinkedIn
-                  </button>
-                  <button className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium">
-                    Copy Link
-                  </button>
-                </div>
+                <ShareButtons
+                  jobUrl={`${process.env.NEXT_PUBLIC_APP_URL || 'https://aliffservices.com'}/careers/${job.slug}`}
+                  jobTitle={job.title}
+                />
               </div>
             </div>
           </div>
