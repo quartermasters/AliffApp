@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
         data: {
           status: 'INTERVIEW_COMPLETE',
           interviewCompleted: true,
-          interviewTranscript: updatedMessages,
+          interviewTranscript: updatedMessages as any,
         },
       });
 
