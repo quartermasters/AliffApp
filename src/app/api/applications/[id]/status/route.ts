@@ -25,7 +25,7 @@ export async function GET(
     const application = await prisma.application.findUnique({
       where: { id },
       include: {
-        jobPosting: {
+        job: {
           select: {
             id: true,
             title: true,
@@ -33,10 +33,7 @@ export async function GET(
             location: true,
           },
         },
-        interviewSessions: {
-          orderBy: { createdAt: 'desc' },
-          take: 1,
-        },
+        interviewSession: true,
       },
     });
 
@@ -66,8 +63,8 @@ export async function GET(
       nextStep = 'HUMAN_INTERVIEW';
     }
 
-    // Get latest interview session if exists
-    const latestInterview = application.interviewSessions?.[0];
+    // Get interview session if exists
+    const interviewSession = application.interviewSession;
 
     // Build response
     const response = {
@@ -75,9 +72,9 @@ export async function GET(
       submittedAt: application.createdAt,
       candidateName: `${application.firstName} ${application.lastName}`,
       email: application.email,
-      jobTitle: application.jobPosting.title,
-      jobDepartment: application.jobPosting.department,
-      jobLocation: application.jobPosting.location,
+      jobTitle: application.job.title,
+      jobDepartment: application.job.department,
+      jobLocation: application.job.location,
       status: application.status,
       fitScore: application.fitScore,
       nextStep,
@@ -86,7 +83,7 @@ export async function GET(
       // Interview data (if exists)
       interviewCompleted: application.interviewCompleted,
       interviewScore: application.interviewScore,
-      interviewStatus: latestInterview?.status,
+      interviewStatus: interviewSession?.status,
 
       // Timeline
       timeline: [
@@ -107,7 +104,7 @@ export async function GET(
             : shouldInterview
             ? 'pending'
             : 'skipped',
-          date: latestInterview?.completedAt || null,
+          date: interviewSession?.completedAt || null,
         },
         {
           step: 'Team Review',
