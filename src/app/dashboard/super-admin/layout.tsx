@@ -25,8 +25,8 @@ export default async function SuperAdminLayout({
   }
 
   // Check if user has Super Admin or Admin role
-  const allowedRoles = [Role.SUPER_ADMIN, Role.ADMIN];
-  if (!allowedRoles.includes(session.user.role)) {
+  const allowedRoles: Role[] = [Role.SUPER_ADMIN, Role.ADMIN];
+  if (!allowedRoles.includes(session.user.role as Role)) {
     redirect('/dashboard');
   }
 
