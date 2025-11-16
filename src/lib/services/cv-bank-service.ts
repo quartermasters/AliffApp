@@ -259,12 +259,9 @@ export async function getCandidateProfile(candidateId: string): Promise<any> {
   const candidate = await prisma.candidate.findUnique({
     where: { id: candidateId },
     include: {
-      applications: {
+      application: {
         include: {
           job: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
         },
       },
     },
