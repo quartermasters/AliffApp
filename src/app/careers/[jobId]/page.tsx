@@ -32,7 +32,7 @@ export default async function JobDetailPage({ params }: PageProps) {
   let job;
 
   try {
-    job = await prisma.jobPosting.findUnique({
+    job = await prisma.jobPosting.findFirst({
       where: {
         slug: jobId,
         status: JobStatus.PUBLISHED,
