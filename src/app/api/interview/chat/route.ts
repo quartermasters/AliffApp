@@ -67,10 +67,7 @@ export async function POST(request: NextRequest) {
         where: { applicationId },
         data: {
           completedAt: new Date(),
-          messages: {
-            messages: result.state.messages,
-            answers: result.state.answers,
-          },
+          messages: result.state.messages as any, // Json field stores the messages array directly
           gpt4Score: report.finalScore,
           consensusScore: report.finalScore,
           duration: Math.round((Date.now() - result.state.startTime.getTime()) / 1000 / 60),
