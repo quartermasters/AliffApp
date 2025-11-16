@@ -6,6 +6,7 @@
  */
 
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import SignInForm from '@/components/auth/SignInForm';
 import Link from 'next/link';
 
@@ -36,7 +37,9 @@ export default function SignInPage() {
 
         {/* Sign In Form */}
         <div className="mt-8 bg-slate-800/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-700/50 p-8">
-          <SignInForm />
+          <Suspense fallback={<div className="text-center text-slate-400">Loading...</div>}>
+            <SignInForm />
+          </Suspense>
 
           {/* Divider */}
           <div className="mt-6">
