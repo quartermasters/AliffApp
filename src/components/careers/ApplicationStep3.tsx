@@ -253,25 +253,6 @@ Best regards,
             />
             <div className="text-sm">
               <p className="text-gray-900">
-                I agree to the{' '}
-                <a
-                  href="/terms"
-                  target="_blank"
-                  className="text-blue-600 hover:text-blue-700 underline"
-                >
-                  Terms of Service
-                </a>{' '}
-                and{' '}
-                <a
-                  href="/privacy"
-                  target="_blank"
-                  className="text-blue-600 hover:text-blue-700 underline"
-                >
-                  Privacy Policy
-                </a>
-                .
-              </p>
-              <p className="text-gray-600 mt-2">
                 By submitting this application, I confirm that the information provided is accurate and I consent to Aliff Services processing my data for recruitment purposes.
               </p>
             </div>

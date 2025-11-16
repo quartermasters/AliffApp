@@ -177,9 +177,8 @@ export default function ApplyPage() {
       // Upload resume
       const formDataObj = new FormData();
       formDataObj.append('file', resumeFile!);
-      formDataObj.append('type', 'resume');
 
-      const uploadRes = await fetch('/api/upload', {
+      const uploadRes = await fetch('/api/applications/upload-resume', {
         method: 'POST',
         body: formDataObj,
       });
