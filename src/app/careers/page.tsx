@@ -127,7 +127,7 @@ export default async function CareersPage() {
                   location={job.location}
                   salary={job.salary}
                   description={job.description}
-                  publishedAt={job.publishedAt}
+                  publishedAt={job.publishedAt?.toISOString() ?? null}
                   applicationsCount={job._count.applications}
                 />
               ))}

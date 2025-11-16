@@ -39,7 +39,7 @@ interface JobCardProps {
   location: JobLocation;
   salary: string | null;
   description: string;
-  publishedAt: Date | null;
+  publishedAt: string | null; // Changed from Date to string for serialization
   applicationsCount: number;
   // Optional: fit score if user has uploaded resume
   fitScore?: number;
