@@ -144,7 +144,7 @@ export async function GET(
               status: 'INTERVIEWED',
               appliedForJobId: session.application.jobId,
               applicationDate: session.application.createdAt,
-              parsedResumeData: session.application.resumeParsedData,
+              parsedResumeData: session.application.resumeParsedData as any,
               resumeUrl: session.application.resumeUrl,
               resumeText: session.application.resumeText,
             },
