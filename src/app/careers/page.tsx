@@ -13,7 +13,7 @@ export const runtime = 'nodejs';
 
 export default async function CareersPage() {
   // Fetch published jobs
-  let jobs = [];
+  let jobs: any[] = [];
 
   try {
     jobs = await prisma.jobPosting.findMany({
