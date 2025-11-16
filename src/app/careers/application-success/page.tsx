@@ -13,7 +13,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { CheckCircle, Clock, Mail, MessageSquare, FileText, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
@@ -27,7 +27,7 @@ interface ApplicationData {
   jobTitle: string;
 }
 
-export default function ApplicationSuccessPage() {
+function ApplicationSuccessContent() {
   const searchParams = useSearchParams();
   const applicationId = searchParams.get('id');
 
@@ -262,5 +262,22 @@ export default function ApplicationSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ApplicationSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading your application...</p>
+          </div>
+        </div>
+      }
+    >
+      <ApplicationSuccessContent />
+    </Suspense>
   );
 }
