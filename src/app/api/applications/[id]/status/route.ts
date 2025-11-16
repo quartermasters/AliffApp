@@ -83,7 +83,7 @@ export async function GET(
       // Interview data (if exists)
       interviewCompleted: application.interviewCompleted,
       interviewScore: application.interviewScore,
-      interviewStatus: interviewSession?.status,
+      interviewRecommendation: interviewSession?.recommendation,
 
       // Timeline
       timeline: [

@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // Fetch application to get job details
     const application = await prisma.application.findUnique({
       where: { id: applicationId },
-      include: { jobPosting: true },
+      include: { job: true },
     });
 
     if (!application) {
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Determine role type based on job title
-    const roleType = determineRoleType(application.jobPosting.title);
+    const roleType = determineRoleType(application.job.title);
 
     // Initialize interview
     const interviewState = await initializeInterview(
@@ -65,10 +65,9 @@ export async function POST(request: NextRequest) {
     await prisma.interviewSession.create({
       data: {
         applicationId,
-        status: 'IN_PROGRESS',
         startedAt: new Date(),
-        transcript: {},
-        metadata: {},
+        messages: [],
+        questionsAsked: [],
       },
     });
 

@@ -66,16 +66,18 @@ export async function POST(request: NextRequest) {
       await prisma.interviewSession.updateMany({
         where: { applicationId },
         data: {
-          status: 'COMPLETED',
           completedAt: new Date(),
-          transcript: {
+          messages: {
             messages: result.state.messages,
             answers: result.state.answers,
           },
           gpt4Score: report.finalScore,
-          overallScore: report.finalScore,
+          consensusScore: report.finalScore,
           duration: Math.round((Date.now() - result.state.startTime.getTime()) / 1000 / 60),
-          feedback: report.summary,
+          detailedFeedback: report.summary,
+          recommendation: report.recommendation,
+          strengths: report.strengths || [],
+          concerns: report.concerns || [],
         },
       });
 

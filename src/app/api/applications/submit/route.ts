@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     const existingApplication = await prisma.application.findFirst({
       where: {
         email,
-        jobPostingId: jobId,
+        jobId: jobId,
       },
     });
 
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
     // Create application
     const application = await prisma.application.create({
       data: {
-        jobPostingId: jobId,
+        jobId: jobId,
 
         // Personal Information
         firstName,
@@ -157,24 +157,15 @@ export async function POST(request: NextRequest) {
 
         // Additional Info
         coverLetter,
-        additionalNotes,
-        heardAboutUs,
+        // Note: additionalNotes and heardAboutUs are not in schema
+        // They are passed to CV Bank only
 
         // Scores
         fitScore: fitScore.overall,
-        fitScoreBreakdown: fitScore.breakdown as any,
+        // Note: fitScoreBreakdown stored in parsedResumeData
 
         // Status
         status: 'SUBMITTED',
-        source: 'WEBSITE',
-
-        // Metadata
-        metadata: {
-          fitReport: fitScore,
-          employmentStatus,
-          userAgent: request.headers.get('user-agent'),
-          ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
-        } as any,
       },
     });
 
@@ -226,13 +217,8 @@ export async function POST(request: NextRequest) {
       isNew: cvBankResult.isNew,
     });
 
-    // Link candidate to application
-    await prisma.application.update({
-      where: { id: application.id },
-      data: {
-        candidateId: cvBankResult.candidateId,
-      },
-    });
+    // Note: No need to link candidate to application
+    // The Candidate model already has applicationId linking back to this application
 
     // Determine next steps based on fit score
     let nextStep = 'REVIEW'; // Default: human review
