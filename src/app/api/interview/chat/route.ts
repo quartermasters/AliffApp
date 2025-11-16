@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
           interviewTranscript: {
             messages: result.state.messages,
             report,
-          },
+          } as any, // Json field
         },
       });
 
