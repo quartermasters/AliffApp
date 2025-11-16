@@ -12,9 +12,20 @@ import { existsSync } from 'fs';
 // @ts-ignore - pdf-parse has no types
 import pdfParse from 'pdf-parse';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid build-time errors
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY environment variable is not set');
+    }
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openaiClient;
+}
 
 export interface ExtractedPhoto {
   found: boolean;
@@ -41,6 +52,7 @@ async function analyzePDFWithVision(filePath: string): Promise<ExtractedPhoto> {
     const base64PDF = dataBuffer.toString('base64');
 
     // Use GPT-4 Vision to analyze the PDF and detect if there's a photo
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4-vision-preview',
       messages: [
@@ -188,6 +200,7 @@ async function analyzeImageForPhoto(filePath: string, fileType: string): Promise
     const base64Image = imageBuffer.toString('base64');
     const mimeType = fileType;
 
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4-vision-preview',
       messages: [
@@ -303,6 +316,7 @@ export async function validateHeadshot(photoUrl: string): Promise<{
       mimeType = photoUrl.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
     }
 
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4-vision-preview',
       messages: [

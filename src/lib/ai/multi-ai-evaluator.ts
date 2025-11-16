@@ -9,15 +9,44 @@ import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid build-time errors
+let openaiClient: OpenAI | null = null;
+let anthropicClient: Anthropic | null = null;
+let geminiClient: GoogleGenerativeAI | null = null;
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY environment variable is not set');
+    }
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openaiClient;
+}
 
-const gemini = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
+function getAnthropicClient(): Anthropic {
+  if (!anthropicClient) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY environment variable is not set');
+    }
+    anthropicClient = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+  }
+  return anthropicClient;
+}
+
+function getGeminiClient(): GoogleGenerativeAI {
+  if (!geminiClient) {
+    if (!process.env.GOOGLE_API_KEY) {
+      throw new Error('GOOGLE_API_KEY environment variable is not set');
+    }
+    geminiClient = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+  }
+  return geminiClient;
+}
 
 export interface CandidateEvaluation {
   applicationId: string;
@@ -59,6 +88,7 @@ async function evaluateWithGPT4(data: CandidateEvaluation): Promise<AIEvaluation
   const prompt = buildEvaluationPrompt(data);
 
   try {
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: [
@@ -106,6 +136,7 @@ async function evaluateWithClaude(data: CandidateEvaluation): Promise<AIEvaluati
   const prompt = buildEvaluationPrompt(data);
 
   try {
+    const anthropic = getAnthropicClient();
     const response = await anthropic.messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 1000,
@@ -148,6 +179,7 @@ async function evaluateWithGemini(data: CandidateEvaluation): Promise<AIEvaluati
   const prompt = buildEvaluationPrompt(data);
 
   try {
+    const gemini = getGeminiClient();
     const model = gemini.getGenerativeModel({ model: 'gemini-pro' });
 
     const result = await model.generateContent([

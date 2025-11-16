@@ -17,9 +17,20 @@ import {
   RoleType,
 } from './interview-questions';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Lazy initialization to avoid build-time errors
+let openaiClient: OpenAI | null = null;
+
+function getOpenAIClient(): OpenAI {
+  if (!openaiClient) {
+    if (!process.env.OPENAI_API_KEY) {
+      throw new Error('OPENAI_API_KEY environment variable is not set');
+    }
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+  }
+  return openaiClient;
+}
 
 export interface InterviewMessage {
   role: 'user' | 'assistant' | 'system';
@@ -137,6 +148,7 @@ ${context}
 Provide a fair, objective evaluation.`;
 
   try {
+    const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
       model: 'gpt-4-turbo-preview',
       messages: [
