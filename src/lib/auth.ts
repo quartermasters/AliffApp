@@ -47,7 +47,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // Update last login
         await prisma.user.update({
           where: { id: user.id },
-          data: { lastLogin: new Date() },
+          data: { lastLoginAt: new Date() },
         });
 
         return {
@@ -123,7 +123,7 @@ export const authOptions = {
         // Update last login
         await prisma.user.update({
           where: { id: user.id },
-          data: { lastLogin: new Date() },
+          data: { lastLoginAt: new Date() },
         });
 
         return {
