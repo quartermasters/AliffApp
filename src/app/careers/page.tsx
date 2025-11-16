@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
 import { Briefcase, Globe, Building, Laptop, MapPin, DollarSign, Calendar, FileText, MessageCircle } from 'lucide-react';
+import AIChatWidget from '@/components/careers/AIChatWidget';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -231,8 +232,9 @@ export default async function CareersPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
             <button
               onClick={() => {
-                // TODO: Implement AI chat widget in Phase 2
-                alert('AI Chat widget coming soon! For now, please apply to any open position to join our talent pool.');
+                // Scroll to bottom to make AI chat widget visible
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                // Widget will auto-appear at bottom-right
               }}
               className="inline-flex items-center gap-2 bg-teal-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
             >
@@ -252,6 +254,9 @@ export default async function CareersPage() {
         </div>
       </div>
       </section>
+
+      {/* AI Chat Widget */}
+      <AIChatWidget />
     </main>
   );
 }

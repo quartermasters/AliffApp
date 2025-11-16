@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { JobStatus, JobType, JobLocation } from '@prisma/client';
 import { Globe, Building, MapPin, DollarSign, Eye, FileText, ArrowLeft, MessageCircle } from 'lucide-react';
+import AIChatWidget from '@/components/careers/AIChatWidget';
 
 // Force dynamic rendering (requires database access)
 export const dynamic = 'force-dynamic';
@@ -265,8 +266,8 @@ export default async function JobDetailPage({ params }: PageProps) {
                 </p>
                 <button
                   onClick={() => {
-                    // TODO: Implement AI chat widget in Phase 2
-                    alert('AI Chat widget coming soon! Click the "Need Help?" button at the bottom right of your screen.');
+                    // Scroll to bottom to make AI chat widget visible
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
                   }}
                   className="w-full bg-teal-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-teal-700 transition-colors text-sm flex items-center justify-center gap-2"
                 >
@@ -296,14 +297,8 @@ export default async function JobDetailPage({ params }: PageProps) {
       </div>
       </section>
 
-      {/* AI Chat Widget Placeholder */}
-      {/* TODO: Implement AI chat widget in Sprint 4 */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button className="bg-teal-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-teal-700 transition-all hover:scale-105 flex items-center gap-2">
-          <MessageCircle className="w-5 h-5" />
-          <span className="font-medium">Need Help?</span>
-        </button>
-      </div>
+      {/* AI Chat Widget - Context-aware for this specific job */}
+      <AIChatWidget jobId={job.slug} jobTitle={job.title} />
     </main>
   );
 }
