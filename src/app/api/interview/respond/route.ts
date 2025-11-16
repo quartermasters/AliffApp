@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
     const updatedSession = await prisma.interviewSession.update({
       where: { id: interviewId },
       data: {
-        messages: updatedMessages,
+        messages: updatedMessages as any,
         extractedData: updatedExtractedData,
         currentStage: newStage,
         lastActivityAt: new Date(),
