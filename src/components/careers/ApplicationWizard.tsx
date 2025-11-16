@@ -351,13 +351,7 @@ export default function ApplicationWizard({ jobId, jobTitle }: ApplicationWizard
         {/* Help Section */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            Need assistance?{' '}
-            <a
-              href="mailto:hr@aliffcapital.com"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              Contact our HR team
-            </a>
+            Need assistance? Chat with <span className="font-semibold text-gray-900">ALIFF</span> using the widget at the bottom-right of your screen.
           </p>
         </div>
       </div>

@@ -220,11 +220,8 @@ function ApplicationSuccessContent() {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">Check Your Email</h3>
-              <p className="text-sm text-gray-600 mb-3">
-                We've sent a confirmation email to your inbox. If you don't see it within a few minutes, please check your spam folder.
-              </p>
-              <p className="text-xs text-gray-500">
-                Tip: Add <span className="font-medium">hr@aliffcapital.com</span> to your contacts to ensure you receive our emails.
+              <p className="text-sm text-gray-600">
+                We've sent a confirmation email to your inbox. If you don't see it within a few minutes, please check your spam folder or chat with ALIFF using the widget for assistance.
               </p>
             </div>
           </div>

@@ -347,15 +347,9 @@ Best regards,
       {/* Help Section */}
       <div className="mt-8 bg-gray-50 rounded-lg p-6 border border-gray-200">
         <h3 className="font-semibold text-gray-900 mb-2">Need Help?</h3>
-        <p className="text-sm text-gray-700 mb-3">
-          Having trouble submitting your application? We're here to help!
+        <p className="text-sm text-gray-700">
+          Having trouble? Chat with <span className="font-semibold text-gray-900">ALIFF</span> using the widget at the bottom-right of your screen for instant support.
         </p>
-        <a
-          href="mailto:hr@aliffcapital.com"
-          className="text-blue-600 hover:text-blue-700 font-medium text-sm"
-        >
-          Contact us at hr@aliffcapital.com
-        </a>
       </div>
     </div>
   );

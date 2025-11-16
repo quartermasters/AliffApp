@@ -314,13 +314,9 @@ function ApplicationTrackingContent() {
 
         {/* Help Section */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-gray-600 mb-2">Need help?</p>
-          <a
-            href="mailto:hr@aliffcapital.com"
-            className="text-blue-600 hover:text-blue-700 font-medium"
-          >
-            Contact us at hr@aliffcapital.com
-          </a>
+          <p className="text-sm text-gray-600">
+            Need help? Chat with <span className="font-semibold text-gray-900">ALIFF</span> using the widget at the bottom-right of your screen.
+          </p>
         </div>
       </div>
     </div>

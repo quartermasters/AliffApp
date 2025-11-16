@@ -683,13 +683,7 @@ export default function ApplyPage() {
         <div className="mt-8 bg-slate-50 rounded-2xl p-6 border border-slate-200">
           <h3 className="font-semibold text-slate-900 mb-2">Need Help?</h3>
           <p className="text-sm text-slate-700">
-            Having trouble? Chat with ALIFF using the widget at the bottom-right or email us at{' '}
-            <a
-              href="mailto:hr@aliffcapital.com"
-              className="text-teal-600 hover:text-teal-700 font-medium"
-            >
-              hr@aliffcapital.com
-            </a>
+            Having trouble? Chat with <span className="font-semibold text-slate-900">ALIFF</span> using the widget at the bottom-right of your screen for instant help.
           </p>
         </div>
       </div>
