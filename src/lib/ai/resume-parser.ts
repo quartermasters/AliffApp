@@ -153,7 +153,8 @@ async function extractTextFromPDF(filePath: string): Promise<string> {
   try {
     const dataBuffer = await readFile(filePath);
     // Dynamic import for CommonJS module compatibility
-    const pdfParse = (await import('pdf-parse')).default;
+    const pdfParseModule = await import('pdf-parse');
+    const pdfParse = (pdfParseModule as any).default || pdfParseModule;
     const pdfData = await pdfParse(dataBuffer);
     return pdfData.text;
   } catch (error) {
@@ -168,7 +169,8 @@ async function extractTextFromPDF(filePath: string): Promise<string> {
 async function extractTextFromPDFBuffer(buffer: Buffer): Promise<string> {
   try {
     // Dynamic import for CommonJS module compatibility
-    const pdfParse = (await import('pdf-parse')).default;
+    const pdfParseModule = await import('pdf-parse');
+    const pdfParse = (pdfParseModule as any).default || pdfParseModule;
     const pdfData = await pdfParse(buffer);
     return pdfData.text;
   } catch (error) {
@@ -234,7 +236,8 @@ async function extractTextFromImageBuffer(buffer: Buffer, fileName: string = '')
 async function extractTextFromWord(filePath: string): Promise<string> {
   try {
     // Dynamic import for CommonJS module compatibility
-    const mammoth = (await import('mammoth')).default;
+    const mammothModule = await import('mammoth');
+    const mammoth = (mammothModule as any).default || mammothModule;
     const result = await mammoth.extractRawText({ path: filePath });
     return result.value;
   } catch (error) {
@@ -249,7 +252,8 @@ async function extractTextFromWord(filePath: string): Promise<string> {
 async function extractTextFromWordBuffer(buffer: Buffer): Promise<string> {
   try {
     // Dynamic import for CommonJS module compatibility
-    const mammoth = (await import('mammoth')).default;
+    const mammothModule = await import('mammoth');
+    const mammoth = (mammothModule as any).default || mammothModule;
     const result = await mammoth.extractRawText({ buffer });
     return result.value;
   } catch (error) {
