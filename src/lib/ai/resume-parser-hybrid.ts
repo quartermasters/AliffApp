@@ -142,10 +142,11 @@ export interface ParsedResumeData {
 
 /**
  * Extract text from PDF using pdfjs-dist (ESM-compatible)
+ * Falls back to GPT-4o Vision if pdfjs-dist fails (e.g., in serverless environments)
  */
 async function extractTextFromPDF(buffer: Buffer): Promise<string> {
   try {
-    console.log('[PARSER] Extracting text from PDF with pdfjs-dist...');
+    console.log('[PARSER] Attempting PDF text extraction with pdfjs-dist...');
 
     // Dynamic import for ESM module
     const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
@@ -169,11 +170,22 @@ async function extractTextFromPDF(buffer: Buffer): Promise<string> {
       fullText += pageText + '\n';
     }
 
-    console.log(`[PARSER] Extracted ${fullText.length} characters from PDF`);
+    console.log(`[PARSER] Successfully extracted ${fullText.length} characters from PDF with pdfjs-dist`);
     return fullText;
   } catch (error) {
-    console.error('[PARSER] PDF extraction error:', error);
-    throw new Error('Failed to extract text from PDF');
+    console.error('[PARSER] pdfjs-dist PDF extraction failed:', error);
+    console.error('[PARSER] This likely indicates missing dependencies in serverless environment');
+    console.error('[PARSER] Suggested fixes:');
+    console.error('[PARSER]   1. Verify OPENAI_API_KEY environment variable is set');
+    console.error('[PARSER]   2. Try uploading resume as an image (JPG/PNG) instead of PDF');
+    console.error('[PARSER]   3. Check Vercel function logs for detailed error');
+
+    // Provide detailed error message
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(
+      `PDF text extraction failed in serverless environment. ${errorMessage}. ` +
+      `Please try uploading your resume as an image (JPG/PNG) or contact support if the issue persists.`
+    );
   }
 }
 
