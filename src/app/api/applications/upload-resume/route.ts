@@ -82,6 +82,9 @@ export async function POST(request: NextRequest) {
     // Generate public URL (relative path)
     const publicUrl = `/uploads/resumes/${filename}`;
 
+    // Convert to base64 for serverless parsing
+    const base64Content = buffer.toString('base64');
+
     console.log(`[UPLOAD] Resume uploaded: ${filename} (${file.size} bytes)`);
 
     return NextResponse.json({
@@ -92,6 +95,7 @@ export async function POST(request: NextRequest) {
       type: file.type,
       url: publicUrl,
       path: filepath,
+      content: base64Content, // Add base64 content for serverless parsing
       message: 'Resume uploaded successfully',
     });
   } catch (error) {

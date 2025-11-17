@@ -68,8 +68,9 @@ export default function ProcessingPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          filePath: uploads.resume.path,
+          fileContent: uploads.resume.content,
           fileType: uploads.resume.type,
+          fileName: uploads.resume.filename,
         }),
       });
 

@@ -6,16 +6,16 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { parseResume, validateParsedData } from '@/lib/ai/resume-parser';
+import { parseResumeFromBuffer, validateParsedData } from '@/lib/ai/resume-parser';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { filePath, fileType } = body;
+    const { fileContent, fileType, fileName } = body;
 
-    if (!filePath) {
+    if (!fileContent) {
       return NextResponse.json(
-        { error: 'File path is required' },
+        { error: 'File content is required' },
         { status: 400 }
       );
     }
@@ -27,10 +27,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`[API] Starting resume parsing for: ${filePath}`);
+    console.log(`[API] Starting resume parsing for: ${fileName || 'resume'}`);
+
+    // Convert base64 to buffer
+    const buffer = Buffer.from(fileContent, 'base64');
 
     // Parse the resume using AI
-    const parsedData = await parseResume(filePath, fileType);
+    const parsedData = await parseResumeFromBuffer(buffer, fileType);
 
     // Validate the parsed data
     const validation = validateParsedData(parsedData);

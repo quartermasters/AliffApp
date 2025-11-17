@@ -151,7 +151,7 @@ export interface ParsedResumeData {
 }
 
 /**
- * Extract text from PDF resume
+ * Extract text from PDF resume (from file path)
  */
 async function extractTextFromPDF(filePath: string): Promise<string> {
   try {
@@ -165,13 +165,38 @@ async function extractTextFromPDF(filePath: string): Promise<string> {
 }
 
 /**
- * Extract text from image resume using GPT-4 Vision
+ * Extract text from PDF resume (from buffer)
+ */
+async function extractTextFromPDFBuffer(buffer: Buffer): Promise<string> {
+  try {
+    const pdfData = await pdfParse(buffer);
+    return pdfData.text;
+  } catch (error) {
+    console.error('[PARSER] PDF extraction error:', error);
+    throw new Error('Failed to extract text from PDF');
+  }
+}
+
+/**
+ * Extract text from image resume using GPT-4 Vision (from file path)
  */
 async function extractTextFromImage(filePath: string): Promise<string> {
   try {
     const imageBuffer = await readFile(filePath);
-    const base64Image = imageBuffer.toString('base64');
-    const mimeType = filePath.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
+    return extractTextFromImageBuffer(imageBuffer, filePath);
+  } catch (error) {
+    console.error('[PARSER] Image extraction error:', error);
+    throw new Error('Failed to extract text from image');
+  }
+}
+
+/**
+ * Extract text from image resume using GPT-4 Vision (from buffer)
+ */
+async function extractTextFromImageBuffer(buffer: Buffer, fileName: string = ''): Promise<string> {
+  try {
+    const base64Image = buffer.toString('base64');
+    const mimeType = fileName.toLowerCase().endsWith('.png') ? 'image/png' : 'image/jpeg';
 
     const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
@@ -204,11 +229,24 @@ async function extractTextFromImage(filePath: string): Promise<string> {
 }
 
 /**
- * Extract text from Word document resume
+ * Extract text from Word document resume (from file path)
  */
 async function extractTextFromWord(filePath: string): Promise<string> {
   try {
     const result = await mammoth.extractRawText({ path: filePath });
+    return result.value;
+  } catch (error) {
+    console.error('[PARSER] Word document extraction error:', error);
+    throw new Error('Failed to extract text from Word document');
+  }
+}
+
+/**
+ * Extract text from Word document resume (from buffer)
+ */
+async function extractTextFromWordBuffer(buffer: Buffer): Promise<string> {
+  try {
+    const result = await mammoth.extractRawText({ buffer });
     return result.value;
   } catch (error) {
     console.error('[PARSER] Word document extraction error:', error);
@@ -359,7 +397,7 @@ Return the data in this exact JSON structure:
 }
 
 /**
- * Main function to parse a resume file
+ * Main function to parse a resume file (from file path)
  */
 export async function parseResume(filePath: string, fileType: string): Promise<ParsedResumeData> {
   console.log(`[PARSER] Starting resume parsing: ${filePath} (${fileType})`);
@@ -373,6 +411,37 @@ export async function parseResume(filePath: string, fileType: string): Promise<P
     resumeText = await extractTextFromImage(filePath);
   } else if (fileType.includes('word') || fileType.includes('document')) {
     resumeText = await extractTextFromWord(filePath);
+  } else {
+    throw new Error(`Unsupported file type: ${fileType}`);
+  }
+
+  if (!resumeText || resumeText.trim().length < 50) {
+    throw new Error('Could not extract sufficient text from resume');
+  }
+
+  console.log(`[PARSER] Extracted ${resumeText.length} characters from resume`);
+
+  // Parse the extracted text with GPT-4
+  const parsedData = await parseResumeWithGPT4(resumeText);
+
+  return parsedData;
+}
+
+/**
+ * Parse a resume from a buffer (for serverless environments)
+ */
+export async function parseResumeFromBuffer(buffer: Buffer, fileType: string): Promise<ParsedResumeData> {
+  console.log(`[PARSER] Starting resume parsing from buffer (${fileType})`);
+
+  let resumeText: string;
+
+  // Extract text based on file type
+  if (fileType === 'application/pdf') {
+    resumeText = await extractTextFromPDFBuffer(buffer);
+  } else if (fileType.startsWith('image/')) {
+    resumeText = await extractTextFromImageBuffer(buffer);
+  } else if (fileType.includes('word') || fileType.includes('document')) {
+    resumeText = await extractTextFromWordBuffer(buffer);
   } else {
     throw new Error(`Unsupported file type: ${fileType}`);
   }
