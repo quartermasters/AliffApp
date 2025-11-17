@@ -14,10 +14,6 @@
 
 import OpenAI from 'openai';
 import { readFile } from 'fs/promises';
-// @ts-ignore - pdf-parse has no types
-import pdfParse from 'pdf-parse';
-// @ts-ignore - mammoth types may be incompatible
-import mammoth from 'mammoth';
 
 // Lazy initialization to avoid build-time errors
 let openaiClient: OpenAI | null = null;
@@ -156,6 +152,8 @@ export interface ParsedResumeData {
 async function extractTextFromPDF(filePath: string): Promise<string> {
   try {
     const dataBuffer = await readFile(filePath);
+    // Dynamic import for CommonJS module compatibility
+    const pdfParse = (await import('pdf-parse')).default;
     const pdfData = await pdfParse(dataBuffer);
     return pdfData.text;
   } catch (error) {
@@ -169,6 +167,8 @@ async function extractTextFromPDF(filePath: string): Promise<string> {
  */
 async function extractTextFromPDFBuffer(buffer: Buffer): Promise<string> {
   try {
+    // Dynamic import for CommonJS module compatibility
+    const pdfParse = (await import('pdf-parse')).default;
     const pdfData = await pdfParse(buffer);
     return pdfData.text;
   } catch (error) {
@@ -233,6 +233,8 @@ async function extractTextFromImageBuffer(buffer: Buffer, fileName: string = '')
  */
 async function extractTextFromWord(filePath: string): Promise<string> {
   try {
+    // Dynamic import for CommonJS module compatibility
+    const mammoth = (await import('mammoth')).default;
     const result = await mammoth.extractRawText({ path: filePath });
     return result.value;
   } catch (error) {
@@ -246,6 +248,8 @@ async function extractTextFromWord(filePath: string): Promise<string> {
  */
 async function extractTextFromWordBuffer(buffer: Buffer): Promise<string> {
   try {
+    // Dynamic import for CommonJS module compatibility
+    const mammoth = (await import('mammoth')).default;
     const result = await mammoth.extractRawText({ buffer });
     return result.value;
   } catch (error) {
