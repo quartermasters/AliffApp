@@ -6,7 +6,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { parseResumeFromBuffer, validateParsedData } from '@/lib/ai/resume-parser-hybrid';
+// Import vision-only parser for Vercel serverless compatibility
+import { parseResumeFromBuffer, validateParsedData } from '@/lib/ai/resume-parser-gpt4vision';
 
 // Route segment config for Vercel
 export const runtime = 'nodejs';
