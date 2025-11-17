@@ -13,6 +13,11 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
 
+// Route segment config for Vercel
+export const runtime = 'nodejs';
+export const maxDuration = 30;
+export const dynamic = 'force-dynamic';
+
 const ALLOWED_TYPES = [
   'application/pdf',
   'application/msword',
@@ -25,11 +30,21 @@ const ALLOWED_TYPES = [
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export async function POST(request: NextRequest) {
+  console.log('[UPLOAD-RESUME] POST request received');
+
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
+    console.log('[UPLOAD-RESUME] File details:', {
+      hasFile: !!file,
+      name: file?.name,
+      size: file?.size,
+      type: file?.type
+    });
+
     if (!file) {
+      console.error('[UPLOAD-RESUME] No file provided');
       return NextResponse.json(
         { error: 'No file provided' },
         { status: 400 }
