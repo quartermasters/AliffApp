@@ -72,10 +72,10 @@ export async function POST(request: NextRequest) {
     // Create new interview session
     const firstName = candidateName?.split(' ')[0] || application.firstName;
 
-    // Use recruiter's personalized greeting
+    // Use recruiter's personalized greeting (SHORT and conversational)
     const welcomeMessage = recruiterPersona?.greeting
-      ? `${recruiterPersona.greeting.replace('Thanks for applying', `Thanks for applying to the ${jobTitle || application.job.title} position`)}\n\nI've reviewed your CV and I'm really impressed by your background. This interview will only take 5-10 minutes.\n\nLet's start - can you tell me a bit about your current situation? Are you currently working or available to start immediately?`
-      : `Hi ${firstName}! Thanks for applying to the ${jobTitle || application.job.title} position.\n\nI've reviewed your CV and I'm impressed by your background. Let's start - can you tell me a bit about your current situation? Are you currently working or available to start immediately?`;
+      ? recruiterPersona.greeting.replace('Thanks for applying', `Thanks for applying to the ${jobTitle || application.job.title} position`)
+      : `Hi ${firstName}! Thanks for applying to the ${jobTitle || application.job.title} position.`;
 
     const interviewSession = await prisma.interviewSession.create({
       data: {

@@ -2,28 +2,16 @@
  * AI Interview Conductor - Conversational Mode
  *
  * Orchestrates free-flowing conversational interviews with ALIFF (recruiter)
- * - Claude API: Natural conversation responses
- * - OpenAI API: Structured data extraction + scoring
+ * - OpenAI GPT-4o: Natural conversation responses
+ * - OpenAI GPT-4o: Structured data extraction + scoring
  * - Stage progression: 7 stages from Welcome to Closing
  * - Real-time data extraction from candidate responses
- * - Multi-AI consensus scoring at completion
  */
 
-import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 
 // Lazy initialization to avoid build-time errors
-let anthropic: Anthropic | null = null;
 let openai: OpenAI | null = null;
-
-function getAnthropic(): Anthropic {
-  if (!anthropic) {
-    anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY || '',
-    });
-  }
-  return anthropic;
-}
 
 function getOpenAI(): OpenAI {
   if (!openai) {
@@ -96,7 +84,7 @@ export interface ConversationContext {
 }
 
 /**
- * Generate ALIFF's conversational response using Claude API
+ * Generate ALIFF's conversational response using OpenAI GPT-4o
  */
 export async function generateAliffResponse(
   context: ConversationContext,
@@ -106,15 +94,18 @@ export async function generateAliffResponse(
   const conversationHistory = buildConversationHistory(context, userMessage);
 
   try {
-    const response = await getAnthropic().messages.create({
-      model: 'claude-3-5-sonnet-20241022',
+    // Use OpenAI GPT-4o instead of Claude
+    const response = await getOpenAI().chat.completions.create({
+      model: 'gpt-4o',
       max_tokens: 1024,
       temperature: 0.7,
-      system: systemPrompt,
-      messages: conversationHistory,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        ...conversationHistory,
+      ],
     });
 
-    const aliffResponse = response.content[0].type === 'text' ? response.content[0].text : '';
+    const aliffResponse = response.choices[0].message.content || '';
 
     // Determine stage progression
     const { newStage, shouldComplete } = determineStageProgression(
@@ -130,7 +121,7 @@ export async function generateAliffResponse(
       shouldComplete,
     };
   } catch (error) {
-    console.error('[INTERVIEW] Claude API error:', error);
+    console.error('[INTERVIEW] OpenAI API error:', error);
     throw new Error('Failed to generate response');
   }
 }
@@ -171,14 +162,13 @@ export async function extractStructuredData(
 }
 
 /**
- * Calculate interview scores using multi-AI consensus (Claude + OpenAI)
+ * Calculate interview scores using OpenAI GPT-4o
  */
 export async function calculateInterviewScores(
   messages: Message[],
   extractedData: ExtractedData,
   jobRequirements: any
 ): Promise<{
-  claudeScore: number;
   openaiScore: number;
   consensusScore: number;
   breakdown: {
@@ -191,33 +181,14 @@ export async function calculateInterviewScores(
   concerns: string[];
   recommendation: 'PROCEED_TO_HUMAN_REVIEW' | 'ADD_TO_TALENT_POOL' | 'REJECT';
 }> {
-  // Get scores from both AI providers
-  const [claudeAnalysis, openaiAnalysis] = await Promise.all([
-    analyzeWithClaude(messages, extractedData, jobRequirements),
-    analyzeWithOpenAI(messages, extractedData, jobRequirements),
-  ]);
+  // Get scores from OpenAI GPT-4o
+  const openaiAnalysis = await analyzeWithOpenAI(messages, extractedData, jobRequirements);
 
-  // Calculate consensus
-  const consensusScore = Math.round((claudeAnalysis.overallScore + openaiAnalysis.overallScore) / 2);
-
-  const breakdown = {
-    communication: Math.round(
-      (claudeAnalysis.breakdown.communication + openaiAnalysis.breakdown.communication) / 2
-    ),
-    availability: Math.round(
-      (claudeAnalysis.breakdown.availability + openaiAnalysis.breakdown.availability) / 2
-    ),
-    technical: Math.round(
-      (claudeAnalysis.breakdown.technical + openaiAnalysis.breakdown.technical) / 2
-    ),
-    motivation: Math.round(
-      (claudeAnalysis.breakdown.motivation + openaiAnalysis.breakdown.motivation) / 2
-    ),
-  };
-
-  // Combine strengths and concerns
-  const strengths = [...new Set([...claudeAnalysis.strengths, ...openaiAnalysis.strengths])];
-  const concerns = [...new Set([...claudeAnalysis.concerns, ...openaiAnalysis.concerns])];
+  // Use OpenAI score as final score
+  const consensusScore = openaiAnalysis.overallScore;
+  const breakdown = openaiAnalysis.breakdown;
+  const strengths = openaiAnalysis.strengths;
+  const concerns = openaiAnalysis.concerns;
 
   // Determine recommendation
   let recommendation: 'PROCEED_TO_HUMAN_REVIEW' | 'ADD_TO_TALENT_POOL' | 'REJECT';
@@ -230,7 +201,6 @@ export async function calculateInterviewScores(
   }
 
   return {
-    claudeScore: claudeAnalysis.overallScore,
     openaiScore: openaiAnalysis.overallScore,
     consensusScore,
     breakdown,
@@ -241,91 +211,7 @@ export async function calculateInterviewScores(
 }
 
 /**
- * Analyze interview with Claude
- */
-async function analyzeWithClaude(
-  messages: Message[],
-  extractedData: ExtractedData,
-  jobRequirements: any
-): Promise<{
-  overallScore: number;
-  breakdown: { communication: number; availability: number; technical: number; motivation: number };
-  strengths: string[];
-  concerns: string[];
-}> {
-  const analysisPrompt = `You are an expert recruiter analyzing a candidate interview.
-
-**Interview Transcript:**
-${messages.map((m) => `${m.role === 'user' ? 'Candidate' : 'ALIFF'}: ${m.content}`).join('\n\n')}
-
-**Extracted Data:**
-${JSON.stringify(extractedData, null, 2)}
-
-**Job Requirements:**
-${JSON.stringify(jobRequirements, null, 2)}
-
-**Your Task:**
-Analyze this interview and provide scores (0-100) for:
-1. Communication (grammar, clarity, professionalism)
-2. Availability Fit (hours/schedule match)
-3. Technical Skills (proficiency in required skills)
-4. Motivation (career goals, enthusiasm)
-
-Also identify:
-- Top 3-5 strengths
-- Top 1-3 concerns or red flags
-
-Return your analysis as JSON in this exact format:
-{
-  "overallScore": 85,
-  "breakdown": {
-    "communication": 90,
-    "availability": 85,
-    "technical": 80,
-    "motivation": 85
-  },
-  "strengths": ["Clear communication", "Relevant experience", "Immediate availability"],
-  "concerns": ["Limited portfolio samples"]
-}`;
-
-  try {
-    const response = await getAnthropic().messages.create({
-      model: 'claude-3-5-sonnet-20241022',
-      max_tokens: 2048,
-      temperature: 0.3,
-      messages: [
-        {
-          role: 'user',
-          content: analysisPrompt,
-        },
-      ],
-    });
-
-    const content = response.content[0].type === 'text' ? response.content[0].text : '{}';
-
-    // Extract JSON from response (Claude might include explanation)
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    const analysis = jsonMatch ? JSON.parse(jsonMatch[0]) : {
-      overallScore: 50,
-      breakdown: { communication: 50, availability: 50, technical: 50, motivation: 50 },
-      strengths: [],
-      concerns: ['Unable to analyze'],
-    };
-
-    return analysis;
-  } catch (error) {
-    console.error('[INTERVIEW] Claude analysis error:', error);
-    return {
-      overallScore: 50,
-      breakdown: { communication: 50, availability: 50, technical: 50, motivation: 50 },
-      strengths: [],
-      concerns: ['Analysis failed'],
-    };
-  }
-}
-
-/**
- * Analyze interview with OpenAI
+ * Analyze interview with OpenAI GPT-4o
  */
 async function analyzeWithOpenAI(
   messages: Message[],
@@ -395,86 +281,113 @@ Format your response as JSON with this structure:
 }
 
 /**
- * Build system prompt for Claude based on current stage
+ * Build system prompt for GPT-4o based on current stage
  */
 function buildSystemPrompt(context: ConversationContext): string {
   const { candidateName, jobTitle, currentStage, extractedData } = context;
   const firstName = candidateName.split(' ')[0];
 
-  const basePrompt = `You are ALIFF, a professional and friendly recruitment agent at Aliff Services. You are conducting a conversational interview with ${firstName} who applied for the ${jobTitle} position.
+  const basePrompt = `You are a professional and friendly recruiter conducting a conversational interview with ${firstName} for the ${jobTitle} position.
 
-**Your Personality:**
-- Professional but warm (use contractions like "I'm" not "I am")
-- Encouraging and positive ("That's great!", "Love to hear that")
-- Curious and engaged (ask follow-up questions)
-- Clear and efficient (5-10 minute interview total)
-- Human-like (do NOT reveal you are AI)
+**CRITICAL RULES - YOU MUST FOLLOW THESE:**
+1. Keep responses SHORT (1-2 sentences max, 15-25 words ideal)
+2. Ask ONLY ONE question at a time
+3. Be warm and conversational (like texting a colleague)
+4. Use casual language: "I'm" not "I am", "Let's" not "Let us"
+5. Show enthusiasm: "Great!", "Love it!", "Perfect!"
+6. Do NOT reveal you are AI
+7. Do NOT ask multiple questions in one message
+8. Do NOT write long paragraphs
+
+**Your Style:**
+- Think of this like a friendly WhatsApp chat
+- Short bursts of text
+- One question, wait for answer, then next question
+- Use natural reactions: "Nice!", "Got it", "Makes sense"
+- Keep it flowing and relaxed
 
 **Current Interview Stage: ${currentStage}**
 
 **Interview Flow:**
-1. WELCOME - Warm introduction, ask about current situation
-2. AVAILABILITY - Deep dive on hours/day, days/month, start date, schedule
-3. SKILLS - Assess technical proficiency, ask for examples, portfolio
-4. REMOTE_WORK - Remote experience, home setup, communication style
-5. COMPENSATION - Expected rate, contractor understanding
-6. MOTIVATION - Why this role, career goals, work preferences
-7. CLOSING - Final questions, explain next steps
+1. WELCOME - Ask about current work situation
+2. AVAILABILITY - Hours per day, days per month, start date
+3. SKILLS - Technical proficiency, examples, portfolio
+4. REMOTE_WORK - Remote experience, setup, communication
+5. COMPENSATION - Expected rate, contractor experience
+6. MOTIVATION - Why this role, career goals
+7. CLOSING - Final questions, next steps
 
 **Stage-Specific Instructions:**`;
 
   const stageInstructions: Record<InterviewStage, string> = {
-    WELCOME: `You're starting the interview. Ask about their current situation - are they employed or available immediately? Keep it conversational and warm. Once they respond, transition to AVAILABILITY stage.`,
+    WELCOME: `React warmly to their availability. Then ask ONE simple question: "How many hours per day can you work?" STOP THERE. Wait for their answer.`,
 
-    AVAILABILITY: `Ask detailed availability questions:
-- How many hours per day can they commit?
-- How many days per month are they available?
-- When can they start?
-- Preferred schedule (morning, afternoon, flexible)?
-After getting clear answers, transition to SKILLS stage.`,
+    AVAILABILITY: `You're asking about availability ONE question at a time:
+- First: "How many hours per day?"
+- Then: "How many days per month?"
+- Then: "When can you start?"
+Only ask the NEXT question after they answer the CURRENT one. Keep it SHORT and friendly.`,
 
-    SKILLS: `Validate their technical skills:
-- Ask them to rate proficiency (1-10) on key skills from CV
-- Request specific examples of recent projects
-- Ask for portfolio/GitHub links
-- What tools/technologies excite them?
-After understanding their skills, move to REMOTE_WORK stage.`,
+    SKILLS: `Ask about their skills ONE at a time:
+- First: Pick ONE key skill from their CV and ask "How would you rate yourself in [skill]?"
+- Then: "Can you share an example of a recent project?"
+- Then: "Got a portfolio or GitHub link?"
+SHORT questions only! After 2-3 exchanges, move to REMOTE_WORK.`,
 
-    REMOTE_WORK: `Assess remote work readiness:
-- How much remote work experience?
-- Home office setup quality?
-- Communication preferences (Slack, email, video)?
-- Timezone and meeting availability?
-After covering remote work, transition to COMPENSATION.`,
+    REMOTE_WORK: `Ask about remote work setup ONE question at a time:
+- First: "How much remote work experience do you have?"
+- Then: "Tell me about your home office setup?"
+- Then: "What's your preferred way to communicate? Slack, email, or video?"
+Keep it conversational! After 2-3 exchanges, move to COMPENSATION.`,
 
-    COMPENSATION: `Discuss compensation professionally:
-- Confirm their expected hourly rate
-- Verify they understand contractor setup (1099, monthly payments, no benefits)
-- Ask if they have contractor experience
-After alignment on compensation, move to MOTIVATION stage.`,
+    COMPENSATION: `Discuss money simply:
+- First: "What hourly rate are you looking for?"
+- Then: "You cool with contractor setup? (1099, monthly payments)"
+Keep it SHORT! After they answer, move to MOTIVATION.`,
 
-    MOTIVATION: `Understand their motivations:
-- What attracted them to this role?
-- Career goals for next 1-2 years?
-- What work environment helps them thrive?
-After understanding motivation, transition to CLOSING.`,
+    MOTIVATION: `Understand what drives them:
+- First: "What got you excited about this role?"
+- Then: "Where do you see yourself in a year or two?"
+SHORT and friendly! After they answer, move to CLOSING.`,
 
-    CLOSING: `Wrap up professionally:
-- Ask if they have any questions
-- Explain next steps: (1) AI analysis, (2) Email within 24h, (3) Team review in 3-5 days, (4) Profile in CV bank
-- Thank them warmly
-- End with "Thanks so much for your time, [Name]. Best of luck!"
-After closing, the interview is COMPLETED.`,
+    CLOSING: `Wrap up warmly:
+- First: "Got any questions for me?"
+- Then explain BRIEFLY: "We'll review your interview, email you within 24h, then team review in 3-5 days."
+- End with: "Thanks so much, [Name]! Best of luck 😊"
+After this, mark interview as COMPLETED.`,
 
-    COMPLETED: `Interview is complete. This stage should not be reached.`,
+    COMPLETED: `Interview complete. Should not reach here.`,
   };
+
+  // Context about what's been covered
+  const conversationContext = context.messages.length > 1
+    ? `\n\n**IMPORTANT - Conversation So Far:**\nYou've already asked ${context.messages.length / 2} questions. Review the conversation above. DO NOT repeat questions you've already asked! Move forward to the NEXT question in the stage.`
+    : '';
 
   const dataContext =
     Object.keys(extractedData).length > 0
       ? `\n\n**Data Already Collected:**\n${JSON.stringify(extractedData, null, 2)}\n\nDon't re-ask questions you've already covered.`
       : '';
 
-  return basePrompt + '\n\n' + stageInstructions[currentStage] + dataContext;
+  // Recruiter style adaptation
+  const styleContext = context.parsedResumeData?.assignedRecruiter?.style
+    ? `\n\n**Your Communication Style:** ${context.parsedResumeData.assignedRecruiter.style} - ${getStyleGuidance(context.parsedResumeData.assignedRecruiter.style)}`
+    : '';
+
+  return basePrompt + '\n\n' + stageInstructions[currentStage] + conversationContext + dataContext + styleContext;
+}
+
+/**
+ * Get style-specific guidance for recruiter persona
+ */
+function getStyleGuidance(style: string): string {
+  const styleGuides: Record<string, string> = {
+    casual_friendly: 'Use "Hey", "Awesome!", be warm and approachable',
+    enthusiastic: 'High energy! Use "!", show excitement, quick and upbeat',
+    professional_concise: 'Keep it brief, direct, respectful. No fluff.',
+    relatable_authentic: 'Talk like a real person. No corporate speak. Be genuine.',
+  };
+  return styleGuides[style] || 'Be professional and friendly';
 }
 
 /**

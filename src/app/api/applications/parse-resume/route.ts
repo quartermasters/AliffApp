@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { parseResumeFromBuffer, validateParsedData } from '@/lib/ai/resume-parser';
+import { parseResumeFromBuffer, validateParsedData } from '@/lib/ai/resume-parser-hybrid';
 
 // Route segment config for Vercel
 export const runtime = 'nodejs';
@@ -91,10 +91,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Parse the resume using AI
-    console.log('[PARSE-RESUME] Calling parseResumeFromBuffer...');
-    const parsedData = await parseResumeFromBuffer(buffer, fileType);
-    console.log('[PARSE-RESUME] Resume parsed successfully');
+    // Parse the resume using hybrid approach (text extraction + GPT-4o)
+    console.log('[PARSE-RESUME] Calling parseResumeFromBuffer with hybrid parser...');
+    const parsedData = await parseResumeFromBuffer(buffer, fileType, fileName || 'resume');
+    console.log('[PARSE-RESUME] Resume parsed successfully with hybrid parser');
 
     // Validate the parsed data
     const validation = validateParsedData(parsedData);

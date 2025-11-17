@@ -25,8 +25,10 @@ export async function POST(request: NextRequest) {
       resumeUrl,
       uploadedPhotoUrl,
       cvExtractedPhotoUrl,
+      coverLetterUrl,
       resumeParsedData,
       resumeText,
+      assignedRecruiter, // NEW: Recruiter persona assignment
     } = body;
 
     // Validate required fields
@@ -37,27 +39,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if job exists
+    // Check if job exists (jobId is actually a slug from URL)
     const job = await prisma.jobPosting.findUnique({
-      where: { id: jobId },
+      where: { slug: jobId },
     });
 
     if (!job) {
       return NextResponse.json({ error: 'Job posting not found' }, { status: 404 });
     }
 
+    // Merge recruiter persona into resumeParsedData for easy retrieval
+    const enrichedResumeData = {
+      ...(resumeParsedData || {}),
+      assignedRecruiter: assignedRecruiter || null, // Store recruiter persona
+    };
+
     // Create application record
     const application = await prisma.application.create({
       data: {
-        jobId,
+        jobId: job.id, // Use the actual job ID, not the slug
         firstName,
         lastName,
         email,
         phone: phone || null,
         resumeUrl,
+        coverLetter: coverLetterUrl || null,
         uploadedPhotoUrl: uploadedPhotoUrl || null,
         cvExtractedPhotoUrl: cvExtractedPhotoUrl || null,
-        resumeParsedData: resumeParsedData || null,
+        resumeParsedData: enrichedResumeData,
         resumeText: resumeText || null,
         status: 'SUBMITTED', // Will change to INTERVIEWING when interview starts
         photoMetadata: {
