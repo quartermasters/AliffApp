@@ -2,7 +2,7 @@
  * Interview Results API Endpoint
  *
  * Returns interview analysis and scores
- * - Multi-AI consensus scoring (Claude + OpenAI)
+ * - OpenAI GPT-4o scoring
  * - Breakdown by category
  * - Strengths and concerns
  * - Recommendation
@@ -86,7 +86,6 @@ export async function GET(
     await prisma.interviewSession.update({
       where: { id: interviewId },
       data: {
-        claudeScore: scores.claudeScore,
         gpt4Score: scores.openaiScore,
         consensusScore: scores.consensusScore,
         communicationScore: scores.breakdown.communication,
@@ -134,7 +133,6 @@ export async function GET(
               interviewTranscript: messages as any,
               interviewScore: scores.consensusScore,
               interviewScores: {
-                claude: scores.claudeScore,
                 openai: scores.openaiScore,
                 consensus: scores.consensusScore,
               } as any,
