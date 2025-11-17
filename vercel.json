@@ -1,18 +1,5 @@
 {
-  "functions": {
-    "src/app/api/applications/parse-resume/route.ts": {
-      "maxDuration": 60,
-      "memory": 1024
-    },
-    "src/app/api/applications/upload-resume/route.ts": {
-      "maxDuration": 30,
-      "memory": 512
-    },
-    "src/app/api/applications/upload-photo/route.ts": {
-      "maxDuration": 30,
-      "memory": 512
-    }
-  },
+  "regions": ["iad1"],
   "headers": [
     {
       "source": "/api/(.*)",

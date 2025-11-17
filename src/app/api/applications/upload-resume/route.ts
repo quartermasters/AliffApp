@@ -15,7 +15,6 @@ import { existsSync } from 'fs';
 
 // Route segment config for Vercel
 export const runtime = 'nodejs';
-export const maxDuration = 30;
 export const dynamic = 'force-dynamic';
 
 const ALLOWED_TYPES = [

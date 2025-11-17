@@ -10,7 +10,6 @@ import { parseResumeFromBuffer, validateParsedData } from '@/lib/ai/resume-parse
 
 // Route segment config for Vercel
 export const runtime = 'nodejs';
-export const maxDuration = 60; // 60 seconds for AI processing
 export const dynamic = 'force-dynamic';
 
 // OPTIONS handler for CORS preflight
