@@ -25,7 +25,7 @@ export async function OPTIONS() {
 }
 
 export async function POST(request: NextRequest) {
-  console.log('[PARSE-RESUME] POST request received');
+  console.log('[PARSE-RESUME] v2 - POST request received');
 
   try {
     // Parse request body with error handling
