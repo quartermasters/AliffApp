@@ -89,7 +89,7 @@ export async function POST(
 
     // If interview is completed, trigger multi-AI evaluation
     if (completed) {
-      await triggerInterviewEvaluation(sessionId);
+      await triggerInterviewEvaluation(updatedSession);
     }
 
     return NextResponse.json({
@@ -153,17 +153,18 @@ export async function POST(
 /**
  * Trigger multi-AI evaluation (Phase 2 Task 3)
  */
-async function triggerInterviewEvaluation(sessionId: string): Promise<void> {
+async function triggerInterviewEvaluation(
+  session: any
+): Promise<void> {
   console.log(
-    `[Interview API] Triggering multi-AI evaluation for session ${sessionId}`
+    `[Interview API] Triggering multi-AI evaluation for session ${session.id}`
   );
 
-  // Phase 2 Task 3 implementation
-  // Enqueue job for GPT-4, Claude, and Gemini evaluation
-  /*
-  await evaluationQueue.add('multi-ai-evaluation', {
-    sessionId,
-    timestamp: new Date().toISOString(),
-  });
-  */
+  // Import evaluation queue
+  const { triggerInterviewEvaluation: queueEvaluation } = await import(
+    "@/lib/aliff/recruiter/interview/queue"
+  );
+
+  // Trigger async evaluation
+  await queueEvaluation(session);
 }
